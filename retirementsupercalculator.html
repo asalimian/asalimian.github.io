@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.plot.ly/plotly-2.3.1.min.js"></script>
+    <script type="text/javascript">
+        function contribtime() {
+            Tm = document.getElementById('years_opt').value * 1;
+            r = document.getElementById('r_opt').value / 100;
+            c = document.getElementById('cont_opt').value * 1;
+            P0 = document.getElementById('p0_opt').value * 1;
+            Pm = document.getElementById('pmax_opt').value * 1;
+            t = Math.min(Math.max(0, Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)), Tm)
+            document.getElementById('time_opt').value = Math.round(t * 1000) / 1000
+            Tm = document.getElementById('years_pes').value * 1;
+            r = document.getElementById('r_pes').value / 100;
+            c = document.getElementById('cont_pes').value * 1;
+            P0 = document.getElementById('p0_pes').value * 1;
+            Pm = document.getElementById('pmax_pes').value * 1;
+            t = Math.min(Math.max(0, Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)), Tm)
+            document.getElementById('time_pes').value = Math.round(t * 1000) / 1000
+        }
+        function savingluxury() {
+            Tm = document.getElementById('years_opt').value * 1;
+            r = document.getElementById('r_opt').value / 100;
+            P0 = document.getElementById('p0_opt').value * 1;
+            Pm = document.getElementById('pmax_opt').value * 1;
+            c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1)
+            document.getElementById('lux_opt').value = Math.round(c * 100) / 100
+            Tm = document.getElementById('years_pes').value * 1;
+            r = document.getElementById('r_pes').value / 100;
+            P0 = document.getElementById('p0_pes').value * 1;
+            Pm = document.getElementById('pmax_pes').value * 1;
+            c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1)
+            document.getElementById('lux_pes').value = Math.round(c * 100) / 100
+        }
+        function expgrowth(principle, rate, years, y0) {
+            n = 100
+            x = [...Array(n).keys()]
+            expgrow = x => principle * Math.exp(x * rate / 100 / n * years);
+            yadd = y => y / n * years + y0;
+            return [x.map(yadd), x.map(expgrow)];
+        }
+        function expcont(principle, contrib, rate, years, y0) {
+            n = 100
+            x = [...Array(n).keys()]
+            expgrow = x => principle * Math.exp(x * (rate / 100 / n * years)) + contrib / (rate / 100) * (Math.exp(x * (rate / 100 / n * years)) - 1);
+            yadd = y => y / n * years + y0;
+            return [x.map(yadd), x.map(expgrow)];
+        }
+        function updateData() {
+            contribtime()
+            savingluxury()
+            var currentTime = new Date()
+
+            optcoast = expgrowth(document.getElementById('pmax_opt').value / Math.exp(document.getElementById('r_opt').value / 100 * (document.getElementById('years_opt').value - document.getElementById('time_opt').value)),
+                document.getElementById('r_opt').value,
+                (document.getElementById('years_opt').value * 1 - document.getElementById('time_opt').value * 1),
+                (currentTime.getFullYear() + currentTime.getMonth() / 12 + document.getElementById('time_opt').value * 1))
+            pescoast = expgrowth(document.getElementById('pmax_pes').value / Math.exp(document.getElementById('r_pes').value / 100 * (document.getElementById('years_pes').value - document.getElementById('time_pes').value)),
+                document.getElementById('r_pes').value,
+                document.getElementById('years_pes').value * 1 - document.getElementById('time_pes').value * 1,
+                currentTime.getFullYear() + currentTime.getMonth() / 12 + document.getElementById('time_pes').value * 1);
+            optcontrib = expcont(document.getElementById('p0_opt').value,
+                document.getElementById('cont_opt').value,
+                document.getElementById('r_opt').value,
+                (document.getElementById('time_opt').value),
+                currentTime.getFullYear() + currentTime.getMonth() / 12)
+            pescontrib = expcont(document.getElementById('p0_pes').value,
+                document.getElementById('cont_pes').value,
+                document.getElementById('r_pes').value,
+                (document.getElementById('time_pes').value),
+                currentTime.getFullYear() + currentTime.getMonth() / 12)
+
+            graphDiv = document.getElementById('tester')
+
+            //update the layout and all the traces
+            Plotly.react(TESTER, [{
+                x: optcoast[0],
+                y: optcoast[1],
+                name: 'Opt Coast'
+            }, {
+                x: pescoast[0],
+                y: pescoast[1],
+                name: 'Pes Coast'
+            }, {
+                x: optcontrib[0],
+                y: optcontrib[1],
+                name: 'Opt Contrib'
+            }, {
+                x: pescontrib[0],
+                y: pescontrib[1],
+                name: 'Pes Contrib'
+            }], layout);
+        }
+    </script>
+    <style>
+    </style>
+</head>
+
+<body onload="updateData()">
+    <table>
+        <tr>
+            <th>Value</th>
+            <th>Optimistic<abbr title="Use retirement savings, and good return rate"><sup>?</sup></abbr></th>
+            <th>Pessimistic<abbr title="Use net worth, and poor return rate"><sup>?</sup></th>
+            <th>Units</th>
+        </tr>
+        <tr>
+            <td><label for="p0"><abbr title="How much you have now">Principle</label><br></td>
+            <td><input type="number" id="p0_opt" name="fav_language" value="100" onchange="updateData()"></td>
+            <td><input type="number" id="p0_pes" name="fav_language" value="200" onchange="updateData()"></td>
+            <td>Dollars</td>
+        </tr>
+        <tr>
+            <td><label for="html"><abbr title="How much you think you'll need">Goal</abbr></label></td>
+            <td><input type="number" id="pmax_opt" name="fav_language" value="2000" pattern="${2}"
+                    onchange="updateData()"></td>
+            <td><input type="number" id="pmax_pes" name="fav_language" value="2000" pattern="${2}"
+                    onchange="updateData()"></td>
+            <td>Dollars</td>
+        </tr>
+        <tr>
+            <td><label for="html"><abbr title="Total investment return rate">Rate</abbr></label></td>
+            <td><input type="number" id="r_opt" name="fav_language" value="7" onchange="updateData()"></td>
+            <td><input type="number" id="r_pes" name="fav_language" value="4" onchange="updateData()"></td>
+            <td>Percent</td>
+        </tr>
+        <tr>
+            <td><label for="html"><abbr title="How many years till retirement">Year</abbr></label></td>
+            <td><input type="number" id="years_opt" name="fav_language" value="30" onchange="updateData()"></td>
+            <td><input type="number" id="years_pes" name="fav_language" value="30" onchange="updateData()"></td>
+            <td>Years</td>
+        </tr>
+        <tr>
+            <td><label for="html"><abbr title="How much you plan on saving per year">Annual Contribution</abbr></label>
+            </td>
+            <td><input type="number" id="cont_opt" name="fav_language" value="25" onchange="updateData()"></td>
+            <td><input type="number" id="cont_pes" name="fav_language" value="25" onchange="updateData()"></td>
+            <td>Dollars</td>
+        </tr>
+        <tr>
+            <td><label for="html"><abbr title="How long you'd need to contribute to hit coast">Contribution
+                        Time</abbr></label></td>
+            <td><input type="number" id="time_opt" name="fav_language" style="background-color: lightgray;" readonly
+                    value="30" onchange="updateData()"></td>
+            <td><input type="number" id="time_pes" name="fav_language" style="background-color: lightgray;" readonly
+                    value="30" onchange="updateData()"></td>
+            <td>Years</td>
+        </tr>
+        <tr>
+            <td><label for="html"><abbr
+                        title="How much you'd need to save continuously till retirement. If negative, how much you can afford to spend each year and still meet your goal.">Req
+                        Save or
+                        Spend</abbr></label></td>
+            <td><input type="number" id="lux_opt" name="fav_language" style="background-color: lightgray;" readonly
+                    value="30" onchange="updateData()"></td>
+            <td><input type="number" id="lux_pes" name="fav_language" style="background-color: lightgray;" readonly
+                    value="30" onchange="updateData()"></td>
+            <td>Dollars</td>
+        </tr>
+    </table>
+
+
+
+
+
+
+
+    <div id="tester" style="width:700px;height:500px;"></div>
+    <script type="text/javascript">
+
+
+
+        TESTER = document.getElementById('tester');
+        var currentTime = new Date()
+        var data = [{
+            x: [0, 0], y: [0, 0], name: 'Opt Coast'
+        }, {
+            x: [0, 0], y: [0, 0], name: 'Pes Coast'
+        }, {
+            x: [0, 0], y: [0, 0], name: 'Opt Contrib'
+        }, {
+            x: [0, 0], y: [0, 0], name: 'Pes Contrib'
+        }]
+        var layout = {
+            xaxis: { 'title': 'Year' },
+            yaxis: { 'title': 'Value' }
+        };
+
+        Plotly.react(TESTER, data, layout);
+
+    </script>
+</body>
+
+
+</html>
