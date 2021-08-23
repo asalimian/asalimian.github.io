@@ -70,16 +70,16 @@
         }
         function expgrowth(principle, rate, years, y0) {
             n = 100
-            x = [...Array(n).keys()]
+            x = [...Array(n+1).keys()]
             expgrow = x => principle * Math.exp(x * rate / 100 / n * years);
-            yadd = y => y / n * years + y0;
+            yadd = y => (y / n * years + y0-1970)*1000*3600*24*365.24;
             return [x.map(yadd), x.map(expgrow)];
         }
         function expcont(principle, contrib, rate, years, y0) {
             n = 100
-            x = [...Array(n).keys()]
+            x = [...Array(n+1).keys()]
             expgrow = x => principle * Math.exp(x * (rate / 100 / n * years)) + contrib / (rate / 100) * (Math.exp(x * (rate / 100 / n * years)) - 1);
-            yadd = y => y / n * years + y0;
+            yadd = y => (y / n * years + y0 -1970)*1000*3600*24*365.24;
             return [x.map(yadd), x.map(expgrow)];
         }
         function updateData() {
@@ -320,7 +320,7 @@
             TESTER = document.getElementById('tester');
             var currentTime = new Date()
             var data = [{
-                x: [0, 0], y: [0, 0], name: 'Opt Coast'
+                x: [0, 0], y: [0, 0], name: 'Optimistic Coast'
             }, {
                 x: [0, 0], y: [0, 0], name: 'Pes Coast'
             }, {
@@ -328,10 +328,15 @@
             }, {
                 x: [0, 0], y: [0, 0], name: 'Pes Contrib'
             }]
+
             var layout = {
-                xaxis: { 'title': 'Year' },
-                yaxis: { 'title': 'Value' },
-                autosize: true
+                xaxis: { 'title': 'Year',type: 'date' , },
+                yaxis: { 'title': 'Value',hoverformat: '.0f' },
+                legend: {'orientation':'h', 'y':-0.2},
+                margin: {'t':20},
+                autosize: true,
+                paper_bgcolor: "#F9F9F9",
+                plot_bgcolor: "FcFcFc"
             };
 
             Plotly.react(TESTER, data, layout);
