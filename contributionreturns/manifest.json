@@ -1,7 +1,7 @@
 {
     "name": "Contribution Calculator",
     "short_name": "Contribute",
-    "start_url": "index.html",
+    "start_url": "app.html",
     "display": "standalone",
     "background_color": "#5900b3",
     "theme_color": "black",
