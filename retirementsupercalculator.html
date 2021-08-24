@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.plot.ly/plotly-2.3.1.min.js"></script>
     <script type="text/javascript">
-        
+
         function loadDefaults() {
             payload = "[{\"Optimistic Scenario\":{\"Principle\":\"100\",\"Goal\":\"2000\",\"Rate\":\"7\",\"Years\":\"30\",\"Contribution\":\"25\"},\"Pessimistic Scenario\":{\"Principle\":\"200\",\"Goal\":\"2000\",\"Rate\":\"4\",\"Years\":\"30\",\"Contribution\":\"25\"}}]"
             document.getElementById("savebox").value = payload
             loaddata()
         }
         function init() {
-            if (localStorage.autosave==null || !(localStorage.autosave=="true")) {
+            if (localStorage.autosave == null || !(localStorage.autosave == "true")) {
                 loadDefaults()
                 updateData()
             } else {
@@ -21,7 +21,7 @@
                 loaddata()
                 updateData()
             }
-            
+
         }
         function reloadValue() {
 
@@ -72,9 +72,19 @@
         }
         function toggleAutoSave(item) {
             localStorage.setItem('autosave', item.checked)
-            if (item.checked==false) {
+            if (item.checked == false) {
                 delete localStorage.json_settings
             } else {
+                updateData()
+            }
+
+        }
+        function toggleLogAxis(item) {
+            if (item.checked == true) {
+                layout.yaxis.type = 'log';
+                updateData()
+            } else {
+                layout.yaxis.type = null;
                 updateData()
             }
 
@@ -132,7 +142,7 @@
             return [x.map(yadd), x.map(expgrow)];
         }
         function updateData() {
-            if (getValue('autosave')=='true') {
+            if (getValue('autosave') == 'true') {
                 document.getElementById('autosave').checked = true
                 document.getElementById('savebox').value = localStorage['json_settings']
             }
@@ -150,8 +160,8 @@
             cont_pes = document.getElementById('cont_pes').value;
 
             document.getElementById('savebox').value = JSON.stringify([{ "Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes } }])
-            if (localStorage['autosave']=='true') {
-                localStorage['json_settings']=document.getElementById('savebox').value
+            if (localStorage['autosave'] == 'true') {
+                localStorage['json_settings'] = document.getElementById('savebox').value
             }
             var currentTime = new Date()
 
@@ -178,21 +188,33 @@
 
             //update the layout and all the traces
             Plotly.react(TESTER, [{
-                x: optcoast[0],
-                y: optcoast[1],
-                name: 'Opt Coast'
+                x: pescontrib[0],
+                y: pescontrib[1],
+                name: 'Contribution Period Pessimistic',
+                marker: {
+                    color: '#951b1c',
+                }
             }, {
                 x: pescoast[0],
                 y: pescoast[1],
-                name: 'Pes Coast'
+                name: 'Returns Pessimistic',
+                marker: {
+                    color: '#e36667',
+                }
             }, {
                 x: optcontrib[0],
                 y: optcontrib[1],
-                name: 'Opt Contrib'
+                name: 'Contribution Period Optimistic',
+                marker: {
+                    color: '#144c73',
+                }
             }, {
-                x: pescontrib[0],
-                y: pescontrib[1],
-                name: 'Pes Contrib'
+                x: optcoast[0],
+                y: optcoast[1],
+                name: 'Returns Optimistic',
+                marker: {
+                    color: '#419ede',
+                }
             }], layout);
         }
     </script>
@@ -202,6 +224,8 @@
             display: inline-block;
             width: 48px;
             height: 22px;
+            margin-top: 2px;
+            margin-bottom: 2px;
         }
 
         .switch input {
@@ -315,24 +339,24 @@
                     <th>Pessimistic<abbr title="Use net worth, and poor return rate"><sup>?</sup></th>
                     <th>Units</th>
                 </tr>
-                <tr>
-                    <td><label for="p0"><abbr title="How much you have now">Principle</label><br></td>
-                    <td><input type="number" id="p0_opt" name="fav_language"  onchange="updateData()"></td>
-                    <td><input type="number" id="p0_pes" name="fav_language"  onchange="updateData()"></td>
-                    <td>Dollars</td>
+                <tr></tr>
+                <td><label for="p0"><abbr title="How much you have now">Principle</label><br></td>
+                <td><input type="number" id="p0_opt" name="fav_language" onchange="updateData()"></td>
+                <td><input type="number" id="p0_pes" name="fav_language" onchange="updateData()"></td>
+                <td>Dollars</td>
                 </tr>
                 <tr>
                     <td><label for="html"><abbr title="How much you think you'll need">Goal</abbr></label></td>
-                    <td><input type="number" id="pmax_opt" name="fav_language"  pattern="${2}"
-                            onchange="updateData()"></td>
-                    <td><input type="number" id="pmax_pes" name="fav_language" pattern="${2}"
-                            onchange="updateData()"></td>
+                    <td><input type="number" id="pmax_opt" name="fav_language" pattern="${2}" onchange="updateData()">
+                    </td>
+                    <td><input type="number" id="pmax_pes" name="fav_language" pattern="${2}" onchange="updateData()">
+                    </td>
                     <td>Dollars</td>
                 </tr>
                 <tr>
                     <td><label for="html"><abbr title="Total investment return rate">Rate</abbr></label></td>
-                    <td><input type="number" id="r_opt" name="fav_language"  onchange="updateData()"></td>
-                    <td><input type="number" id="r_pes" name="fav_language"  onchange="updateData()"></td>
+                    <td><input type="number" id="r_opt" name="fav_language" onchange="updateData()"></td>
+                    <td><input type="number" id="r_pes" name="fav_language" onchange="updateData()"></td>
                     <td>Percent</td>
                 </tr>
                 <tr>
@@ -346,7 +370,7 @@
                                 Contribution</abbr></label>
                     </td>
                     <td><input type="number" id="cont_opt" name="fav_language" onchange="updateData()"></td>
-                    <td><input type="number" id="cont_pes" name="fav_language"  onchange="updateData()"></td>
+                    <td><input type="number" id="cont_pes" name="fav_language" onchange="updateData()"></td>
                     <td>Dollars</td>
                 </tr>
                 <tr>
@@ -355,7 +379,7 @@
                     <td><input type="number" id="time_opt" name="fav_language" style="background-color: lightgray;"
                             readonly onchange="updateData()"></td>
                     <td><input type="number" id="time_pes" name="fav_language" style="background-color: lightgray;"
-                            readonly  onchange="updateData()"></td>
+                            readonly onchange="updateData()"></td>
                     <td>Years</td>
                 </tr>
                 <tr>
@@ -370,7 +394,7 @@
                     <td>Dollars</td>
                 </tr>
             </table>
-            <input style="width:10em;" type="button" Value="Backup/Load" onclick="togglesave()"><input type="button"
+            <input style="width:10em;" type="button" Value="Settings" onclick="togglesave()"><input type="button"
                 Value="Help" onclick="togglehelp()">
         </div>
 
@@ -385,8 +409,16 @@
             <label class="switch">
                 <input id="autosave" type="checkbox" onchange="toggleAutoSave(this)">
                 <span class="slider round"></span>
+            </label><br>
+            <label for="logplot">Log plot</label>
+            <label class="switch">
+                <input id="logplot" type="checkbox" onchange="toggleLogAxis(this)">
+                <span class="slider round"></span>
             </label>
-            <div style="font-size:11px;color:#555;">No data is transmitted to the server, and data will be stored according to your browser setting. Do not enable autosave on shared devices. You can store this string securely on your device to reload in the future. Please note that starting year is based on system time so subsequent usages of this tool will generate different plots.</div>
+            <div style="font-size:11px;color:#555;">No data is transmitted to the server, and data will be stored
+                according to your browser setting. Do not enable autosave on shared devices. You can store this string
+                securely on your device to reload in the future. Please note that starting year is based on system time
+                so subsequent usages of this tool will generate different plots.</div>
         </div>
         <div class="help" id="help" style="display:none">
             <div style="text-align: right;padding-right:10px;"
@@ -459,7 +491,7 @@
 
             var layout = {
                 xaxis: { 'title': 'Year', type: 'date', },
-                yaxis: { 'title': 'Value', hoverformat: '.0f' },
+                yaxis: { 'title': 'Value', hoverformat: '.0f', 'type': null },
                 legend: { 'orientation': 'h', 'y': -0.2 },
                 margin: { 't': 20 },
                 autosize: true,
