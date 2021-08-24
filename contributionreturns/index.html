@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Responsive -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ 
+  <!-- Title -->
+  <title>PWA Tutorial</title>
+    <!-- Meta Tags required for
+       Progressive Web App -->
+    <meta name="apple-mobile-web-app-status-bar" content="#aa7700">
+    <meta name="theme-color" content="black">
+
+    <!-- Manifest File link -->
+    <link rel="manifest" href="manifest.json">
+
+    <script src="https://cdn.plot.ly/plotly-2.3.1.min.js"></script>
+    <script type="text/javascript">
+
+        function loadDefaults() {
+            payload = "[{\"Optimistic Scenario\":{\"Principle\":\"100\",\"Goal\":\"2000\",\"Rate\":\"7\",\"Years\":\"30\",\"Contribution\":\"25\"},\"Pessimistic Scenario\":{\"Principle\":\"200\",\"Goal\":\"2000\",\"Rate\":\"4\",\"Years\":\"30\",\"Contribution\":\"25\"}}]"
+            document.getElementById("savebox").value = payload
+            loaddata()
+        }
+        function init() {
+            if (localStorage.autosave == null || !(localStorage.autosave == "true")) {
+                loadDefaults()
+                updateData()
+            } else {
+                document.getElementById("savebox").value = localStorage.json_settings
+                document.getElementById("autosave").checked = true
+                loaddata()
+                updateData()
+            }
+
+        }
+        function reloadValue() {
+
+            document.getElementById("text").value = getValue("text");    // set the value to this input
+            document.getElementById("textarea").value = getValue("textarea");   // set the value to this input
+        }
+        /* Here you can add more inputs to set value. if it's saved */
+
+        //Save the value function - save it to localStorage as (ID, VALUE)
+        function setValue(e) {
+            var id = e.id;  // get the sender's id to save it . 
+            var val = e.value; // get the value. 
+            localStorage[id] = val;// Every time user writing something, the localStorage's value will override . 
+        }
+
+        //get the saved value function - return the value of "v" from localStorage. 
+        function getValue(v) {
+            if (!localStorage.getItem(v)) {
+                return "";// You can change this to your defualt value. 
+            }
+            return localStorage.getItem(v);
+        }
+        function loaddata() {
+            datamodel = JSON.parse(document.getElementById("savebox").value)
+            document.getElementById('pmax_opt').value = datamodel[0]["Optimistic Scenario"]["Goal"];
+            document.getElementById('pmax_pes').value = datamodel[0]["Pessimistic Scenario"]["Goal"];
+            document.getElementById('p0_opt').value = datamodel[0]["Optimistic Scenario"]["Principle"];
+            document.getElementById('p0_pes').value = datamodel[0]["Pessimistic Scenario"]["Principle"];
+            document.getElementById('r_opt').value = datamodel[0]["Optimistic Scenario"]["Rate"];
+            document.getElementById('r_pes').value = datamodel[0]["Pessimistic Scenario"]["Rate"];
+            document.getElementById('years_opt').value = datamodel[0]["Optimistic Scenario"]["Years"];
+            document.getElementById('years_pes').value = datamodel[0]["Pessimistic Scenario"]["Years"];
+            document.getElementById('cont_opt').value = datamodel[0]["Optimistic Scenario"]["Contribution"];
+            document.getElementById('cont_pes').value = datamodel[0]["Pessimistic Scenario"]["Contribution"];
+
+            contribtime()
+            savingluxury()
+
+        }
+        function togglesave() {
+            if (document.getElementById("save").style.display == "block") {
+                document.getElementById("save").style.display = "none";
+            } else {
+                document.getElementById("save").style.display = "block";
+            }
+            document.getElementById("help").style.display = "none";
+
+        }
+        function toggleAutoSave(item) {
+            localStorage.setItem('autosave', item.checked)
+            if (item.checked == false) {
+                delete localStorage.json_settings
+            } else {
+                updateData()
+            }
+
+        }
+        function toggleLogAxis(item) {
+            if (item.checked == true) {
+                layout.yaxis.type = 'log';
+                updateData()
+            } else {
+                layout.yaxis.type = null;
+                updateData()
+            }
+
+        }
+        function togglehelp() {
+            if (document.getElementById("help").style.display == "block") {
+                document.getElementById("help").style.display = "none";
+            } else {
+                document.getElementById("help").style.display = "block";
+            }
+            document.getElementById("save").style.display = "none";
+        }
+        function contribtime() {
+            Tm = document.getElementById('years_opt').value * 1;
+            r = document.getElementById('r_opt').value / 100;
+            c = document.getElementById('cont_opt').value * 1;
+            P0 = document.getElementById('p0_opt').value * 1;
+            Pm = document.getElementById('pmax_opt').value * 1;
+            t = Math.min(Math.max(0, Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)), Tm)
+            document.getElementById('time_opt').value = Math.round(t * 1000) / 1000
+            Tm = document.getElementById('years_pes').value * 1;
+            r = document.getElementById('r_pes').value / 100;
+            c = document.getElementById('cont_pes').value * 1;
+            P0 = document.getElementById('p0_pes').value * 1;
+            Pm = document.getElementById('pmax_pes').value * 1;
+            t = Math.min(Math.max(0, Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)), Tm)
+            document.getElementById('time_pes').value = Math.round(t * 1000) / 1000
+        }
+        function savingluxury() {
+            Tm = document.getElementById('years_opt').value * 1;
+            r = document.getElementById('r_opt').value / 100;
+            P0 = document.getElementById('p0_opt').value * 1;
+            Pm = document.getElementById('pmax_opt').value * 1;
+            c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1)
+            document.getElementById('lux_opt').value = Math.round(c * 100) / 100
+            Tm = document.getElementById('years_pes').value * 1;
+            r = document.getElementById('r_pes').value / 100;
+            P0 = document.getElementById('p0_pes').value * 1;
+            Pm = document.getElementById('pmax_pes').value * 1;
+            c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1)
+            document.getElementById('lux_pes').value = Math.round(c * 100) / 100
+        }
+        function expgrowth(principle, rate, years, y0) {
+            n = 100
+            x = [...Array(n + 1).keys()]
+            expgrow = x => principle * Math.exp(x * rate / 100 / n * years);
+            yadd = y => (y / n * years + y0 - 1970) * 1000 * 3600 * 24 * 365.24;
+            return [x.map(yadd), x.map(expgrow)];
+        }
+        function expcont(principle, contrib, rate, years, y0) {
+            n = 100
+            x = [...Array(n + 1).keys()]
+            expgrow = x => principle * Math.exp(x * (rate / 100 / n * years)) + contrib / (rate / 100) * (Math.exp(x * (rate / 100 / n * years)) - 1);
+            yadd = y => (y / n * years + y0 - 1970) * 1000 * 3600 * 24 * 365.24;
+            return [x.map(yadd), x.map(expgrow)];
+        }
+        function updateData() {
+            if (getValue('autosave') == 'true') {
+                document.getElementById('autosave').checked = true
+                document.getElementById('savebox').value = localStorage['json_settings']
+            }
+            contribtime()
+            savingluxury()
+            pmax_opt = document.getElementById('pmax_opt').value;
+            pmax_pes = document.getElementById('pmax_pes').value;
+            p0_opt = document.getElementById('p0_opt').value;
+            p0_pes = document.getElementById('p0_pes').value;
+            r_opt = document.getElementById('r_opt').value;
+            r_pes = document.getElementById('r_pes').value;
+            years_opt = document.getElementById('years_opt').value;
+            years_pes = document.getElementById('years_pes').value;
+            cont_opt = document.getElementById('cont_opt').value;
+            cont_pes = document.getElementById('cont_pes').value;
+
+            document.getElementById('savebox').value = JSON.stringify([{ "Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes } }])
+            if (localStorage['autosave'] == 'true') {
+                localStorage['json_settings'] = document.getElementById('savebox').value
+            }
+            var currentTime = new Date()
+
+            optcoast = expgrowth(document.getElementById('pmax_opt').value / Math.exp(document.getElementById('r_opt').value / 100 * (document.getElementById('years_opt').value - document.getElementById('time_opt').value)),
+                document.getElementById('r_opt').value,
+                (document.getElementById('years_opt').value * 1 - document.getElementById('time_opt').value * 1),
+                (currentTime.getFullYear() + currentTime.getMonth() / 12 + document.getElementById('time_opt').value * 1))
+            pescoast = expgrowth(document.getElementById('pmax_pes').value / Math.exp(document.getElementById('r_pes').value / 100 * (document.getElementById('years_pes').value - document.getElementById('time_pes').value)),
+                document.getElementById('r_pes').value,
+                document.getElementById('years_pes').value * 1 - document.getElementById('time_pes').value * 1,
+                currentTime.getFullYear() + currentTime.getMonth() / 12 + document.getElementById('time_pes').value * 1);
+            optcontrib = expcont(document.getElementById('p0_opt').value,
+                document.getElementById('cont_opt').value,
+                document.getElementById('r_opt').value,
+                (document.getElementById('time_opt').value),
+                currentTime.getFullYear() + currentTime.getMonth() / 12)
+            pescontrib = expcont(document.getElementById('p0_pes').value,
+                document.getElementById('cont_pes').value,
+                document.getElementById('r_pes').value,
+                (document.getElementById('time_pes').value),
+                currentTime.getFullYear() + currentTime.getMonth() / 12)
+
+            graphDiv = document.getElementById('tester')
+
+            //update the layout and all the traces
+            Plotly.react(TESTER, [{
+                x: pescontrib[0],
+                y: pescontrib[1],
+                name: 'Contribution Period Pessimistic',
+                marker: {
+                    color: '#951b1c',
+                }
+            }, {
+                x: pescoast[0],
+                y: pescoast[1],
+                name: 'Returns Pessimistic',
+                marker: {
+                    color: '#e36667',
+                }
+            }, {
+                x: optcontrib[0],
+                y: optcontrib[1],
+                name: 'Contribution Period Optimistic',
+                marker: {
+                    color: '#144c73',
+                }
+            }, {
+                x: optcoast[0],
+                y: optcoast[1],
+                name: 'Returns Optimistic',
+                marker: {
+                    color: '#419ede',
+                }
+            }], layout);
+        }
+    </script>
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 22px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #21f380;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #21f380;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        input[type=number] {
+            width: 5em
+        }
+
+        input[type=button] {
+            width: 10em
+        }
+
+        .item1 {
+            grid-area: header;
+        }
+
+        .item2 {
+            grid-area: menu;
+        }
+
+        .item3 {
+            grid-area: main;
+        }
+
+        .item4 {
+            grid-area: right;
+        }
+
+        .item5 {
+            grid-area: footer;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-areas:
+                'input'
+                'save'
+                'plot';
+            grid-gap: 10px;
+            background-color: #74747436;
+            padding: 10px;
+        }
+
+        .grid-container>div {
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1em;
+        }
+    </style>
+</head>
+
+<body onload="init()">
+    <div class="grid-container">
+        <div class="input">
+            <table style="width:100%;">
+                <tr>
+                    <th>Value</th>
+                    <th>Optimistic<abbr title="Use retirement savings, and good return rate"><sup>?</sup></abbr></th>
+                    <th>Pessimistic<abbr title="Use net worth, and poor return rate"><sup>?</sup></th>
+                    <th>Units</th>
+                </tr>
+                <tr></tr>
+                <td><label for="p0"><abbr title="How much you have now">Principle</label><br></td>
+                <td><input type="number" id="p0_opt" name="fav_language" onchange="updateData()"></td>
+                <td><input type="number" id="p0_pes" name="fav_language" onchange="updateData()"></td>
+                <td>Dollars</td>
+                </tr>
+                <tr>
+                    <td><label for="html"><abbr title="How much you think you'll need">Goal</abbr></label></td>
+                    <td><input type="number" id="pmax_opt" name="fav_language" pattern="${2}" onchange="updateData()">
+                    </td>
+                    <td><input type="number" id="pmax_pes" name="fav_language" pattern="${2}" onchange="updateData()">
+                    </td>
+                    <td>Dollars</td>
+                </tr>
+                <tr>
+                    <td><label for="html"><abbr title="Total investment return rate">Rate</abbr></label></td>
+                    <td><input type="number" id="r_opt" name="fav_language" onchange="updateData()"></td>
+                    <td><input type="number" id="r_pes" name="fav_language" onchange="updateData()"></td>
+                    <td>Percent</td>
+                </tr>
+                <tr>
+                    <td><label for="html"><abbr title="How many years till retirement">Year</abbr></label></td>
+                    <td><input type="number" id="years_opt" name="fav_language" onchange="updateData()"></td>
+                    <td><input type="number" id="years_pes" name="fav_language" onchange="updateData()"></td>
+                    <td>Years</td>
+                </tr>
+                <tr>
+                    <td><label for="html"><abbr title="How much you plan on saving per year">Annual
+                                Contribution</abbr></label>
+                    </td>
+                    <td><input type="number" id="cont_opt" name="fav_language" onchange="updateData()"></td>
+                    <td><input type="number" id="cont_pes" name="fav_language" onchange="updateData()"></td>
+                    <td>Dollars</td>
+                </tr>
+                <tr>
+                    <td><label for="html"><abbr title="How long you'd need to contribute to hit coast">Contribution
+                                Time</abbr></label></td>
+                    <td><input type="number" id="time_opt" name="fav_language" style="background-color: lightgray;"
+                            readonly onchange="updateData()"></td>
+                    <td><input type="number" id="time_pes" name="fav_language" style="background-color: lightgray;"
+                            readonly onchange="updateData()"></td>
+                    <td>Years</td>
+                </tr>
+                <tr>
+                    <td><label for="html"><abbr
+                                title="How much you'd need to save continuously till retirement. If negative, how much you can afford to spend each year and still meet your goal.">Req
+                                Save or
+                                Spend</abbr></label></td>
+                    <td><input type="number" id="lux_opt" name="fav_language" style="background-color: lightgray;"
+                            readonly onchange="updateData()"></td>
+                    <td><input type="number" id="lux_pes" name="fav_language" style="background-color: lightgray;"
+                            readonly onchange="updateData()"></td>
+                    <td>Dollars</td>
+                </tr>
+            </table>
+            <input style="width:10em;" type="button" Value="Settings" onclick="togglesave()"><input type="button"
+                Value="Help" onclick="togglehelp()">
+        </div>
+
+
+        <div class="save" id="save" style="display:none">
+            <div style="text-align: right;padding-right:10px;"
+                onclick="document.getElementById('save').style.display = 'none';">✖️</div>
+            <label for="savebox">Full JSON String</label><br>
+            <textarea id="savebox" rows="5" cols="50" onchange="loaddata();updateData()"></textarea><br>
+            <input type="button" value="Update parameters with string" onclick="loaddata()"><br>
+            <label for="autosave">Autosave</label>
+            <label class="switch">
+                <input id="autosave" type="checkbox" onchange="toggleAutoSave(this)">
+                <span class="slider round"></span>
+            </label><br>
+            <label for="logplot">Log plot</label>
+            <label class="switch">
+                <input id="logplot" type="checkbox" onchange="toggleLogAxis(this)">
+                <span class="slider round"></span>
+            </label>
+            <div style="font-size:11px;color:#555;">No data is transmitted to the server, and data will be stored
+                according to your browser setting. Do not enable autosave on shared devices. You can store this string
+                securely on your device to reload in the future. Please note that starting year is based on system time
+                so subsequent usages of this tool will generate different plots.</div>
+        </div>
+        <div class="help" id="help" style="display:none">
+            <div style="text-align: right;padding-right:10px;"
+                onclick="document.getElementById('help').style.display = 'none';">✖️</div>
+            <h2>The Inputs</h2>
+            <p>
+                <strong>Principle</strong><br> How much you have. Use savings for optimistic value, and net worth for
+                pessistic value.
+                <hr>
+            </p>
+            <p>
+                <strong>Goal</strong><br>
+                How much you want to save
+                <hr>
+            </p>
+            <p>
+                <strong>Rate</strong><br>
+                Investment return rate (7% is average inflation adjusted returns, 4% is the "safe withdrawal rate")
+                <hr>
+            </p>
+            <p><strong>Year</strong><br>
+                How far away is your goal?
+                <hr>
+            </p>
+            <p><strong>Annual Contribution</strong><br>
+                How much you contribute annually ($19.5k to max out 401k, $6k to max out IRA per person)<br>
+            </p>
+            <hr>
+            <h2>The Outputs</h2>
+            <p>
+                <strong>Contribution Time</strong><br>
+                How long at the current contribution rate you'd need to keep making payments
+                <hr>
+            </p>
+            <p><strong>Req Save or Spend</strong><br>
+                How much you'd need to save until your goal year to meet the goal.
+                <hr>
+            <div style="padding: 0 20px 0 20px;">
+                If contribution rate is greater than req save, then you'll be done saving early.
+                <hr>
+                If contribution rate is lower than req save, then you need to save more, decrease your goal, or extend
+                your timeline.
+                <hr>
+                If contribution rate is negative, then you've oversaved.
+            </div>
+            </p>
+
+        </div>
+
+
+        <div class="plot">
+            <div id="tester" style="width:100%;height:500px;"></div>
+        </div>
+
+        <script type="text/javascript">
+
+
+
+            TESTER = document.getElementById('tester');
+            var currentTime = new Date()
+            var data = [{
+                x: [0, 0], y: [0, 0], name: 'Optimistic Coast'
+            }, {
+                x: [0, 0], y: [0, 0], name: 'Pes Coast'
+            }, {
+                x: [0, 0], y: [0, 0], name: 'Opt Contrib'
+            }, {
+                x: [0, 0], y: [0, 0], name: 'Pes Contrib'
+            }]
+
+            var layout = {
+                xaxis: { 'title': 'Year', type: 'date', },
+                yaxis: { 'title': 'Value', hoverformat: '.0f', 'type': null },
+                legend: { 'orientation': 'h', 'y': -0.2 },
+                margin: { 't': 20 },
+                autosize: true,
+                paper_bgcolor: "#F9F9F9",
+                plot_bgcolor: "FcFcFc"
+            };
+
+            Plotly.react(TESTER, data, layout);
+
+        </script>
+    </div>
+    <div>
+        ©️ 2021 Alex Salimian
+    </div>
+</body>
+
+
+</html>
