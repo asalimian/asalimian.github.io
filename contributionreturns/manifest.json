@@ -4,7 +4,7 @@
     "start_url": "app.html",
     "display": "standalone",
     "background_color": "#5900b3",
-    "theme_color": "black",
+    "theme_color": "green",
     "scope": ".",
     "description": "This is a little calculator.",
     "icons": [
@@ -18,5 +18,6 @@
             "sizes": "512x512",
             "type": "image/png"
         }
-    ]
+    ],
+    "version":"v0.11"
 }
