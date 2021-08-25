@@ -104,12 +104,14 @@
 
         }
         function togglehelp() {
+            document.getElementById("save").style.display = "none";
             if (document.getElementById("help").style.display == "block") {
                 document.getElementById("help").style.display = "none";
+                document.getElementById("plot").style.display = "block";
             } else {
                 document.getElementById("help").style.display = "block";
+                document.getElementById("plot").style.display = "none";
             }
-            document.getElementById("save").style.display = "none";
         }
         function contribtime() {
             Tm = document.getElementById('years_opt').value * 1;
@@ -346,7 +348,6 @@
             display: grid;
             grid-template-areas:
                 'input'
-                'save'
                 'plot';
             grid-gap: 10px;
             background-color: #74747436;
@@ -359,10 +360,32 @@
             padding: 10px 0;
             font-size: 1em;
         }
+
+        .save {
+            background-color: rgb(178, 224, 203) !important;
+            border: solid 1px black;
+            text-align: center;
+            border: solid 1px black;
+            padding: 0px 0;
+            font-size: 1em;
+            right: 18px;
+            left:18px;
+        }
+
+        .help {
+            background-color: rgb(178, 224, 203) !important;
+            text-align: center;
+            border: solid 1px black;
+            padding: 0px 0;
+            font-size: 1em;
+            right: 18px;
+            left:18px;
+        }
     </style>
 </head>
 
 <body onload="init()">
+
     <div class="grid-container">
         <div class="input">
             <table style="width:100%;">
@@ -430,9 +453,10 @@
             <input style="width:10em;" type="button" Value="Settings" onclick="togglesave()"><input type="button"
                 Value="Help" onclick="togglehelp()">
         </div>
-
-
-        <div class="save" id="save" style="display:none">
+        <div class="plot" id="plot">
+            <div id="tester" style="width:100%;height:500px;"></div>
+        </div>
+        <div class="save" id="save" style="display:none; position:fixed;">
             <div style="text-align: right;padding-right:10px;"
                 onclick="document.getElementById('save').style.display = 'none';">✖️</div>
             <label for="savebox">Full JSON String</label><br>
@@ -453,9 +477,8 @@
                 securely on your device to reload in the future. Please note that starting year is based on system time
                 so subsequent usages of this tool will generate different plots.</div>
         </div>
-        <div class="help" id="help" style="display:none">
-            <div style="text-align: right;padding-right:10px;"
-                onclick="document.getElementById('help').style.display = 'none';">✖️</div>
+        <div class="help" id="help" style="display:none; position: absolute;">
+            <div style="text-align: right;" onclick="togglehelp()">✖️</div>
             <h2>The Inputs</h2>
             <p>
                 <strong>Principle</strong><br> How much you have. Use savings for optimistic value, and net worth for
@@ -500,12 +523,6 @@
             </p>
 
         </div>
-
-
-        <div class="plot">
-            <div id="tester" style="width:100%;height:500px;"></div>
-        </div>
-
         <script type="text/javascript">
 
 
@@ -524,9 +541,9 @@
 
             var layout = {
                 xaxis: { 'title': 'Year', type: 'date', },
-                yaxis: { 'title': 'Value', hoverformat: '.0f', 'type': null },
+                yaxis: { 'title': '', hoverformat: '.0f', 'type': null },
                 legend: { 'orientation': 'h', 'y': -0.2 },
-                margin: { 't': 20 },
+                margin: { 't': 20, 'r': 5, 'l': 40 },
                 autosize: true,
                 paper_bgcolor: "#F9F9F9",
                 plot_bgcolor: "FcFcFc"
@@ -537,7 +554,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.12
+        ©️ 2021 Alex Salimian v0.13
     </div>
 </body>
 
