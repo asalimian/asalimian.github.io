@@ -1,12 +1,12 @@
 {
-    "name": "Contribution Calculator",
-    "short_name": "Contribute",
+    "name": "Principle and the Pea",
+    "short_name": "Principea",
     "start_url": "app.html",
     "display": "standalone",
-    "background_color": "#5900b3",
+    "background_color": "#00AB7E",
     "theme_color": "green",
     "scope": ".",
-    "description": "This is a little calculator.",
+    "description": "This is a little calculator for a little savings.",
     "icons": [
         {
             "src": "images/icon-192x192.png",
@@ -19,5 +19,5 @@
             "type": "image/png"
         }
     ],
-    "version":"v0.11"
+    "version":"v0.12"
 }
