@@ -120,14 +120,18 @@
             P0 = document.getElementById('p0_opt').value * 1;
             Pm = document.getElementById('pmax_opt').value * 1;
             t = Math.min(Math.max(0, Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)), Tm)
-            document.getElementById('time_opt').value = Math.round(t * 1000) / 1000
+            time_opt = Math.round(t * 1000) / 1000;
             Tm = document.getElementById('years_pes').value * 1;
             r = document.getElementById('r_pes').value / 100;
             c = document.getElementById('cont_pes').value * 1;
             P0 = document.getElementById('p0_pes').value * 1;
             Pm = document.getElementById('pmax_pes').value * 1;
             t = Math.min(Math.max(0, Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)), Tm)
-            document.getElementById('time_pes').value = Math.round(t * 1000) / 1000
+            time_pes = Math.round(t * 1000) / 1000;
+
+            document.getElementById('time_opt').value = time_opt;
+            document.getElementById('time_pes').value = time_pes;
+            return { 'opt': time_opt, 'pes': time_pes }
         }
         function savingluxury() {
             Tm = document.getElementById('years_opt').value * 1;
@@ -135,13 +139,18 @@
             P0 = document.getElementById('p0_opt').value * 1;
             Pm = document.getElementById('pmax_opt').value * 1;
             c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1)
-            document.getElementById('lux_opt').value = Math.round(c * 100) / 100
+            lux_opt = Math.round(c * 100) / 100
             Tm = document.getElementById('years_pes').value * 1;
             r = document.getElementById('r_pes').value / 100;
             P0 = document.getElementById('p0_pes').value * 1;
             Pm = document.getElementById('pmax_pes').value * 1;
             c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1)
-            document.getElementById('lux_pes').value = Math.round(c * 100) / 100
+            lux_pes = Math.round(c * 100) / 100
+
+            document.getElementById('lux_opt').value = lux_opt;
+            document.getElementById('lux_pes').value = lux_pes;
+
+            return { 'opt': lux_opt, 'pes': lux_pes }
         }
         function expgrowth(principle, rate, years, y0) {
             n = 100
@@ -162,8 +171,8 @@
                 document.getElementById('autosave').checked = true
                 document.getElementById('savebox').value = localStorage['json_settings']
             }
-            contribtime()
-            savingluxury()
+            time = contribtime()
+            lux = savingluxury()
             pmax_opt = document.getElementById('pmax_opt').value;
             pmax_pes = document.getElementById('pmax_pes').value;
             p0_opt = document.getElementById('p0_opt').value;
@@ -179,6 +188,31 @@
             if (localStorage['autosave'] == 'true') {
                 localStorage['json_settings'] = document.getElementById('savebox').value
             }
+
+            if (lux.opt * 1 > cont_opt * 1) {
+                document.getElementById('status_opt').value = "off-track"
+                document.getElementById('status_opt').style["background-color"] = "#b41f2d"
+            } else if (time.opt * 1 <= 0) {
+                document.getElementById('status_opt').value = "over-saved"
+                document.getElementById('status_opt').style["background-color"] = "gold"
+            } else {
+                document.getElementById('status_opt').value = "on-track"
+                document.getElementById('status_opt').style["background-color"] = "#1fb45c"
+
+            }
+
+            if (lux.pes * 1 > cont_pes * 1) {
+                document.getElementById('status_pes').value = "off-track"
+                document.getElementById('status_pes').style["background-color"] = "#b41f2d"
+            } else if (time.pes * 1 <= 0) {
+                document.getElementById('status_pes').value = "over-saved"
+                document.getElementById('status_pes').style["background-color"] = "gold"
+            } else {
+                document.getElementById('status_pes').value = "on-track"
+                document.getElementById('status_pes').style["background-color"] = "#1fb45c"
+            }
+
+
             var currentTime = new Date()
 
             optcoast = expgrowth(document.getElementById('pmax_opt').value / Math.exp(document.getElementById('r_opt').value / 100 * (document.getElementById('years_opt').value - document.getElementById('time_opt').value)),
@@ -189,15 +223,25 @@
                 document.getElementById('r_pes').value,
                 document.getElementById('years_pes').value * 1 - document.getElementById('time_pes').value * 1,
                 currentTime.getFullYear() + currentTime.getMonth() / 12 + document.getElementById('time_pes').value * 1);
+            if (document.getElementById('time_opt').value == 0) {
+                ylen = (document.getElementById('years_opt').value);
+            } else {
+                ylen = (document.getElementById('time_opt').value)
+            }
             optcontrib = expcont(document.getElementById('p0_opt').value,
                 document.getElementById('cont_opt').value,
                 document.getElementById('r_opt').value,
-                (document.getElementById('time_opt').value),
+                ylen,
                 currentTime.getFullYear() + currentTime.getMonth() / 12)
+            if (document.getElementById('time_pes').value == 0) {
+                ylen = (document.getElementById('years_pes').value);
+            } else {
+                ylen = (document.getElementById('time_pes').value)
+            }
             pescontrib = expcont(document.getElementById('p0_pes').value,
                 document.getElementById('cont_pes').value,
                 document.getElementById('r_pes').value,
-                (document.getElementById('time_pes').value),
+                ylen,
                 currentTime.getFullYear() + currentTime.getMonth() / 12)
 
             graphDiv = document.getElementById('tester')
@@ -369,7 +413,7 @@
             padding: 0px 0;
             font-size: 1em;
             right: 18px;
-            left:18px;
+            left: 18px;
         }
 
         .help {
@@ -379,7 +423,7 @@
             padding: 0px 0;
             font-size: 1em;
             right: 18px;
-            left:18px;
+            left: 18px;
         }
     </style>
 </head>
@@ -396,13 +440,13 @@
                     <th>Units</th>
                 </tr>
                 <tr></tr>
-                <td><label for="p0"><abbr title="How much you have now">Principle</label><br></td>
+                <td><label for="p0_opt"><abbr title="How much you have now">Principle</label><br></td>
                 <td><input type="number" id="p0_opt" name="fav_language" onchange="updateData()"></td>
                 <td><input type="number" id="p0_pes" name="fav_language" onchange="updateData()"></td>
                 <td>Dollars</td>
                 </tr>
                 <tr>
-                    <td><label for="html"><abbr title="How much you think you'll need">Goal</abbr></label></td>
+                    <td><label for="pmax_opt"><abbr title="How much you think you'll need">Goal</abbr></label></td>
                     <td><input type="number" id="pmax_opt" name="fav_language" pattern="${2}" onchange="updateData()">
                     </td>
                     <td><input type="number" id="pmax_pes" name="fav_language" pattern="${2}" onchange="updateData()">
@@ -410,19 +454,19 @@
                     <td>Dollars</td>
                 </tr>
                 <tr>
-                    <td><label for="html"><abbr title="Total investment return rate">Rate</abbr></label></td>
+                    <td><label for="r_opt"><abbr title="Total investment return rate">Rate</abbr></label></td>
                     <td><input type="number" id="r_opt" name="fav_language" onchange="updateData()"></td>
                     <td><input type="number" id="r_pes" name="fav_language" onchange="updateData()"></td>
                     <td>Percent</td>
                 </tr>
                 <tr>
-                    <td><label for="html"><abbr title="How many years till retirement">Year</abbr></label></td>
+                    <td><label for="years_opt"><abbr title="How many years till retirement">Year</abbr></label></td>
                     <td><input type="number" id="years_opt" name="fav_language" onchange="updateData()"></td>
                     <td><input type="number" id="years_pes" name="fav_language" onchange="updateData()"></td>
                     <td>Years</td>
                 </tr>
                 <tr>
-                    <td><label for="html"><abbr title="How much you plan on saving per year">Annual
+                    <td><label for="cont_opt"><abbr title="How much you plan on saving per year">Annual
                                 Contribution</abbr></label>
                     </td>
                     <td><input type="number" id="cont_opt" name="fav_language" onchange="updateData()"></td>
@@ -430,7 +474,7 @@
                     <td>Dollars</td>
                 </tr>
                 <tr>
-                    <td><label for="html"><abbr title="How long you'd need to contribute to hit coast">Contribution
+                    <td><label for="time_opt"><abbr title="How long you'd need to contribute to hit coast">Contribution
                                 Time</abbr></label></td>
                     <td><input type="number" id="time_opt" name="fav_language" style="background-color: lightgray;"
                             readonly onchange="updateData()"></td>
@@ -439,7 +483,7 @@
                     <td>Years</td>
                 </tr>
                 <tr>
-                    <td><label for="html"><abbr
+                    <td><label for="lux_opt"><abbr
                                 title="How much you'd need to save continuously till retirement. If negative, how much you can afford to spend each year and still meet your goal.">Req
                                 Save or
                                 Spend</abbr></label></td>
@@ -447,6 +491,14 @@
                             readonly onchange="updateData()"></td>
                     <td><input type="number" id="lux_pes" name="fav_language" style="background-color: lightgray;"
                             readonly onchange="updateData()"></td>
+                    <td>Dollars</td>
+                </tr>
+                <tr>
+                    <td><label for="status_opt"><abbr title="">Status</abbr></label></td>
+                    <td><input type="text" id="status_opt" name="fav_language"
+                            style="background-color: lightgray;width:5em;" readonly onchange="updateData()"></td>
+                    <td><input type="text" id="status_pes" name="fav_language"
+                            style="background-color: lightgray;width:5em;" readonly onchange="updateData()"></td>
                     <td>Dollars</td>
                 </tr>
             </table>
@@ -509,13 +561,14 @@
                 How long at the current contribution rate you'd need to keep making payments
                 <hr>
             </p>
-            <p><strong>Req Save or Spend</strong><br>
+            <p><strong>Required Save or Spend</strong><br>
                 How much you'd need to save until your goal year to meet the goal.
                 <hr>
             <div style="padding: 0 20px 0 20px;">
                 If contribution rate is greater than req save, then you'll be done saving early.
                 <hr>
-                If contribution rate is lower than req save, then you need to save more, decrease your goal, or extend
+                2000 If contribution rate is lower than req save, then you need to save more, decrease your goal, or
+                extend
                 your timeline.
                 <hr>
                 If contribution rate is negative, then you've oversaved.
@@ -554,7 +607,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.13
+        ©️ 2021 Alex Salimian v0.14
     </div>
 </body>
 
