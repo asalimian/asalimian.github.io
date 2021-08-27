@@ -368,42 +368,33 @@
             width: 10em
         }
 
-        .item1 {
-            grid-area: header;
-        }
-
-        .item2 {
-            grid-area: menu;
-        }
-
-        .item3 {
-            grid-area: main;
-        }
-
-        .item4 {
-            grid-area: right;
-        }
-
-        .item5 {
-            grid-area: footer;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-areas:
-                'input'
-                'plot';
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
             grid-gap: 10px;
             background-color: #74747436;
             padding: 10px;
+            
         }
 
-        .grid-container>div {
+        .flex-container>div {
             background-color: rgba(255, 255, 255, 0.8);
             text-align: center;
             padding: 10px 0;
             font-size: 1em;
+            flex: 1 0 auto;
         }
+
+        .input {
+            width:auto;
+            flex: auto;
+        }
+         .plot {
+             min-width: 400px;
+             max-height: 100%;
+             height:100%;
+         }
+        
 
         .save {
             background-color: rgb(178, 224, 203) !important;
@@ -430,7 +421,7 @@
 
 <body onload="init()">
 
-    <div class="grid-container">
+    <div class="flex-container">
         <div class="input">
             <table style="width:100%;">
                 <tr>
@@ -506,7 +497,7 @@
                 Value="Help" onclick="togglehelp()">
         </div>
         <div class="plot" id="plot">
-            <div id="tester" style="width:100%;height:500px;"></div>
+            <div id="tester" ></div>
         </div>
         <div class="save" id="save" style="display:none; position:fixed;">
             <div style="text-align: right;padding-right:10px;"
@@ -607,7 +598,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.14
+        ©️ 2021 Alex Salimian v0.15
     </div>
 </body>
 
