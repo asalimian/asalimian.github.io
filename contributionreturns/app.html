@@ -394,6 +394,10 @@
             flex: 1 0 auto;
         }
 
+        .flex-container>textarea {
+            flex: 1 ;
+        }
+
         .input {
             width: auto;
             min-width: 300px;
@@ -518,7 +522,9 @@
             <div style="text-align: right;padding-right:10px;"
                 onclick="document.getElementById('save').style.display = 'none';">✖️</div>
             <label for="savebox">Full JSON String</label><br>
-            <textarea id="savebox" rows="5" cols="50" onchange="loaddata();updateData()"></textarea><br>
+            <div class="flex-container">
+                <textarea id="savebox" rows="5"  onchange="loaddata();updateData()"></textarea><br>
+            </div>
             <input type="button" value="Update parameters with string" style="width:15em;" onclick="loaddata()"><br>
             <label for="autosave">Autosave</label>
             <label class="switch">
@@ -613,7 +619,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.16
+        ©️ 2021 Alex Salimian v0.17
     </div>
 </body>
 
