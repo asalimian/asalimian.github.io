@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Responsive -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="ie=edge">
 
     <!-- Title -->
     <title>Contribution Calculator</title>
@@ -59,6 +59,14 @@
             return localStorage.getItem(v);
         }
         function loaddata() {
+            if (localStorage.logplot == "true") {
+                document.getElementById('logplot').checked = localStorage.logplot
+                layout.yaxis.type = 'log'
+            } else {
+                layout.yaxis.type = null
+
+            }
+
             datamodel = JSON.parse(document.getElementById("savebox").value)
             document.getElementById('pmax_opt').value = datamodel[0]["Optimistic Scenario"]["Goal"];
             document.getElementById('pmax_pes').value = datamodel[0]["Pessimistic Scenario"]["Goal"];
@@ -187,29 +195,30 @@
             document.getElementById('savebox').value = JSON.stringify([{ "Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes } }])
             if (localStorage['autosave'] == 'true') {
                 localStorage['json_settings'] = document.getElementById('savebox').value
+                localStorage['logplot'] = document.getElementById('logplot').checked
             }
 
             if (lux.opt * 1 > cont_opt * 1) {
                 document.getElementById('status_opt').value = "off-track"
-                document.getElementById('status_opt').style["background-color"] = "#b41f2d"
+                document.getElementById('status_opt').style["background-color"] = "#FF2B3F"
             } else if (time.opt * 1 <= 0) {
                 document.getElementById('status_opt').value = "over-saved"
                 document.getElementById('status_opt').style["background-color"] = "gold"
             } else {
                 document.getElementById('status_opt').value = "on-track"
-                document.getElementById('status_opt').style["background-color"] = "#1fb45c"
+                document.getElementById('status_opt').style["background-color"] = "#25DA6F"
 
             }
 
             if (lux.pes * 1 > cont_pes * 1) {
                 document.getElementById('status_pes').value = "off-track"
-                document.getElementById('status_pes').style["background-color"] = "#b41f2d"
+                document.getElementById('status_pes').style["background-color"] = "#FF2B3F"
             } else if (time.pes * 1 <= 0) {
                 document.getElementById('status_pes').value = "over-saved"
                 document.getElementById('status_pes').style["background-color"] = "gold"
             } else {
                 document.getElementById('status_pes').value = "on-track"
-                document.getElementById('status_pes').style["background-color"] = "#1fb45c"
+                document.getElementById('status_pes').style["background-color"] = "#25DA6F"
             }
 
 
@@ -374,7 +383,7 @@
             grid-gap: 10px;
             background-color: #74747436;
             padding: 10px;
-            
+
         }
 
         .flex-container>div {
@@ -386,15 +395,20 @@
         }
 
         .input {
-            width:auto;
+            width: auto;
+            min-width: 300px;
             flex: auto;
         }
-         .plot {
-             min-width: 400px;
-             max-height: 100%;
-             height:100%;
-         }
-        
+
+        .plot {
+            min-width: 300px;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui;
+        }
 
         .save {
             background-color: rgb(178, 224, 203) !important;
@@ -420,14 +434,15 @@
 </head>
 
 <body onload="init()">
-
+    
     <div class="flex-container">
+        
         <div class="input">
             <table style="width:100%;">
                 <tr>
                     <th>Value</th>
-                    <th>Optimistic<abbr title="Use retirement savings, and good return rate"><sup>?</sup></abbr></th>
-                    <th>Pessimistic<abbr title="Use net worth, and poor return rate"><sup>?</sup></th>
+                    <th>Optimistic<abbr title="Use retirement savings, and good return rate"></abbr></th>
+                    <th>Pessimistic<abbr title="Use net worth, and poor return rate"></th>
                     <th>Units</th>
                 </tr>
                 <tr></tr>
@@ -497,14 +512,14 @@
                 Value="Help" onclick="togglehelp()">
         </div>
         <div class="plot" id="plot">
-            <div id="tester" ></div>
+            <div id="tester"></div>
         </div>
         <div class="save" id="save" style="display:none; position:fixed;">
             <div style="text-align: right;padding-right:10px;"
                 onclick="document.getElementById('save').style.display = 'none';">✖️</div>
             <label for="savebox">Full JSON String</label><br>
             <textarea id="savebox" rows="5" cols="50" onchange="loaddata();updateData()"></textarea><br>
-            <input type="button" value="Update parameters with string" onclick="loaddata()"><br>
+            <input type="button" value="Update parameters with string" style="width:15em;" onclick="loaddata()"><br>
             <label for="autosave">Autosave</label>
             <label class="switch">
                 <input id="autosave" type="checkbox" onchange="toggleAutoSave(this)">
@@ -598,7 +613,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.15
+        ©️ 2021 Alex Salimian v0.16
     </div>
 </body>
 
