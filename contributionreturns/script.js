@@ -80,11 +80,11 @@
         document.getElementById('cont_opt').value = datamodel[0]["Optimistic Scenario"]["Contribution"];
         document.getElementById('cont_pes').value = datamodel[0]["Pessimistic Scenario"]["Contribution"];
 
-        contribtime()
-        savingluxury()
+        calcContributions()
+        calcSavings()
 
     }
-    function togglesave() {
+    function toggleSaveWindow() {
         if (document.getElementById("save").style.display == "block") {
             document.getElementById("save").style.display = "none";
         } else {
@@ -112,7 +112,7 @@
         }
 
     }
-    function togglehelp() {
+    function toggleHelpWindow() {
         document.getElementById("save").style.display = "none";
         if (document.getElementById("help").style.display == "block") {
             document.getElementById("help").style.display = "none";
@@ -122,7 +122,7 @@
             document.getElementById("plot").style.display = "none";
         }
     }
-    function contribtime() {
+    function calcContributions() {
         Tm = document.getElementById('years_opt').value * 1;
         r = document.getElementById('r_opt').value.replace('%','') / 100;
         c = document.getElementById('cont_opt').value * 1;
@@ -142,7 +142,7 @@
         document.getElementById('time_pes').value = time_pes;
         return { 'opt': time_opt, 'pes': time_pes }
     }
-    function savingluxury() {
+    function calcSavings() {
         Tm = document.getElementById('years_opt').value * 1;
         r = document.getElementById('r_opt').value.replace('%','') / 100;
         P0 = document.getElementById('p0_opt').value.replace('$','').replace(',','')*1 * 1;
@@ -180,8 +180,8 @@
             document.getElementById('autosave').checked = true
             document.getElementById('savebox').value = localStorage['json_settings']
         }
-        time = contribtime()
-        lux = savingluxury()
+        time = calcContributions()
+        lux = calcSavings()
         pmax_opt = document.getElementById('pmax_opt').value.replace('$','').replace(',','')*1;
         pmax_pes = document.getElementById('pmax_pes').value.replace('$','').replace(',','')*1;
         p0_opt = document.getElementById('p0_opt').value.replace('$','').replace(',','')*1;

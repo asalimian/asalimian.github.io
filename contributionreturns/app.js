@@ -1,22 +1,14 @@
-
-    function cur2text(el) {
-        value = '$ '+Number(el.value.replace('$','').replace(',','')).toLocaleString();
+    function num2text(el,pre='',suf='') {
+        value = pre+Number(el.value.replace('%','').replace(',','')).toLocaleString()+suf;
         el.type = "text"
         el.value = value
+        if (localStorage['autosave'] == 'true') {
+            localStorage['json_settings'] = document.getElementById('savebox').value
+            localStorage['logplot'] = document.getElementById('logplot').checked
+        }
     }
-    function text2cur(el) {
-        value = el.value.replace('$','').replace(',','') * 1
-        el.type = "number"
-        el.value = value
-    }
-
-    function per2text(el) {
-        value = Number(el.value.replace('%','').replace(',','')).toLocaleString()+'%';
-        el.type = "text"
-        el.value = value
-    }
-    function text2per(el) {
-        value = el.value.replace('%','').replace(',','') * 1
+    function text2num(el) {
+        value = el.value.replace('%','').replace('$','').replace(',','') * 1
         el.type = "number"
         el.value = value
     }
@@ -38,27 +30,7 @@
         }
 
     }
-    function reloadValue() {
 
-        document.getElementById("text").value = getValue("text");    // set the value to this input
-        document.getElementById("textarea").value = getValue("textarea");   // set the value to this input
-    }
-    /* Here you can add more inputs to set value. if it's saved */
-
-    //Save the value function - save it to localStorage as (ID, VALUE)
-    function setValue(e) {
-        var id = e.id;  // get the sender's id to save it . 
-        var val = e.value; // get the value. 
-        localStorage[id] = val;// Every time user writing something, the localStorage's value will override . 
-    }
-
-    //get the saved value function - return the value of "v" from localStorage. 
-    function getValue(v) {
-        if (!localStorage.getItem(v)) {
-            return "";// You can change this to your defualt value. 
-        }
-        return localStorage.getItem(v);
-    }
     function loaddata() {
         if (localStorage.logplot == "true") {
             document.getElementById('logplot').checked = localStorage.logplot
@@ -80,11 +52,11 @@
         document.getElementById('cont_opt').value = datamodel[0]["Optimistic Scenario"]["Contribution"];
         document.getElementById('cont_pes').value = datamodel[0]["Pessimistic Scenario"]["Contribution"];
 
-        contribtime()
-        savingluxury()
+        calcContributions()
+        calcSavings()
 
     }
-    function togglesave() {
+    function toggleSaveWindow() {
         if (document.getElementById("save").style.display == "block") {
             document.getElementById("save").style.display = "none";
         } else {
@@ -112,7 +84,7 @@
         }
 
     }
-    function togglehelp() {
+    function toggleHelpWindow() {
         document.getElementById("save").style.display = "none";
         if (document.getElementById("help").style.display == "block") {
             document.getElementById("help").style.display = "none";
@@ -122,7 +94,7 @@
             document.getElementById("plot").style.display = "none";
         }
     }
-    function contribtime() {
+    function calcContributions() {
         Tm = document.getElementById('years_opt').value * 1;
         r = document.getElementById('r_opt').value.replace('%','') / 100;
         c = document.getElementById('cont_opt').value.replace('$','').replace(',','') * 1;
@@ -140,9 +112,12 @@
 
         document.getElementById('time_opt').value = time_opt;
         document.getElementById('time_pes').value = time_pes;
+
+        num2text(document.getElementById('time_opt'));
+        num2text(document.getElementById('time_pes'));
         return { 'opt': time_opt, 'pes': time_pes }
     }
-    function savingluxury() {
+    function calcSavings() {
         Tm = document.getElementById('years_opt').value * 1;
         r = document.getElementById('r_opt').value.replace('%','') / 100;
         P0 = document.getElementById('p0_opt').value.replace('$','').replace(',','')*1 * 1;
@@ -159,8 +134,8 @@
         document.getElementById('lux_opt').value = lux_opt;
         document.getElementById('lux_pes').value = lux_pes;
 
-        cur2text(document.getElementById('lux_opt'));
-        cur2text(document.getElementById('lux_pes'));
+        num2text(document.getElementById('lux_opt'),'$ ');
+        num2text(document.getElementById('lux_pes'),'$ ');
 
         return { 'opt': lux_opt, 'pes': lux_pes }
     }
@@ -179,12 +154,12 @@
         return [x.map(yadd), x.map(expgrow)];
     }
     function updateData() {
-        if (getValue('autosave') == 'true') {
+        if (localStorage['autosave'] == 'true') {
             document.getElementById('autosave').checked = true
             document.getElementById('savebox').value = localStorage['json_settings']
         }
-        time = contribtime()
-        lux = savingluxury()
+        time = calcContributions()
+        lux = calcSavings()
         pmax_opt = document.getElementById('pmax_opt').value;
         pmax_pes = document.getElementById('pmax_pes').value;
         p0_opt = document.getElementById('p0_opt').value;
@@ -214,26 +189,25 @@
         }
 
         if (lux.opt * 1 > cont_opt * 1) {
-            document.getElementById('status_opt').value = "off-track"
-            document.getElementById('status_opt').style["background-color"] = "#FF2B3F"
+            document.getElementById('status_opt').value = "❌off-track"
+            document.getElementById('status_opt').className = "offtrack"
         } else if (time.opt * 1 <= 0) {
-            document.getElementById('status_opt').value = "over-saved"
-            document.getElementById('status_opt').style["background-color"] = "gold"
+            document.getElementById('status_opt').value = "⚠️oversaved"
+            document.getElementById('status_opt').className = "oversaved"
         } else {
-            document.getElementById('status_opt').value = "on-track"
-            document.getElementById('status_opt').style["background-color"] = "#25DA6F"
-
+            document.getElementById('status_opt').value = "✔️on-track"
+            document.getElementById('status_opt').className = "ontrack"
         }
 
         if (lux.pes * 1 > cont_pes * 1) {
-            document.getElementById('status_pes').value = "off-track"
-            document.getElementById('status_pes').style["background-color"] = "#FF2B3F"
+            document.getElementById('status_pes').value = "❌off-track"
+            document.getElementById('status_pes').className = "offtrack"
         } else if (time.pes * 1 <= 0) {
-            document.getElementById('status_pes').value = "over-saved"
-            document.getElementById('status_pes').style["background-color"] = "gold"
+            document.getElementById('status_pes').value = "⚠️oversaved"
+            document.getElementById('status_pes').className = "oversaved"
         } else {
-            document.getElementById('status_pes').value = "on-track"
-            document.getElementById('status_pes').style["background-color"] = "#25DA6F"
+            document.getElementById('status_pes').value = "✔️on-track"
+            document.getElementById('status_pes').className = "ontrack"
         }
 
 

@@ -57,11 +57,11 @@
             document.getElementById('cont_opt').value = datamodel[0]["Optimistic Scenario"]["Contribution"];
             document.getElementById('cont_pes').value = datamodel[0]["Pessimistic Scenario"]["Contribution"];
 
-            contribtime()
-            savingluxury()
+            calcContributions()
+            calcSavings()
 
         }
-        function togglesave() {
+        function toggleSaveWindow() {
             if (document.getElementById("save").style.display == "block") {
                 document.getElementById("save").style.display = "none";
             } else {
@@ -89,7 +89,7 @@
             }
 
         }
-        function togglehelp() {
+        function toggleHelpWindow() {
             if (document.getElementById("help").style.display == "block") {
                 document.getElementById("help").style.display = "none";
             } else {
@@ -97,7 +97,7 @@
             }
             document.getElementById("save").style.display = "none";
         }
-        function contribtime() {
+        function calcContributions() {
             Tm = document.getElementById('years_opt').value * 1;
             r = document.getElementById('r_opt').value / 100;
             c = document.getElementById('cont_opt').value * 1;
@@ -113,7 +113,7 @@
             t = Math.min(Math.max(0, Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)), Tm)
             document.getElementById('time_pes').value = Math.round(t * 1000) / 1000
         }
-        function savingluxury() {
+        function calcSavings() {
             Tm = document.getElementById('years_opt').value * 1;
             r = document.getElementById('r_opt').value / 100;
             P0 = document.getElementById('p0_opt').value * 1;
@@ -146,8 +146,8 @@
                 document.getElementById('autosave').checked = true
                 document.getElementById('savebox').value = localStorage['json_settings']
             }
-            contribtime()
-            savingluxury()
+            calcContributions()
+            calcSavings()
             pmax_opt = document.getElementById('pmax_opt').value;
             pmax_pes = document.getElementById('pmax_pes').value;
             p0_opt = document.getElementById('p0_opt').value;
@@ -394,8 +394,8 @@
                     <td>Dollars</td>
                 </tr>
             </table>
-            <input style="width:10em;" type="button" Value="Settings" onclick="togglesave()"><input type="button"
-                Value="Help" onclick="togglehelp()">
+            <input style="width:10em;" type="button" Value="Settings" onclick="toggleSaveWindow()"><input type="button"
+                Value="Help" onclick="toggleHelpWindow()">
         </div>
 
 
