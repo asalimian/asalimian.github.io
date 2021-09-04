@@ -69,7 +69,7 @@
                     <td><input type="text" class="currency" id="pmax_pes" name="fav_language" onfocus="text2num(this)"
                             onchange="updateData()" onblur="num2text(this,'$ ')">
                     </td>
-                    
+
                 </tr>
                 <tr>
                     <td><label for=" r_opt"><abbr title="Total investment return rate">Rate of Return</abbr></label>
@@ -86,7 +86,7 @@
                     <td><input type="text" id="years_opt" name="fav_language" onfocus="text2num(this)"
                             onchange="updateData()" onblur="num2text(this)"></td>
                     <td><input type="text" id="years_pes" name="fav_language" onfocus="text2num(this)"
-                        onchange="updateData()" onblur="num2text(this)"></td>
+                            onchange="updateData()" onblur="num2text(this)"></td>
 
                 </tr>
                 <tr>
@@ -97,12 +97,11 @@
                             onchange="updateData()" onblur="num2text(this,'$ ')"></td>
                     <td><input type="text" class="currency" id="cont_pes" name="fav_language" onfocus="text2num(this)"
                             onchange="updateData()" onblur="num2text(this,'$ ')"></td>
-                    
+
                 </tr>
                 <tr>
-                    <td><label for=" time_opt"><abbr
-                            title="How long you'd need to contribute to hit coast">Contribution
-                            Time</abbr></label></td>
+                    <td><label for=" time_opt"><abbr title="How long you'd need to contribute to hit coast">Contribution
+                                Time</abbr></label></td>
                     <td><input type="number" id="time_opt" name="fav_language" style="background-color: lightgray;"
                             readonly onchange="updateData()"></td>
                     <td><input type="number" id="time_pes" name="fav_language" style="background-color: lightgray;"
@@ -158,6 +157,20 @@
         </div>
         <div class="help" id="help" style="display:none; position: absolute;">
             <div style="text-align: right;" onclick="toggleHelpWindow()">✖️</div>
+            <h2>The Calculator</h2>
+            <p>
+                This tool helps you calculate two simulataneous paths to your savings goal. Perhaps you're flexible on
+                your goal, timeline, or maybe you want to compare your long term savings to your whole net worth.
+            </p>
+            <p>
+                Auto-save can be enabled in the settings menu, and all data is stored in your device (not on this
+                server), or you can copy out the JSON string so that you can keep your own back-up. As a progressive web
+                app, you can install this on your device for easy access. 
+            </p>
+            <p>
+                Lastly, this should work on either mobile or desktop. Please post an issue on <a href="https://github.com/asalimian/asalimian.github.io/issues">my github page</a> if you find any bugs. 
+            </p>
+            <hr>
             <h2>The Inputs</h2>
             <p>
                 <strong>Principle</strong><br> How much you have. Use savings for optimistic value, and net worth for
@@ -234,7 +247,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.19
+        ©️ 2021 Alex Salimian v0.20
     </div>
 </body>
 

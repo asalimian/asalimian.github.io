@@ -100,14 +100,16 @@
         c = document.getElementById('cont_opt').value.replace('$','').replace(',','') * 1;
         P0 = document.getElementById('p0_opt').value.replace('$','').replace(',','') * 1;
         Pm = document.getElementById('pmax_opt').value.replace('$','').replace(',','') * 1;
-        t = Math.min(Math.max(0, Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)), Tm)
+        t = Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)
+        t = Math.min(Math.max(0, t), Tm)
         time_opt = Math.round(t * 1000) / 1000;
         Tm = document.getElementById('years_pes').value * 1;
         r = document.getElementById('r_pes').value.replace('%','') / 100;
         c = document.getElementById('cont_pes').value.replace('$','').replace(',','') * 1;
         P0 = document.getElementById('p0_pes').value.replace('$','').replace(',','')*1;
         Pm = document.getElementById('pmax_pes').value.replace('$','').replace(',','')*1;
-        t = Math.min(Math.max(0, Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)), Tm)
+        t = Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)
+        t = Math.min(Math.max(0, t), Tm)
         time_pes = Math.round(t * 1000) / 1000;
 
         document.getElementById('time_opt').value = time_opt;
@@ -171,7 +173,9 @@
         cont_opt = document.getElementById('cont_opt').value;
         cont_pes = document.getElementById('cont_pes').value;
         
-        document.getElementById('savebox').value = JSON.stringify([{ "Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes } }])
+        var currentTime = new Date()
+
+        document.getElementById('savebox').value = JSON.stringify([{ "Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes }},{"app_url":"https://asalimian.github.io/contributionreturns/app.html","last_update":currentTime}])
         
         pmax_opt = pmax_opt.replace('$','').replace(',','')*1;
         pmax_pes = pmax_pes.replace('$','').replace(',','')*1;
@@ -211,7 +215,6 @@
         }
 
 
-        var currentTime = new Date()
 
         optcoast = expgrowth(pmax_opt / Math.exp(r_opt / 100 * (years_opt - time_opt)),
             r_opt,
