@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Responsive -->
+    <meta charset="utf-8">
+    <meta content="ie=edge">
+
+    <!-- Title -->
+    <title>Contribution Calculator</title>
+    <!-- Meta Tags required for
+       Progressive Web App -->
+    <meta name="apple-mobile-web-app-status-bar" content="#0075FF">
+    <meta name="theme-color" content="black">
+    <script src="https://cdn.plot.ly/plotly-2.3.1.min.js"></script>
+    <script src="test.js"></script>
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body onload="init()">
+
+    <div class="flex-container">
+
+        <div class="input">
+            <table style="width:100%">
+                <tr>
+                    <th>Value</th>
+                    <th>Loan<abbr title="Use retirement savings, and good return rate"></abbr></th>
+                    <th>Savings<abbr title="Use net worth, and poor return rate"></th>
+                </tr>
+
+                <tr>                  
+                    <td>Principle
+                    
+                    </td>
+                    <td><input type="text" class="currency" id="p0_loan" name="fav_language" onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'$ ')">
+                    </td>
+                    <td> <input type="text" class="currency" id="p0_save" name="fav_language" onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'$ ')">
+                </tr>
+                <tr>
+                    <td> Rate
+                    </td>
+                    <td><input type="text" class="currency" id="r_loan" name="fav_language" onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'','%')">
+                    </td>
+                    <td> <input type="text" class="currency" id="r_save" name="fav_language" onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'','%')"></td>
+                </tr>
+                <tr>
+                    <td>Min payment
+                    </td>
+                    <td><input type="text" class="currency" id="pay_loan" name="fav_language" onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'$ ')"></td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Schedule Years
+                    </td>
+                    <td><input type="text" class="currency" id="years_sch" name="fav_language"
+                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'$ ')"></td>
+                </tr>
+                <tr>
+                    <td>
+
+                        Income
+                    </td>
+                    <td> <input type="text" class="currency" id="income" name="fav_language" onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'$ ')">
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Savings
+                    </td>
+                    <td colspan="2">
+                        <input type="range" style="width:80%" id="income_split" min="0" max="1" step=".01" onchange="updateData()">
+                    </td>
+                    <td id="min_split">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Payment
+                    </td>
+                    <td> <input type="text" class="currency" id="cont_loan" name="fav_language"
+                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'$ ')">
+                    </td>
+                    <td> <input type="text" class="currency" id="cont_save" name="fav_language"
+                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'$ ')">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                        Years
+                    </td>
+                    <td> <input type="text" class="currency" id="years_loan" name="fav_language"
+                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'','yrs')">
+                    </td>
+                    <td> <input type="text" class="currency" id="years_save" name="fav_language"
+                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'$ ')">
+                    </td>
+                </tr>
+
+
+            </table>
+            
+            <input style="width:10em;" type="button" Value="Settings" onclick="toggleSaveWindow()"><input type="button"
+                Value="Help" onclick="toggleHelpWindow()">
+        </div>
+        <div class="plot" id="plot">
+            <div id="tester"></div>
+        </div>
+        <div class="save" id="save" style="display:none; position:fixed;">
+            <div style="text-align: right;padding-right:10px;"
+                onclick="document.getElementById('save').style.display = 'none';">✖️</div>
+            <label for="savebox">Full JSON String</label><br>
+            <div class="flex-container">
+                <textarea id="savebox" rows="5" onchange="loaddata();updateData()"></textarea><br>
+            </div>
+            <input type="button" value="Update parameters with string" style="width:15em;" onclick="loaddata()"><br>
+            <label for="autosave">Autosave</label>
+            <label class="switch">
+                <input id="autosave" type="checkbox" onchange="toggleAutoSave(this)">
+                <span class="slider round"></span>
+            </label><br>
+            <label for="logplot">Log plot</label>
+            <label class="switch">
+                <input id="logplot" type="checkbox" onchange="toggleLogAxis(this)">
+                <span class="slider round"></span>
+            </label>
+            <div style="font-size:11px;color:#555;">No data is transmitted to the server, and data will be stored
+                according to your browser setting. Do not enable autosave on shared devices. You can store this string
+                securely on your device to reload in the future. Please note that starting year is based on system time
+                so subsequent usages of this tool will generate different plots.</div>
+        </div>
+        <div class="help" id="help" style="display:none; position: absolute;">
+            <div style="text-align: right;" onclick="toggleHelpWindow()">✖️</div>
+            <h2>The Calculator</h2>
+            <p>
+                This tool helps you calculate two simulataneous paths to your savings goal. Perhaps you're flexible on
+                your goal, timeline, or maybe you want to compare your long term savings to your whole net worth.
+            </p>
+            <p>
+                Auto-save can be enabled in the settings menu, and all data is stored in your device (not on this
+                server), or you can copy out the JSON string so that you can keep your own back-up. As a progressive web
+                app, you can install this on your device for easy access.
+            </p>
+            <p>
+                Lastly, this should work on either mobile or desktop. Please post an issue on <a
+                    href="https://github.com/asalimian/asalimian.github.io/issues">my github page</a> if you find any
+                bugs.
+            </p>
+            <hr>
+            <h2>The Inputs</h2>
+            <p>
+                <strong>Principle</strong><br> How much you have. Use savings for optimistic value, and net worth for
+                pessistic value.
+                <hr>
+            </p>
+            <p>
+                <strong>Goal</strong><br>
+                How much you want to save
+                <hr>
+            </p>
+            <p>
+                <strong>Rate</strong><br>
+                Investment return rate (7% is average inflation adjusted returns, 4% is the "safe withdrawal rate")
+                <hr>
+            </p>
+            <p><strong>Year</strong><br>
+                How far away is your goal?
+                <hr>
+            </p>
+            <p><strong>Annual Contribution</strong><br>
+                How much you contribute annually ($19.5k to max out 401k, $6k to max out IRA per person)<br>
+            </p>
+            <hr>
+            <h2>The Outputs</h2>
+            <p>
+                <strong>Contribution Time</strong><br>
+                How long at the current contribution rate you'd need to keep making payments
+                <hr>
+            </p>
+            <p><strong>Required Save or Spend</strong><br>
+                How much you'd need to save until your goal year to meet the goal.
+                <hr>
+            <div style="padding: 0 20px 0 20px;">
+                If contribution rate is greater than req save, then you'll be done saving early.
+                <hr>
+                2000 If contribution rate is lower than req save, then you need to save more, decrease your goal, or
+                extend
+                your timeline.
+                <hr>
+                If contribution rate is negative, then you've oversaved.
+            </div>
+            </p>
+
+        </div>
+        <script type="text/javascript">
+
+
+
+            TESTER = document.getElementById('tester');
+            var currentTime = new Date()
+            var data = [{
+                x: [0, 0], y: [0, 0], name: 'Optimistic Coast'
+            }, {
+                x: [0, 0], y: [0, 0], name: 'Pes Coast'
+            }, {
+                x: [0, 0], y: [0, 0], name: 'Opt Contrib'
+            }, {
+                x: [0, 0], y: [0, 0], name: 'Pes Contrib'
+            }]
+
+            var layout = {
+                xaxis: { 'title': 'Year', type: 'date', },
+                yaxis: { 'title': '', hoverformat: '.0f', 'type': null },
+                legend: { 'orientation': 'h', 'y': -0.2 },
+                margin: { 't': 20, 'r': 5, 'l': 40 },
+                autosize: true,
+                paper_bgcolor: "#F9F9F9",
+                plot_bgcolor: "FcFcFc"
+            };
+
+            Plotly.react(TESTER, data, layout);
+
+        </script>
+    </div>
+    <div>
+        ©️ 2021 Alex Salimian v0.01
+    </div>
+</body>
+
+
+</html>

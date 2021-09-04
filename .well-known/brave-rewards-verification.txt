@@ -1,4 +1,0 @@
-This is a Brave Rewards publisher verification file.
-
-Domain: asalimian.github.io
-Token: 1319f8f520c0304771c85caae588d431214592465ecb69936d5a244ed40c9da0
