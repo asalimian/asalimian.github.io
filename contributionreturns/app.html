@@ -12,15 +12,17 @@
     <!-- Meta Tags required for
        Progressive Web App -->
     <meta name="apple-mobile-web-app-status-bar" content="#aa7700">
+    <link rel="apple-touch-icon" href="/icon-192x192.png">
     <meta name="theme-color" content="black">
 
     <!-- Manifest File link -->
     <link rel="manifest" href="manifest.json">
 
-    <script src="https://cdn.plot.ly/plotly-2.3.1.min.js"></script>
-    <script src="app.js"></script>
-    <script src="app_common.js"></script>
+    <script src="plotly-2.3.1.min.js"></script><!-- Source: https://cdn.plot.ly/ -->
+    <link rel="stylesheet" href="font-awesome.min.css"><!-- Source: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/ -->
     <link rel="stylesheet" href="app.css">
+    <script src="app_common.js"></script>
+    <script src="app.js"></script>
     <script type="text/javascript">
         window.addEventListener('load', () => {
             registerSW();
@@ -40,7 +42,6 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 
@@ -262,7 +263,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.21
+        ©️ 2021 Alex Salimian v0.22
     </div>
 </body>
 

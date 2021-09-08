@@ -1,11 +1,11 @@
 {
     "name": "Principle and the Pea",
     "short_name": "Principea",
-    "start_url": "app.html",
+    "start_url": "https://asalimian.github.io/contributionreturns/app.html",
     "display": "standalone",
     "background_color": "#00AB7E",
     "theme_color": "green",
-    "scope": ".",
+    "scope": "https://asalimian.github.io/contributionreturns/",
     "description": "This is a little calculator for a little savings.",
     "icons": [
         {
@@ -17,7 +17,13 @@
             "src": "images/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
-        }
+        },
+        {
+            "src": "images/maskable_icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+          }
     ],
-    "version":"v0.21"
+    "version":"v0.22"
 }
