@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Responsive -->
-    <meta charset="utf-8">
     <meta content="ie=edge">
 
     <!-- Title -->
@@ -14,9 +14,10 @@
     <meta name="apple-mobile-web-app-status-bar" content="#0075FF">
     <link rel="apple-touch-icon" href="/icon-192x192.png">
     <meta name="theme-color" content="black">
-    
-    <script src="plotly-2.3.1.min.js"></script><!-- Source: https://cdn.plot.ly/ -->
-    <link rel="stylesheet" href="font-awesome.min.css"><!-- Source: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/ -->
+
+    <script src="plotly-2.4.2.min.js"></script><!-- Source: https://cdn.plot.ly/ -->
+    <link rel="stylesheet" href="font-awesome.min.css">
+    <!-- Source: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/ -->
     <link rel="stylesheet" href="app.css">
     <script src="app_common.js"></script>
     <script src="test.js"></script>
@@ -34,9 +35,9 @@
         </div>
         <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-          <i class="fa fa-bars"></i>
+            <i class="fa fa-bars"></i>
         </a>
-      </div>
+    </div>
     <div class="flex-container">
 
         <div class="input">
@@ -46,10 +47,10 @@
                     <th>Loan<abbr title="Use retirement savings, and good return rate"></abbr></th>
                     <th>Savings<abbr title="Use net worth, and poor return rate"></th>
                 </tr>
-                         
-                <tr>                  
+
+                <tr>
                     <td>Principle
-                    
+
                     </td>
                     <td><input type="text" class="currency" id="p0_loan" name="fav_language" onfocus="text2num(this)"
                             onchange="updateData()" onblur="num2text(this,'$ ')">
@@ -74,7 +75,7 @@
                     <td>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td>
 
@@ -91,13 +92,14 @@
                         Savings
                     </td>
                     <td colspan="2">
-                        <input type="range" style="width:80%" id="income_split" min="0" max="1" step=".01" onchange="updateData()">
+                        <input type="range" style="width:80%" id="income_split" min="0" max="1" step=".01"
+                            onchange="updateData()">
                     </td>
                     <td id="min_split">
-                        
+
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td>
                         Payment
@@ -136,7 +138,7 @@
 
 
             </table>
-            
+
         </div>
         <div class="plot" id="plot">
             <div id="tester"></div>
@@ -168,12 +170,14 @@
             <div style="text-align: right;" onclick="toggleHelpWindow()">✖️</div>
             <h2>The Loan Payoff Calculator</h2>
             <p>
-                This tool can help you figure out how best to pay off your loan, and figure out if you have any "good debt"
+                This tool can help you figure out how best to pay off your loan, and figure out if you have any "good
+                debt"
             </p>
             <p>
                 Auto-save can be enabled in the settings menu, and all data is stored in your device (not on this
                 server), or you can copy out the JSON string so that you can keep your own back-up. As a progressive web
-                app, you can install this on your device for easy access. Though it will default to the main contribution calculator probably. 
+                app, you can install this on your device for easy access. Though it will default to the main
+                contribution calculator probably.
             </p>
             <p>
                 Lastly, this should work on either mobile or desktop. Please post an issue on <a
@@ -183,48 +187,51 @@
             <hr>
             <h2>The Inputs</h2>
             <p>
-                <strong>Principle</strong><br> How much you have right now. (Sorry we don't support multiple balances right now, so please enter the sum manually)
+                <strong>Principle</strong><br> How much you have right now. (Sorry we don't support multiple balances
+                right now, so please enter the sum manually)
                 <hr>
             </p>
             <p>
                 <strong>Rate</strong><br>
-                How much your annual loan rate is. 
-                <br><br>To annualize your investement return use ln(1+total return)/years 
-                <br><br>  If you have your multiple balances, use a weighted sum. sum(balance_1*rate_1+balance_2*rate_2+...)/sum(balances)
+                How much your annual loan rate is.
+                <br><br>To annualize your investement return use ln(1+total return)/years
+                <br><br> If you have your multiple balances, use a weighted sum.
+                sum(balance_1*rate_1+balance_2*rate_2+...)/sum(balances)
                 <hr>
             </p>
             <p>
                 <strong>Min payment</strong><br>
                 What your minimum payment is, this is used to calculate your repayment period.
                 <br><br>
-                If you're on an income based repayment plan, this will be all messed up. 
+                If you're on an income based repayment plan, this will be all messed up.
                 <hr>
             </p>
             <p><strong>Income</strong><br>
                 How much income you have available for repaying loans or investing (they're kind of the same thing).
-                
+
                 <br><br>
                 take home pay - rent - food - fun money - ...
                 <hr>
             </p>
             <p><strong>Loan/Savings Split</strong><br>
-                How to allocate your discretionary income: Left for faster payoff, right for more savings  
+                How to allocate your discretionary income: Left for faster payoff, right for more savings
             </p>
             <hr>
             <h2>The Outputs</h2>
             <p>
                 <strong>Payment</strong><br>
-                How much of your income are allocated to paying back your loan or saving. 
+                How much of your income are allocated to paying back your loan or saving.
                 <hr>
             </p>
             <p><strong>Schedule Years</strong><br>
-                Double check that we're calculating your standard repayment period. 
+                Double check that we're calculating your standard repayment period.
                 <hr>
             </p>
             <p><strong>Years</strong><br>
-                At this point we've screwed up all the usual amortization tables, so we need to calculate when you'll be done repaying your loan.
+                At this point we've screwed up all the usual amortization tables, so we need to calculate when you'll be
+                done repaying your loan.
                 <br><br>
-                On the right, the savings years shows how many years your full income will be going towards saving. 
+                On the right, the savings years shows how many years your full income will be going towards saving.
                 <hr>
             </p>
 
@@ -260,7 +267,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.22
+        ©️ 2021 Alex Salimian v0.23
     </div>
 </body>
 
