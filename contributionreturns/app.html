@@ -19,6 +19,7 @@
 
     <script src="https://cdn.plot.ly/plotly-2.3.1.min.js"></script>
     <script src="app.js"></script>
+    <script src="app_common.js"></script>
     <link rel="stylesheet" href="app.css">
     <script type="text/javascript">
         window.addEventListener('load', () => {
@@ -39,10 +40,25 @@
             }
         }
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body onload="init()">
 
+    <div class="topnav">
+        <a href="#home" class="active" >Contribution Calculator</a>
+        <!-- Navigation links (hidden by default) -->
+        <div id="myLinks">
+            <a href="test.html">Loan Calculator</a>
+            <a onclick="toggleSaveWindow();myFunction()">Settings</a>
+            <a onclick="toggleHelpWindow();myFunction()">Help</a>
+        </div>
+        <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
     <div class="flex-container">
 
         <div class="input">
@@ -126,8 +142,7 @@
                             style="background-color: lightgray;width:5em;" readonly onchange="updateData()"></td>
                 </tr>
             </table>
-            <input style="width:10em;" type="button" Value="Settings" onclick="toggleSaveWindow()"><input type="button"
-                Value="Help" onclick="toggleHelpWindow()">
+            
         </div>
         <div class="plot" id="plot">
             <div id="tester"></div>
@@ -247,7 +262,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.20
+        ©️ 2021 Alex Salimian v0.21
     </div>
 </body>
 

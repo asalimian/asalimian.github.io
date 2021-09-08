@@ -1,35 +1,7 @@
-    function num2text(el,pre='',suf='') {
-        value = pre+Number(el.value.replace('%','').replace(',','')).toLocaleString()+suf;
-        el.type = "text"
-        el.value = value
-        if (localStorage['autosave'] == 'true') {
-            localStorage['json_settings'] = document.getElementById('savebox').value
-            localStorage['logplot'] = document.getElementById('logplot').checked
-        }
-    }
-    function text2num(el) {
-        value = el.value.replace('%','').replace('$','').replace(',','') * 1
-        el.type = "number"
-        el.value = value
-    }
 
-    function loadDefaults() {
-        payload = "[{\"Loan\":{\"Principle\":\"$ 100000\",\"Rate\":\"5 %\",\"MinPay\":\"$ 536\"},\"Savings\":{\"Principle\":\"$ 0\",\"Rate\":\"7 %\"},\"Budget\":{\"Income\":\"$ 1050\",\"Split\":\"0.60\"}},{\"url\":\"null\"}]"
-        document.getElementById("savebox").value = payload
-        loaddata()
-    }
-    function init() {
-        if (localStorage.autosave == null || !(localStorage.autosave == "true")) {
-            loadDefaults()
-            updateData()
-        } else {
-            document.getElementById("savebox").value = localStorage.json_settings
-            document.getElementById("autosave").checked = true
-            loaddata()
-            updateData()
-        }
 
-    }
+    
+
 
     function loaddata() {
         if (localStorage.logplot == "true") {
@@ -40,63 +12,26 @@
 
         }
 
-        datamodel = JSON.parse(document.getElementById("savebox").value)
-        document.getElementById('p0_loan').value = datamodel[0]["Loan"]["Principle"];
-        document.getElementById('p0_save').value = datamodel[0]["Savings"]["Principle"];
-        document.getElementById('pay_loan').value = datamodel[0]["Loan"]["MinPay"];
-        document.getElementById('r_loan').value = datamodel[0]["Loan"]["Rate"];
-        document.getElementById('r_save').value = datamodel[0]["Savings"]["Rate"];
-        document.getElementById('income').value = datamodel[0]["Budget"]["Income"];
-        document.getElementById('income_split').value = datamodel[0]["Budget"]["Split"];
+        datamodel = JSON.parse(document.getElementById("savebox").value).LoanPayoffCalculator
+        document.getElementById('p0_loan').value = datamodel["Loan"]["Principle"];
+        document.getElementById('p0_save').value = datamodel["Savings"]["Principle"];
+        document.getElementById('pay_loan').value = datamodel["Loan"]["MinPay"];
+        document.getElementById('r_loan').value = datamodel["Loan"]["Rate"];
+        document.getElementById('r_save').value = datamodel["Savings"]["Rate"];
+        document.getElementById('income').value = datamodel["Budget"]["Income"];
+        document.getElementById('income_split').value = datamodel["Budget"]["Split"];
 
         calcSplit()
         calcYears()
 
     }
-    function toggleSaveWindow() {
-        if (document.getElementById("save").style.display == "block") {
-            document.getElementById("save").style.display = "none";
-        } else {
-            document.getElementById("save").style.display = "block";
-        }
-        document.getElementById("help").style.display = "none";
-
-    }
-    function toggleAutoSave(item) {
-        localStorage.setItem('autosave', item.checked)
-        if (item.checked == false) {
-            delete localStorage.json_settings
-        } else {
-            updateData()
-        }
-
-    }
-    function toggleLogAxis(item) {
-        if (item.checked == true) {
-            layout.yaxis.type = 'log';
-            updateData()
-        } else {
-            layout.yaxis.type = null;
-            updateData()
-        }
-
-    }
-    function toggleHelpWindow() {
-        document.getElementById("save").style.display = "none";
-        if (document.getElementById("help").style.display == "block") {
-            document.getElementById("help").style.display = "none";
-            document.getElementById("plot").style.display = "block";
-        } else {
-            document.getElementById("help").style.display = "block";
-            document.getElementById("plot").style.display = "none";
-        }
-    }
+    
     function calcYears() {
-        p0_loan = -Math.abs(document.getElementById('p0_loan').value.replace('$','').replace(',',''))
-        r_loan = document.getElementById('r_loan').value.replace('$','').replace(',','').replace('%','')/100
-        p_loan = document.getElementById('pay_loan').value.replace('$','').replace(',','')
+        p0_loan = -Math.abs(document.getElementById('p0_loan').value.replace('$','').replace(/,/g,''))
+        r_loan = document.getElementById('r_loan').value.replace('$','').replace(/,/g,'').replace('%','')/100
+        p_loan = document.getElementById('pay_loan').value.replace('$','').replace(/,/g,'')
 
-        c_loan = document.getElementById('cont_loan').value.replace('$','').replace(',','')
+        c_loan = document.getElementById('cont_loan').value.replace('$','').replace(/,/g,'')
 
         years_sch = 1/r_loan*Math.log(12*p_loan/(r_loan*p0_loan+12*p_loan))
         years_loan = 1/r_loan*Math.log(12*c_loan/(r_loan*p0_loan+12*c_loan))
@@ -115,13 +50,13 @@
                  'save': years_save }
     }
     function calcSplit() {
-        income = document.getElementById('income').value.replace('$','').replace(',','')
+        income = document.getElementById('income').value.replace('$','').replace(/,/g,'')
         split = document.getElementById('income_split').value
         if (split>0.99){split=1}
 
-        p0_loan = -Math.abs(document.getElementById('p0_loan').value.replace('$','').replace(',',''))
-        p_loan = -Math.abs(document.getElementById('pay_loan').value.replace('$','').replace(',',''))
-        r_loan = document.getElementById('r_loan').value.replace('$','').replace(',','').replace('%','')/100
+        p0_loan = -Math.abs(document.getElementById('p0_loan').value.replace('$','').replace(/,/g,''))
+        p_loan = -Math.abs(document.getElementById('pay_loan').value.replace('$','').replace(/,/g,''))
+        r_loan = document.getElementById('r_loan').value.replace('$','').replace(/,/g,'').replace('%','')/100
         
 
         document.getElementById('income_split').max = 1 + r_loan*p0_loan/(12*income)
@@ -141,20 +76,7 @@
                  'save': cont_save,
                  'income':income}
     }
-    function expgrowth(principle, rate, years, y0) {
-        n = 100
-        x = [...Array(n + 1).keys()]
-        expgrow = x => principle * Math.exp(x * rate / 100 / n * years);
-        yadd = y => (y / n * years + y0 - 1970) * 1000 * 3600 * 24 * 365.24;
-        return [x.map(yadd), x.map(expgrow)];
-    }
-    function expcont(principle, contrib, rate, years, y0) {
-        n = 100
-        x = [...Array(n + 1).keys()]
-        expgrow = x => principle * Math.exp(x * (rate / 100 / n * years)) + contrib / (rate / 100) * (Math.exp(x * (rate / 100 / n * years)) - 1);
-        yadd = y => (y / n * years + y0 - 1970) * 1000 * 3600 * 24 * 365.24;
-        return [x.map(yadd), x.map(expgrow)];
-    }
+    
     function updateData() {
         if (localStorage['autosave'] == 'true') {
             document.getElementById('autosave').checked = true
@@ -171,10 +93,13 @@
         
         var currentTime = new Date()
 
-        document.getElementById('savebox').value = JSON.stringify([{"Loan":{"Principle":p0_loan,"Rate":r_loan,"MinPay":p_loan},"Savings":{"Principle":"$ 200","Rate":"4 %"},"Budget":{"Income":"$ 2100","Split":"0.60"}},{"url":"null"}])
+        payload = JSON.parse(document.getElementById('savebox').value)
+        payload.LoanPayoffCalculator = {"Loan":{"Principle":p0_loan,"Rate":r_loan,"MinPay":p_loan},"Savings":{"Principle":"$ 200","Rate":"4 %"},"Budget":{"Income":"$ 2100","Split":"0.60"},"app_url":"https://asalimian.github.io/contributionreturns/test.html","last_update":currentTime}
         
-        p0_loan = -Math.abs(p0_loan.replace('$','').replace(',','')*1);
-        p_loan = p_loan.replace('$','').replace(',','')*1;
+        document.getElementById('savebox').value = JSON.stringify(payload)
+        
+        p0_loan = -Math.abs(p0_loan.replace('$','').replace(/,/g,'')*1);
+        p_loan = p_loan.replace('$','').replace(/,/g,'')*1;
         r_loan    = r_loan.replace('%','')/100;
         r_save    = r_save.replace('%','')/100;
         if (localStorage['autosave'] == 'true') {
@@ -227,7 +152,7 @@
                 y: pescontrib[1],
                 name: 'Contribution Period Pessimistic',
                 marker: {
-                    color: 'red',
+                    color: '#d62728',
                 }
             },
             {
@@ -235,7 +160,7 @@
                 y: optcontrib[1],
                 name: 'Contribution Period Pessimistic',
                 marker: {
-                    color: 'green',
+                    color: '#2ca02c',
                 }
             },
             {
@@ -243,7 +168,7 @@
                 y: optsave[1],
                 name: 'Saving Period Pessimistic',
                 marker: {
-                    color: 'blue',
+                    color: '#17becf',
                 }
             },
     ], layout);

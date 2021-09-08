@@ -1,35 +1,8 @@
-    function num2text(el,pre='',suf='') {
-        value = pre+Number(el.value.replace('%','').replace(',','')).toLocaleString()+suf;
-        el.type = "text"
-        el.value = value
-        if (localStorage['autosave'] == 'true') {
-            localStorage['json_settings'] = document.getElementById('savebox').value
-            localStorage['logplot'] = document.getElementById('logplot').checked
-        }
-    }
-    function text2num(el) {
-        value = el.value.replace('%','').replace('$','').replace(',','') * 1
-        el.type = "number"
-        el.value = value
-    }
 
-    function loadDefaults() {
-        payload = "[{\"Optimistic Scenario\":{\"Principle\":\"$ 100\",\"Goal\":\"$ 2,000\",\"Rate\":\"7\",\"Years\":\"30\",\"Contribution\":\"$ 25\"},\"Pessimistic Scenario\":{\"Principle\":\"$ 200\",\"Goal\":\"$ 2,000\",\"Rate\":\"4\",\"Years\":\"30\",\"Contribution\":\"$ 25\"}}]"
-        document.getElementById("savebox").value = payload
-        loaddata()
-    }
-    function init() {
-        if (localStorage.autosave == null || !(localStorage.autosave == "true")) {
-            loadDefaults()
-            updateData()
-        } else {
-            document.getElementById("savebox").value = localStorage.json_settings
-            document.getElementById("autosave").checked = true
-            loaddata()
-            updateData()
-        }
 
-    }
+
+
+
 
     function loaddata() {
         if (localStorage.logplot == "true") {
@@ -40,74 +13,37 @@
 
         }
 
-        datamodel = JSON.parse(document.getElementById("savebox").value)
-        document.getElementById('pmax_opt').value = datamodel[0]["Optimistic Scenario"]["Goal"];
-        document.getElementById('pmax_pes').value = datamodel[0]["Pessimistic Scenario"]["Goal"];
-        document.getElementById('p0_opt').value = datamodel[0]["Optimistic Scenario"]["Principle"];
-        document.getElementById('p0_pes').value = datamodel[0]["Pessimistic Scenario"]["Principle"];
-        document.getElementById('r_opt').value = datamodel[0]["Optimistic Scenario"]["Rate"];
-        document.getElementById('r_pes').value = datamodel[0]["Pessimistic Scenario"]["Rate"];
-        document.getElementById('years_opt').value = datamodel[0]["Optimistic Scenario"]["Years"];
-        document.getElementById('years_pes').value = datamodel[0]["Pessimistic Scenario"]["Years"];
-        document.getElementById('cont_opt').value = datamodel[0]["Optimistic Scenario"]["Contribution"];
-        document.getElementById('cont_pes').value = datamodel[0]["Pessimistic Scenario"]["Contribution"];
+        datamodel = JSON.parse(document.getElementById("savebox").value).ContributionCalculator
+        document.getElementById('pmax_opt').value = datamodel["Optimistic Scenario"]["Goal"];
+        document.getElementById('pmax_pes').value = datamodel["Pessimistic Scenario"]["Goal"];
+        document.getElementById('p0_opt').value = datamodel["Optimistic Scenario"]["Principle"];
+        document.getElementById('p0_pes').value = datamodel["Pessimistic Scenario"]["Principle"];
+        document.getElementById('r_opt').value = datamodel["Optimistic Scenario"]["Rate"];
+        document.getElementById('r_pes').value = datamodel["Pessimistic Scenario"]["Rate"];
+        document.getElementById('years_opt').value = datamodel["Optimistic Scenario"]["Years"];
+        document.getElementById('years_pes').value = datamodel["Pessimistic Scenario"]["Years"];
+        document.getElementById('cont_opt').value = datamodel["Optimistic Scenario"]["Contribution"];
+        document.getElementById('cont_pes').value = datamodel["Pessimistic Scenario"]["Contribution"];
 
         calcContributions()
         calcSavings()
 
     }
-    function toggleSaveWindow() {
-        if (document.getElementById("save").style.display == "block") {
-            document.getElementById("save").style.display = "none";
-        } else {
-            document.getElementById("save").style.display = "block";
-        }
-        document.getElementById("help").style.display = "none";
-
-    }
-    function toggleAutoSave(item) {
-        localStorage.setItem('autosave', item.checked)
-        if (item.checked == false) {
-            delete localStorage.json_settings
-        } else {
-            updateData()
-        }
-
-    }
-    function toggleLogAxis(item) {
-        if (item.checked == true) {
-            layout.yaxis.type = 'log';
-            updateData()
-        } else {
-            layout.yaxis.type = null;
-            updateData()
-        }
-
-    }
-    function toggleHelpWindow() {
-        document.getElementById("save").style.display = "none";
-        if (document.getElementById("help").style.display == "block") {
-            document.getElementById("help").style.display = "none";
-            document.getElementById("plot").style.display = "block";
-        } else {
-            document.getElementById("help").style.display = "block";
-            document.getElementById("plot").style.display = "none";
-        }
-    }
+    
     function calcContributions() {
         Tm = document.getElementById('years_opt').value * 1;
         r = document.getElementById('r_opt').value.replace('%','') / 100;
-        c = document.getElementById('cont_opt').value.replace('$','').replace(',','') * 1;
-        P0 = document.getElementById('p0_opt').value.replace('$','').replace(',','') * 1;
-        Pm = document.getElementById('pmax_opt').value.replace('$','').replace(',','') * 1;
+        c = document.getElementById('cont_opt').value.replace('$','').replace(/,/g,'') * 1;
+        P0 = document.getElementById('p0_opt').value.replace('$','').replace(/,/g,'') * 1;
+        Pm = document.getElementById('pmax_opt').value.replace('$','').replace(/,/g,'') * 1;
         t = Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)
         t = Math.min(Math.max(0, t), Tm)
         time_opt = Math.round(t * 1000) / 1000;
         Tm = document.getElementById('years_pes').value * 1;
         r = document.getElementById('r_pes').value.replace('%','') / 100;
-        c = document.getElementById('cont_pes').value.replace('$','').replace(',','') * 1;
-        P0 = document.getElementById('p0_pes').value.replace('$','').replace(',','')*1;
-        Pm = document.getElementById('pmax_pes').value.replace('$','').replace(',','')*1;
+        c = document.getElementById('cont_pes').value.replace('$','').replace(/,/g,'') * 1;
+        P0 = document.getElementById('p0_pes').value.replace('$','').replace(/,/g,'')*1;
+        Pm = document.getElementById('pmax_pes').value.replace('$','').replace(/,/g,'')*1;
         t = Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm)
         t = Math.min(Math.max(0, t), Tm)
         time_pes = Math.round(t * 1000) / 1000;
@@ -122,14 +58,14 @@
     function calcSavings() {
         Tm = document.getElementById('years_opt').value * 1;
         r = document.getElementById('r_opt').value.replace('%','') / 100;
-        P0 = document.getElementById('p0_opt').value.replace('$','').replace(',','')*1 * 1;
-        Pm = document.getElementById('pmax_opt').value.replace('$','').replace(',','')*1 * 1;
+        P0 = document.getElementById('p0_opt').value.replace('$','').replace(/,/g,'')*1 * 1;
+        Pm = document.getElementById('pmax_opt').value.replace('$','').replace(/,/g,'')*1 * 1;
         c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1)
         lux_opt = Math.round(c * 100) / 100
         Tm = document.getElementById('years_pes').value * 1;
         r = document.getElementById('r_pes').value.replace('%','') / 100;
-        P0 = document.getElementById('p0_pes').value.replace('$','').replace(',','')*1 * 1;
-        Pm = document.getElementById('pmax_pes').value.replace('$','').replace(',','')*1 * 1;
+        P0 = document.getElementById('p0_pes').value.replace('$','').replace(/,/g,'')*1 * 1;
+        Pm = document.getElementById('pmax_pes').value.replace('$','').replace(/,/g,'')*1 * 1;
         c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1)
         lux_pes = Math.round(c * 100) / 100
 
@@ -141,20 +77,7 @@
 
         return { 'opt': lux_opt, 'pes': lux_pes }
     }
-    function expgrowth(principle, rate, years, y0) {
-        n = 100
-        x = [...Array(n + 1).keys()]
-        expgrow = x => principle * Math.exp(x * rate / 100 / n * years);
-        yadd = y => (y / n * years + y0 - 1970) * 1000 * 3600 * 24 * 365.24;
-        return [x.map(yadd), x.map(expgrow)];
-    }
-    function expcont(principle, contrib, rate, years, y0) {
-        n = 100
-        x = [...Array(n + 1).keys()]
-        expgrow = x => principle * Math.exp(x * (rate / 100 / n * years)) + contrib / (rate / 100) * (Math.exp(x * (rate / 100 / n * years)) - 1);
-        yadd = y => (y / n * years + y0 - 1970) * 1000 * 3600 * 24 * 365.24;
-        return [x.map(yadd), x.map(expgrow)];
-    }
+    
     function updateData() {
         if (localStorage['autosave'] == 'true') {
             document.getElementById('autosave').checked = true
@@ -175,18 +98,20 @@
         
         var currentTime = new Date()
 
-        document.getElementById('savebox').value = JSON.stringify([{ "Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes }},{"app_url":"https://asalimian.github.io/contributionreturns/app.html","last_update":currentTime}])
+        payload = JSON.parse(document.getElementById('savebox').value)
+        payload.ContributionCalculator = {"Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes },"app_url":"https://asalimian.github.io/contributionreturns/test.html","last_update":currentTime}
+        document.getElementById('savebox').value = JSON.stringify(payload)
         
-        pmax_opt = pmax_opt.replace('$','').replace(',','')*1;
-        pmax_pes = pmax_pes.replace('$','').replace(',','')*1;
-        p0_opt   = p0_opt.replace('$','').replace(',','')*1;
-        p0_pes   = p0_pes.replace('$','').replace(',','')*1;
+        pmax_opt = pmax_opt.replace('$','').replace(/,/g,'')*1;
+        pmax_pes = pmax_pes.replace('$','').replace(/,/g,'')*1;
+        p0_opt   = p0_opt.replace('$','').replace(/,/g,'')*1;
+        p0_pes   = p0_pes.replace('$','').replace(/,/g,'')*1;
         r_opt    = r_opt.replace('%','');
         r_pes    = r_pes.replace('%','');
         years_opt= years_opt;
         years_pes= years_pes;
-        cont_opt = cont_opt.replace('$','').replace(',','')*1;
-        cont_pes = cont_pes.replace('$','').replace(',','')*1;
+        cont_opt = cont_opt.replace('$','').replace(/,/g,'')*1;
+        cont_pes = cont_pes.replace('$','').replace(/,/g,'')*1;
         if (localStorage['autosave'] == 'true') {
             localStorage['json_settings'] = document.getElementById('savebox').value
             localStorage['logplot'] = document.getElementById('logplot').checked
@@ -278,3 +203,4 @@
             }
         }], layout);
     }
+

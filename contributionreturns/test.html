@@ -8,18 +8,33 @@
     <meta content="ie=edge">
 
     <!-- Title -->
-    <title>Contribution Calculator</title>
+    <title>Loan Payoff Calculator</title>
     <!-- Meta Tags required for
        Progressive Web App -->
     <meta name="apple-mobile-web-app-status-bar" content="#0075FF">
     <meta name="theme-color" content="black">
     <script src="https://cdn.plot.ly/plotly-2.3.1.min.js"></script>
     <script src="test.js"></script>
+    <script src="app_common.js"></script>
     <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body onload="init()">
-
+    <div class="topnav">
+        <a href="#home" class="active">Loan Payoff Calculator</a>
+        <!-- Navigation links (hidden by default) -->
+        <div id="myLinks">
+            <a href="app.html">Contribution Calculator</a>
+            <a onclick="toggleSaveWindow();myFunction()">Settings</a>
+            <a onclick="toggleHelpWindow();myFunction()">Help</a>
+        </div>
+        <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
     <div class="flex-container">
 
         <div class="input">
@@ -29,7 +44,7 @@
                     <th>Loan<abbr title="Use retirement savings, and good return rate"></abbr></th>
                     <th>Savings<abbr title="Use net worth, and poor return rate"></th>
                 </tr>
-
+                         
                 <tr>                  
                     <td>Principle
                     
@@ -57,13 +72,7 @@
                     <td>
                     </td>
                 </tr>
-                <tr>
-                    <td>Schedule Years
-                    </td>
-                    <td><input type="text" class="currency" id="years_sch" name="fav_language"
-                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'$ ')"></td>
-                </tr>
+                
                 <tr>
                     <td>
 
@@ -86,6 +95,7 @@
                         
                     </td>
                 </tr>
+                
                 <tr>
                     <td>
                         Payment
@@ -99,6 +109,13 @@
                             onchange="updateData()" onblur="num2text(this,'$ ')">
 
                     </td>
+                </tr>
+                <tr>
+                    <td>Schedule Years
+                    </td>
+                    <td><input type="text" class="currency" id="years_sch" name="fav_language"
+                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
+                            onchange="updateData()" onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td>
@@ -118,8 +135,6 @@
 
             </table>
             
-            <input style="width:10em;" type="button" Value="Settings" onclick="toggleSaveWindow()"><input type="button"
-                Value="Help" onclick="toggleHelpWindow()">
         </div>
         <div class="plot" id="plot">
             <div id="tester"></div>
@@ -149,15 +164,14 @@
         </div>
         <div class="help" id="help" style="display:none; position: absolute;">
             <div style="text-align: right;" onclick="toggleHelpWindow()">✖️</div>
-            <h2>The Calculator</h2>
+            <h2>The Loan Payoff Calculator</h2>
             <p>
-                This tool helps you calculate two simulataneous paths to your savings goal. Perhaps you're flexible on
-                your goal, timeline, or maybe you want to compare your long term savings to your whole net worth.
+                This tool can help you figure out how best to pay off your loan, and figure out if you have any "good debt"
             </p>
             <p>
                 Auto-save can be enabled in the settings menu, and all data is stored in your device (not on this
                 server), or you can copy out the JSON string so that you can keep your own back-up. As a progressive web
-                app, you can install this on your device for easy access.
+                app, you can install this on your device for easy access. Though it will default to the main contribution calculator probably. 
             </p>
             <p>
                 Lastly, this should work on either mobile or desktop. Please post an issue on <a
@@ -167,46 +181,49 @@
             <hr>
             <h2>The Inputs</h2>
             <p>
-                <strong>Principle</strong><br> How much you have. Use savings for optimistic value, and net worth for
-                pessistic value.
-                <hr>
-            </p>
-            <p>
-                <strong>Goal</strong><br>
-                How much you want to save
+                <strong>Principle</strong><br> How much you have right now. (Sorry we don't support multiple balances right now, so please enter the sum manually)
                 <hr>
             </p>
             <p>
                 <strong>Rate</strong><br>
-                Investment return rate (7% is average inflation adjusted returns, 4% is the "safe withdrawal rate")
+                How much your annual loan rate is. 
+                <br><br>To annualize your investement return use ln(1+total return)/years 
+                <br><br>  If you have your multiple balances, use a weighted sum. sum(balance_1*rate_1+balance_2*rate_2+...)/sum(balances)
                 <hr>
             </p>
-            <p><strong>Year</strong><br>
-                How far away is your goal?
+            <p>
+                <strong>Min payment</strong><br>
+                What your minimum payment is, this is used to calculate your repayment period.
+                <br><br>
+                If you're on an income based repayment plan, this will be all messed up. 
                 <hr>
             </p>
-            <p><strong>Annual Contribution</strong><br>
-                How much you contribute annually ($19.5k to max out 401k, $6k to max out IRA per person)<br>
+            <p><strong>Income</strong><br>
+                How much income you have available for repaying loans or investing (they're kind of the same thing).
+                
+                <br><br>
+                take home pay - rent - food - fun money - ...
+                <hr>
+            </p>
+            <p><strong>Loan/Savings Split</strong><br>
+                How to allocate your discretionary income: Left for faster payoff, right for more savings  
             </p>
             <hr>
             <h2>The Outputs</h2>
             <p>
-                <strong>Contribution Time</strong><br>
-                How long at the current contribution rate you'd need to keep making payments
+                <strong>Payment</strong><br>
+                How much of your income are allocated to paying back your loan or saving. 
                 <hr>
             </p>
-            <p><strong>Required Save or Spend</strong><br>
-                How much you'd need to save until your goal year to meet the goal.
+            <p><strong>Schedule Years</strong><br>
+                Double check that we're calculating your standard repayment period. 
                 <hr>
-            <div style="padding: 0 20px 0 20px;">
-                If contribution rate is greater than req save, then you'll be done saving early.
+            </p>
+            <p><strong>Years</strong><br>
+                At this point we've screwed up all the usual amortization tables, so we need to calculate when you'll be done repaying your loan.
+                <br><br>
+                On the right, the savings years shows how many years your full income will be going towards saving. 
                 <hr>
-                2000 If contribution rate is lower than req save, then you need to save more, decrease your goal, or
-                extend
-                your timeline.
-                <hr>
-                If contribution rate is negative, then you've oversaved.
-            </div>
             </p>
 
         </div>
@@ -241,7 +258,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.01
+        ©️ 2021 Alex Salimian v0.21
     </div>
 </body>
 
