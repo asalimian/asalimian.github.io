@@ -11,12 +11,16 @@
 .topnav {
   overflow: hidden;
   background-color: #333;
-  position: relative;
+  position: fixed;
+  width:100%;
+  z-index: 100;
 }
 
 /* Hide the links inside the navigation menu (except for logo/home) */
 .topnav #myLinks {
   display: none;
+  
+  z-index: 100;
 }
 
 /* Style navigation menu links */
@@ -26,6 +30,7 @@
   text-decoration: none;
   font-size: 17px;
   display: block;
+  
 }
 
 /* Style the hamburger menu */
@@ -43,7 +48,7 @@
 
 /* Add a grey background color on mouse-over */
 .topnav a:hover {
-  background-color: #ddd;
+  /*background-color: #ddd;*/
   color: black;
 }
 
@@ -109,12 +114,26 @@ input:checked+.slider:before {
 input[type=number] {
     width: 5em;
     text-align: right; 
+    
+    padding-top:5px;
+    padding-bottom:5px;
     }
 
 input[type=text] {
     width: 5em;
     text-align: right; 
+    padding-top:5px;
+    padding-bottom:5px;
+    margin-bottom:4px;
+    margin-top:4px;
+}
 
+input[type=range] {
+    height:32px
+}
+
+input[type=button] {
+    width: 10em;
 }
 
 input.ontrack {
@@ -135,9 +154,7 @@ input.oversaved {
     border-radius: 5px;
 }
 
-input[type=button] {
-    width: 10em;
-}
+
 
 .flex-container {
     display: flex;
@@ -145,6 +162,7 @@ input[type=button] {
     grid-gap: 10px;
     background-color: #74747436;
     padding: 10px;
+    padding-top: 60px;
 
 }
 

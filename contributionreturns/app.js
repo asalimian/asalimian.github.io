@@ -176,7 +176,7 @@
         Plotly.react(TESTER, [{
             x: pescontrib[0],
             y: pescontrib[1],
-            name: 'Contribution Period Pessimistic',
+            name: 'Contributions Pessimistic',
             marker: {
                 color: '#951b1c',
             }
@@ -190,7 +190,7 @@
         }, {
             x: optcontrib[0],
             y: optcontrib[1],
-            name: 'Contribution Period Optimistic',
+            name: 'Contribution Optimistic',
             marker: {
                 color: '#144c73',
             }

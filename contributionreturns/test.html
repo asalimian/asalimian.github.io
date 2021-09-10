@@ -16,7 +16,6 @@
     <meta name="theme-color" content="black">
 
     <script src="plotly-2.4.2.min.js"></script><!-- Source: https://cdn.plot.ly/ -->
-    <link rel="stylesheet" href="font-awesome.min.css">
     <!-- Source: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/ -->
     <link rel="stylesheet" href="app.css">
     <script src="app_common.js"></script>
@@ -30,6 +29,7 @@
         <!-- Navigation links (hidden by default) -->
         <div id="myLinks">
             <a href="app.html">Contribution Calculator</a>
+            <hr>
             <a onclick="toggleSaveWindow();myFunction()">Settings</a>
             <a onclick="toggleHelpWindow();myFunction()">Help</a>
         </div>
@@ -253,13 +253,20 @@
             }]
 
             var layout = {
-                xaxis: { 'title': 'Year', type: 'date', },
-                yaxis: { 'title': '', hoverformat: '.0f', 'type': null },
+                xaxis: { 'title': 'Year',
+                         type: 'date',
+                         fixedrange:true},
+                yaxis: { 'title': '',
+                         hoverformat: '$.0f', 
+                         'type': null,
+                         fixedrange:true},
                 legend: { 'orientation': 'h', 'y': -0.2 },
                 margin: { 't': 20, 'r': 5, 'l': 40 },
                 autosize: true,
                 paper_bgcolor: "#F9F9F9",
-                plot_bgcolor: "FcFcFc"
+                plot_bgcolor: "FcFcFc",
+                hovermode: 'x unified',
+                
             };
 
             Plotly.react(TESTER, data, layout);
@@ -267,7 +274,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.24
+        ©️ 2021 Alex Salimian v0.25
     </div>
 </body>
 

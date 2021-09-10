@@ -150,7 +150,7 @@
             {
                 x: pescontrib[0],
                 y: pescontrib[1],
-                name: 'Contribution Period Pessimistic',
+                name: 'Loan Repayment',
                 marker: {
                     color: '#d62728',
                 }
@@ -158,7 +158,7 @@
             {
                 x: optcontrib[0],
                 y: optcontrib[1],
-                name: 'Contribution Period Pessimistic',
+                name: 'Saving Partial Income',
                 marker: {
                     color: '#2ca02c',
                 }
@@ -166,7 +166,7 @@
             {
                 x: optsave[0],
                 y: optsave[1],
-                name: 'Saving Period Pessimistic',
+                name: 'Saving Full Income',
                 marker: {
                     color: '#17becf',
                 }
