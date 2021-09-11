@@ -19,7 +19,7 @@
     <!-- Source: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/ -->
     <link rel="stylesheet" href="app.css">
     <script src="app_common.js"></script>
-    <script src="loan.js"></script>
+    <script src="plan.js"></script>
 
 </head>
 
@@ -29,7 +29,7 @@
         <!-- Navigation links (hidden by default) -->
         <div id="myLinks">
             <a href="app.html">Contribution Calculator</a>
-            <a href="plan.html">Plan Selector</a>
+            <a href="loan.html">Loan Calculator</a>
             <hr>
             <a onclick="toggleSaveWindow();myFunction()">Settings</a>
             <a onclick="toggleHelpWindow();myFunction()">Help</a>
@@ -42,100 +42,134 @@
     <div class="flex-container">
 
         <div class="input" onchange="updateData()">
-            <table style="width:100%">
+            <table style="width:100%" >
                 <tr>
-                    <th>Value</th>
-                    <th>Loan<abbr title="Use retirement savings, and good return rate"></abbr></th>
-                    <th>Savings<abbr title="Use net worth, and poor return rate"></th>
+                    <th></th>
+                    <th>Plan A</th>
+                    <th>Plan B</th>
+                    <th>Plan C</th>
                 </tr>
 
                 <tr>
-                    <td>Principle
+                    <td>
+                        Premium
+                    </td>
+                    <td>
+                        <input type="text" class="currency" id="prem_a" name="fav_language" onfocus="text2num(this)"
+                             >
+                    </td>
+                    <td>
+                        <input type="text" class="currency" id="prem_b" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ')">
+                    </td>
+                    <td>
+                        <input type="text" class="currency" id="prem_c" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ')">
+                    </td>
 
-                    </td>
-                    <td><input type="text" class="currency" id="p0_loan" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
-                    </td>
-                    <td> <input type="text" class="currency" id="p0_save" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
                 </tr>
                 <tr>
-                    <td> Rate
+                    <td> 
+                        Frequency
                     </td>
-                    <td><input type="text" class="currency" id="r_loan" name="fav_language" onfocus="text2num(this)"
+
+                    <td>
+                        <select id="freq_a" >
+                            <option value="52">Weekly</option>
+                            <option value="26">Bi-Weekly</option>
+                            <option value="24">Semi-Monthly</option>
+                            <option value="12">Monthly</option>
+                            <option value="4">Quarterly</option>
+                            <option value="1">Annually</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="freq_b">
+                            <option value="52">Weekly</option>
+                            <option value="26">Bi-Weekly</option>
+                            <option value="24">Semi-Monthly</option>
+                            <option value="12">Monthly</option>
+                            <option value="4">Quarterly</option>
+                            <option value="1">Annually</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="freq_c">
+                            <option value="52">Weekly</option>
+                            <option value="26">Bi-Weekly</option>
+                            <option value="24">Semi-Monthly</option>
+                            <option value="12">Monthly</option>
+                            <option value="4">Quarterly</option>
+                            <option value="1">Annually</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Deductable
+                    </td>
+
+                    <td>
+                        <input type="text" class="currency" id="ded_a" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ')">
+                    </td>
+                    <td>
+                        <input type="text" class="currency" id="ded_b" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ')">
+                    </td>
+                    <td>
+                        <input type="text" class="currency" id="ded_c" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ')">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Coinsurance</td>
+                    <td>
+                        <input type="text" class="currency" id="co_a" name="fav_language" onfocus="text2num(this)"
                              onblur="num2text(this,'','%')">
                     </td>
-                    <td> <input type="text" class="currency" id="r_save" name="fav_language" onfocus="text2num(this)"
+                    <td> <input type="text" class="currency" id="co_b" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'','%')"></td>
+                    <td> <input type="text" class="currency" id="co_c" name="fav_language" onfocus="text2num(this)"
                              onblur="num2text(this,'','%')"></td>
                 </tr>
                 <tr>
-                    <td>Min payment
-                    </td>
-                    <td><input type="text" class="currency" id="pay_loan" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
                     <td>
+                        Out of Pocket Max
                     </td>
-                </tr>
-
-                <tr>
                     <td>
-
-                        Income
-                    </td>
-                    <td> <input type="text" class="currency" id="income" name="fav_language" onfocus="text2num(this)"
+                        <input type="text" class="currency" id="oop_a" name="fav_language" onfocus="text2num(this)"
                              onblur="num2text(this,'$ ')">
                     </td>
                     <td>
+                        <input type="text" class="currency" id="oop_b" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ')">
                     </td>
-                </tr>
-                <tr>
                     <td>
-                        Savings
-                    </td>
-                    <td colspan="2">
-                        <input type="range" style="width:80%" id="income_split" min="0" max="1" step=".01"
-                            >
-                    </td>
-                    <td id="min_split">
-
+                        <input type="text" class="currency" id="oop_c" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ')">
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        Payment
+                        Discount
                     </td>
-                    <td> <input type="text" class="currency" id="cont_loan" name="fav_language"
-                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
-                    </td>
-                    <td> <input type="text" class="currency" id="cont_save" name="fav_language"
-                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td>Schedule Years
-                    </td>
-                    <td><input type="text" class="currency" id="years_sch" name="fav_language"
-                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
-                </tr>
-                <tr>
                     <td>
-
-                        Years
+                        <input type="text" class="currency" id="disc_a" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ')">
                     </td>
-                    <td> <input type="text" class="currency" id="years_loan" name="fav_language"
-                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'','yrs')">
+                    <td>
+                        <input type="text" class="currency" id="disc_b" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ')">
                     </td>
-                    <td> <input type="text" class="currency" id="years_save" name="fav_language"
-                            style="background-color: lightgray;" readonly onfocus="text2num(this)"
+                    <td>
+                        <input type="text" class="currency" id="disc_c" name="fav_language" onfocus="text2num(this)"
                              onblur="num2text(this,'$ ')">
                     </td>
                 </tr>
+
 
 
             </table>
@@ -149,7 +183,7 @@
                 onclick="document.getElementById('save').style.display = 'none';">✖️</div>
             <label for="savebox">Full JSON String</label><br>
             <div class="flex-container">
-                <textarea id="savebox" rows="5" onchange="loaddata();updateData()"></textarea><br>
+                <textarea id="savebox" rows="5" onchange="loaddata();updateData()" >{}</textarea><br>
             </div>
             <input type="button" value="Update parameters with string" style="width:15em;" onclick="loaddata()"><br>
             <label for="autosave">Autosave</label>
@@ -254,20 +288,23 @@
             }]
 
             var layout = {
-                xaxis: { 'title': 'Year',
-                         type: 'date',
-                         fixedrange:true},
-                yaxis: { 'title': '',
-                         hoverformat: '$.0f', 
-                         'type': null,
-                         fixedrange:true},
+                xaxis: {
+                    'title': 'Amount Billed',
+                    fixedrange: true
+                },
+                yaxis: {
+                    'title': 'Amount Spent',
+                    hoverformat: '$.0f',
+                    'type': null,
+                    fixedrange: true
+                },
                 legend: { 'orientation': 'h', 'y': -0.2 },
-                margin: { 't': 20, 'r': 5, 'l': 40 },
+                margin: { 't': 20, 'r': 5, 'l': 80 },
                 autosize: true,
                 paper_bgcolor: "#F9F9F9",
                 plot_bgcolor: "FcFcFc",
                 hovermode: 'x unified',
-                
+
             };
 
             Plotly.react(TESTER, data, layout);

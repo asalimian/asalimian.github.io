@@ -51,6 +51,7 @@
         <!-- Navigation links (hidden by default) -->
         <div id="myLinks">
             <a href="loan.html">Loan Calculator</a>
+            <a href="plan.html">Plan Selector</a>
             <hr>
             <a onclick="toggleSaveWindow();myFunction()">Settings</a>
             <a onclick="toggleHelpWindow();myFunction()">Help</a>
@@ -62,7 +63,7 @@
       </div>
     <div class="flex-container">
 
-        <div class="input">
+        <div class="input" onchange="updateData()">
             <table style="width:100%;">
                 <tr>
                     <th>Value</th>
@@ -73,18 +74,18 @@
 
                     <td><label for="p0_opt"><abbr title="How much you have now">Starting Amount</label><br></td>
                     <td><input type="text" class="currency" id="p0_opt" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'$ ')"></td>
+                             onblur="num2text(this,'$ ')"></td>
                     <td><input type="text" class="currency" id="p0_pes" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'$ ')"></td>
+                             onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td><label for=" pmax_opt"><abbr title="How much you think you'll need">Goal Amount</abbr></label>
                     </td>
                     <td><input type="text" class="currency" id="pmax_opt" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'$ ')">
+                             onblur="num2text(this,'$ ')">
                     </td>
                     <td><input type="text" class="currency" id="pmax_pes" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'$ ')">
+                             onblur="num2text(this,'$ ')">
                     </td>
 
                 </tr>
@@ -92,18 +93,18 @@
                     <td><label for=" r_opt"><abbr title="Total investment return rate">Rate of Return</abbr></label>
                     </td>
                     <td><input type="text" class="currency" id="r_opt" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'','%')"></td>
+                             onblur="num2text(this,'','%')"></td>
                     <td><input type="text" class="currency" id="r_pes" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'','%')"></td>
+                             onblur="num2text(this,'','%')"></td>
 
                 </tr>
                 <tr>
                     <td><label for="years_opt"><abbr title="How many years till retirement">Years to Goal</abbr></label>
                     </td>
                     <td><input type="text" id="years_opt" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this)"></td>
+                             onblur="num2text(this)"></td>
                     <td><input type="text" id="years_pes" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this)"></td>
+                             onblur="num2text(this)"></td>
 
                 </tr>
                 <tr>
@@ -111,18 +112,18 @@
                                 Contribution</abbr></label>
                     </td>
                     <td><input type="text" class="currency" id="cont_opt" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'$ ')"></td>
+                             onblur="num2text(this,'$ ')"></td>
                     <td><input type="text" class="currency" id="cont_pes" name="fav_language" onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'$ ')"></td>
+                             onblur="num2text(this,'$ ')"></td>
 
                 </tr>
                 <tr>
                     <td><label for=" time_opt"><abbr title="How long you'd need to contribute to hit coast">Contribution
                                 Time</abbr></label></td>
                     <td><input type="number" id="time_opt" name="fav_language" style="background-color: lightgray;"
-                            readonly onchange="updateData()"></td>
+                            readonly ></td>
                     <td><input type="number" id="time_pes" name="fav_language" style="background-color: lightgray;"
-                            readonly onchange="updateData()"></td>
+                            readonly ></td>
                 </tr>
                 <tr>
                     <td><label for="lux_opt"><abbr
@@ -133,14 +134,14 @@
                             style="background-color: lightgray;" readonly></td>
                     <td><input type="text" class="currency" id="lux_pes" name="fav_language"
                             style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                            onchange="updateData()" onblur="num2text(this,'$ ')"></td>
+                             onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td><label for=" status_opt"><abbr title="">Funding Status</abbr></label></td>
                     <td><input type="text" id="status_opt" name="fav_language"
-                            style="background-color: lightgray;width:5em;" readonly onchange="updateData()"></td>
+                            style="background-color: lightgray;width:5em;" readonly ></td>
                     <td><input type="text" id="status_pes" name="fav_language"
-                            style="background-color: lightgray;width:5em;" readonly onchange="updateData()"></td>
+                            style="background-color: lightgray;width:5em;" readonly ></td>
                 </tr>
             </table>
             

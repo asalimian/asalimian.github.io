@@ -24,34 +24,11 @@ function num2text(el,pre='',suf='') {
   }
 }
 
-function loadDefaults(upgrade=false) {
-  var currentTime = new Date()
-  loanpaydefault = {"Loan":{"Principle":"$ 100000","Rate":"5 %","MinPay":"$ 536"},"Savings":{"Principle":"$ 0","Rate":"7 %"},"Budget":{"Income":"$ 1050","Split":"0.60"},"app_url":"https://asalimian.github.io/contributionreturns/loan.html","last_update":currentTime}
 
-  if (upgrade==false) {
-    datamodel = {}
-    datamodel.ContributionCalculator = {"Optimistic Scenario":{"Principle":"$ 100","Goal":"$ 2,000","Rate":"7","Years":"30","Contribution":"$ 25"},"Pessimistic Scenario":{"Principle":"$ 200","Goal":"$ 2,000","Rate":"4","Years":"30","Contribution":"$ 25"},"app_url":"https://asalimian.github.io/contributionreturns/app.html","last_update":currentTime}
-    datamodel.LoanPayoffCalculator = loanpaydefault
-  }
-  if (upgrade==true) {
-    datamodel_old = JSON.parse(document.getElementById("savebox").value)
-    datamodel = {}
-    datamodel.ContributionCalculator = datamodel_old[0]
-    datamodel.LoanPayoffCalculator = loanpaydefault
-    
-  }
-  payload = JSON.stringify(datamodel)
-  document.getElementById("savebox").value = payload
-
-  return datamodel
-  
-}
 
 function init() {
   if (localStorage.autosave == null || !(localStorage.autosave == "true")) {
-      loadDefaults()
-      loaddata()
-      updateData()
+      loadDefaults()    
   } else {
       document.getElementById("savebox").value = localStorage.json_settings
       document.getElementById("autosave").checked = true
@@ -59,9 +36,9 @@ function init() {
       if (datamodel.length>0) {
         loadDefaults(true)
       }
-      loaddata()
-      updateData()
   }
+  loaddata()
+  updateData()
 
 }
 
