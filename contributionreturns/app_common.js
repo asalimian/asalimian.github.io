@@ -26,7 +26,7 @@ function num2text(el,pre='',suf='') {
 
 function loadDefaults(upgrade=false) {
   var currentTime = new Date()
-  loanpaydefault = {"Loan":{"Principle":"$ 100000","Rate":"5 %","MinPay":"$ 536"},"Savings":{"Principle":"$ 0","Rate":"7 %"},"Budget":{"Income":"$ 1050","Split":"0.60"},"app_url":"https://asalimian.github.io/contributionreturns/test.html","last_update":currentTime}
+  loanpaydefault = {"Loan":{"Principle":"$ 100000","Rate":"5 %","MinPay":"$ 536"},"Savings":{"Principle":"$ 0","Rate":"7 %"},"Budget":{"Income":"$ 1050","Split":"0.60"},"app_url":"https://asalimian.github.io/contributionreturns/loan.html","last_update":currentTime}
 
   if (upgrade==false) {
     datamodel = {}

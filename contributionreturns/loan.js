@@ -94,7 +94,7 @@
         var currentTime = new Date()
 
         payload = JSON.parse(document.getElementById('savebox').value)
-        payload.LoanPayoffCalculator = {"Loan":{"Principle":p0_loan,"Rate":r_loan,"MinPay":p_loan},"Savings":{"Principle":"$ 200","Rate":"4 %"},"Budget":{"Income":"$ 2100","Split":"0.60"},"app_url":"https://asalimian.github.io/contributionreturns/test.html","last_update":currentTime}
+        payload.LoanPayoffCalculator = {"Loan":{"Principle":p0_loan,"Rate":r_loan,"MinPay":p_loan},"Savings":{"Principle":"$ 200","Rate":"4 %"},"Budget":{"Income":"$ 2100","Split":"0.60"},"app_url":"https://asalimian.github.io/contributionreturns/loan.html","last_update":currentTime}
         
         document.getElementById('savebox').value = JSON.stringify(payload)
         

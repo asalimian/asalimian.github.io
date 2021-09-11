@@ -99,7 +99,7 @@
         var currentTime = new Date()
 
         payload = JSON.parse(document.getElementById('savebox').value)
-        payload.ContributionCalculator = {"Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes },"app_url":"https://asalimian.github.io/contributionreturns/test.html","last_update":currentTime}
+        payload.ContributionCalculator = {"Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes },"app_url":"https://asalimian.github.io/contributionreturns/loan.html","last_update":currentTime}
         document.getElementById('savebox').value = JSON.stringify(payload)
         
         pmax_opt = pmax_opt.replace('$','').replace(/,/g,'')*1;
