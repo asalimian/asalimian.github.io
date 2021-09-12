@@ -29,9 +29,15 @@ function loaddata() {
 
     }
 
+    if (localStorage['autosave'] == 'true') {
+        document.getElementById('autosave').checked = true
+        document.getElementById('savebox').value = localStorage['json_settings']
+    }
+    
     payload = JSON.parse(document.getElementById("savebox").value)
 
     if (payload[model] == null) {
+        console.log('need to load new data')
         payload = loadDefaults()
     }
 
@@ -46,6 +52,10 @@ function loaddata() {
         document.getElementById('oop_'+plan).value = datamodel['plan'+plan.toUpperCase()]["oop"];
         document.getElementById('disc_'+plan).value = datamodel['plan'+plan.toUpperCase()]["discount"];
     }
+
+    document.getElementById('savebox').value = JSON.stringify(payload)
+
+    console.log('Plan Data loaded')
 }
 
 
@@ -69,11 +79,6 @@ function labelheader(el) {
 }
 
 function updateData() {
-    if (localStorage['autosave'] == 'true') {
-        document.getElementById('autosave').checked = true
-        document.getElementById('savebox').value = localStorage['json_settings']
-    }
-
     var currentTime = new Date()
     payload = JSON.parse(document.getElementById('savebox').value)
 
