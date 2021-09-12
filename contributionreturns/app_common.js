@@ -10,12 +10,12 @@ function myFunction() {
   }
 
   function text2num(el) {
-    value = el.value.replace('%','').replace('$','').replace(/,/g,'') * 1
+    value = el.value.replace('$','').replace('%','').replace(/,/g, '').replace('k','') * 1
     el.type = "number"
     el.value = value
 }
 function num2text(el,pre='',suf='') {
-  value = pre+Number(el.value.replace('%','').replace(',','')).toLocaleString()+suf;
+  value = pre+Number(el.value.replace('$','').replace('%','').replace(/,/g, '').replace('k','')).toLocaleString()+suf;
   el.type = "text"
   el.value = value
   if (localStorage['autosave'] == 'true') {
@@ -24,6 +24,9 @@ function num2text(el,pre='',suf='') {
   }
 }
 
+function strip(str) {
+  return str.replace('$', '').replace(/,/g, '').replace('%', '').replace('k','')
+}
 
 
 function init() {
@@ -39,7 +42,10 @@ function init() {
   }
   loaddata()
   updateData()
-
+  if (localStorage.secondVisit==null) {
+    toggleHelpWindow()
+    localStorage.secondVisit = true
+  }
 }
 
 function toggleSaveWindow() {
@@ -49,16 +55,19 @@ function toggleSaveWindow() {
       document.getElementById("save").style.display = "block";
   }
   document.getElementById("help").style.display = "none";
+  document.getElementById("plot").style.display = "block";
 
 }
 function toggleAutoSave(item) {
   localStorage.setItem('autosave', item.checked)
   if (item.checked == false) {
       delete localStorage.json_settings
+      delete localStorage.secondVisit
   } else {
       loadDefaults()
       localStorage['json_settings'] = document.getElementById('savebox').value
       updateData()
+      console.log(model)
   }
 
 }

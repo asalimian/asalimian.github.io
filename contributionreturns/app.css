@@ -112,7 +112,7 @@ input:checked+.slider:before {
 }
 
 input[type=number] {
-    width: 5em;
+    width: 70px;
     text-align: right; 
     
     padding-top:5px;
@@ -120,7 +120,16 @@ input[type=number] {
     }
 
 input[type=text] {
-    width: 5em;
+    width: 70px;
+    text-align: right; 
+    padding-top:5px;
+    padding-bottom:5px;
+    margin-bottom:4px;
+    margin-top:4px;
+}
+
+select {
+    width: 77px;
     text-align: right; 
     padding-top:5px;
     padding-bottom:5px;

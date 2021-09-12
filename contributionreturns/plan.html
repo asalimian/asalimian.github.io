@@ -8,7 +8,7 @@
     <meta content="ie=edge">
 
     <!-- Title -->
-    <title>Loan Payoff Calculator</title>
+    <title>Health Plan Calculator</title>
     <!-- Meta Tags required for
        Progressive Web App -->
     <meta name="apple-mobile-web-app-status-bar" content="#0075FF">
@@ -25,7 +25,7 @@
 
 <body onload="init()">
     <div class="topnav">
-        <a href="#home" class="active">Loan Payoff Calculator</a>
+        <a href="#home" class="active">Health Plan Calculator</a>
         <!-- Navigation links (hidden by default) -->
         <div id="myLinks">
             <a href="app.html">Contribution Calculator</a>
@@ -45,9 +45,26 @@
             <table style="width:100%" >
                 <tr>
                     <th></th>
-                    <th>Plan A</th>
-                    <th>Plan B</th>
-                    <th>Plan C</th>
+                    <th style="height: 38px;">
+                        <div id="planA" onclick="headerlabel(this)">
+                            
+                        </div>
+                        <input type="text" id="planA_name" onblur="labelheader(this)" hidden>
+                        </th>
+                    <th>
+                        <div id="planB" onclick="headerlabel(this)">
+                            
+                        </div>
+                        <input type="text" id="planB_name" onblur="labelheader(this)" hidden>
+                        </th>
+                    </th>
+                    <th>
+                        <div id="planC" onclick="headerlabel(this)">
+                            
+                        </div>
+                        <input type="text" id="planC_name" onblur="labelheader(this)" hidden>
+                        </th>
+                    </th>
                 </tr>
 
                 <tr>
@@ -56,7 +73,7 @@
                     </td>
                     <td>
                         <input type="text" class="currency" id="prem_a" name="fav_language" onfocus="text2num(this)"
-                             >
+                            onblur="num2text(this,'$ ')">
                     </td>
                     <td>
                         <input type="text" class="currency" id="prem_b" name="fav_language" onfocus="text2num(this)"
@@ -70,7 +87,7 @@
                 </tr>
                 <tr>
                     <td> 
-                        Frequency
+                        Frequency                        
                     </td>
 
                     <td>
@@ -169,6 +186,15 @@
                              onblur="num2text(this,'$ ')">
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        Plot Max
+                    </td>
+                    <td>
+                        <input type="text" class="currency" id="plotmax" name="fav_language" onfocus="text2num(this)"
+                             onblur="num2text(this,'$ ','k')" value='$ 45k'>
+                    </td>
+                </tr>
 
 
 
@@ -179,7 +205,7 @@
             <div id="tester"></div>
         </div>
         <div class="save" id="save" style="display:none; position:fixed;">
-            <div style="text-align: right;padding-right:10px;"
+            <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;"
                 onclick="document.getElementById('save').style.display = 'none';">✖️</div>
             <label for="savebox">Full JSON String</label><br>
             <div class="flex-container">
@@ -203,13 +229,16 @@
         </div>
         <div class="help" id="help" style="display:none; position: absolute;">
             <div style="text-align: right;" onclick="toggleHelpWindow()">✖️</div>
-            <h2>The Loan Payoff Calculator</h2>
+            <h2>The loan payoff</h2>
             <p>
-                This tool can help you figure out how best to pay off your loan, and figure out if you have any "good
-                debt"
+                This tool can help you figure out the best policy to choose from between 3 options.
             </p>
             <p>
-                Auto-save can be enabled in the settings menu, and all data is stored in your device (not on this
+                The vertical axis indicates how much you'll have spent (premiums + out of pocket expenses) versus how much you are billed by your doctor/pharmacy/health provider. 
+            </p>
+            <hr>
+            <p>
+                <a href="#help" onclick="toggleSaveWindow()">Auto-save can be enabled in the settings menu</a>, and all data is stored in your device (not on this
                 server), or you can copy out the JSON string so that you can keep your own back-up. As a progressive web
                 app, you can install this on your device for easy access. Though it will default to the main
                 contribution calculator probably.
@@ -222,53 +251,62 @@
             <hr>
             <h2>The Inputs</h2>
             <p>
-                <strong>Principle</strong><br> How much you have right now. (Sorry we don't support multiple balances
-                right now, so please enter the sum manually)
+                <strong>
+                    Premium
+                </strong><br> 
+                How much your plan costs. 
                 <hr>
             </p>
             <p>
-                <strong>Rate</strong><br>
-                How much your annual loan rate is.
-                <br><br>To annualize your investement return use ln(1+total return)/years
-                <br><br> If you have your multiple balances, use a weighted sum.
-                sum(balance_1*rate_1+balance_2*rate_2+...)/sum(balances)
+                <strong>
+                    Frequency
+                </strong><br> 
+                How often you pay your premium
                 <hr>
             </p>
             <p>
-                <strong>Min payment</strong><br>
-                What your minimum payment is, this is used to calculate your repayment period.
-                <br><br>
-                If you're on an income based repayment plan, this will be all messed up.
+                <strong>
+                    Deductable
+                </strong><br> 
+                How much you have to pay before your insurance starts 
                 <hr>
             </p>
-            <p><strong>Income</strong><br>
-                How much income you have available for repaying loans or investing (they're kind of the same thing).
-
-                <br><br>
-                take home pay - rent - food - fun money - ...
-                <hr>
-            </p>
-            <p><strong>Loan/Savings Split</strong><br>
-                How to allocate your discretionary income: Left for faster payoff, right for more savings
-            </p>
-            <hr>
-            <h2>The Outputs</h2>
             <p>
-                <strong>Payment</strong><br>
-                How much of your income are allocated to paying back your loan or saving.
+                <strong>
+                    Coinsurance
+                </strong><br> 
+                What percentage you are responsible for bills after you reach your deductable. (e.g. if you get a bill of $100, and your coinsurance is 20%, you pay $20 and your insurer pays $80)
                 <hr>
             </p>
-            <p><strong>Schedule Years</strong><br>
-                Double check that we're calculating your standard repayment period.
+            <p>
+                <strong>
+                    Out of Pocket Max
+                </strong><br> 
+                The maximum amount you'll pay per year (not including deductable). 
                 <hr>
             </p>
-            <p><strong>Years</strong><br>
-                At this point we've screwed up all the usual amortization tables, so we need to calculate when you'll be
-                done repaying your loan.
-                <br><br>
-                On the right, the savings years shows how many years your full income will be going towards saving.
+            <p>
+                <strong>
+                    Discount
+                </strong><br> 
+                Any employer contributions or tax credits you may be eligible for. 
                 <hr>
             </p>
+            <p>
+                <strong>
+                    Plot Max
+                </strong><br> 
+                    The maximum amount billed you want to vizualize.
+                <hr>
+            </p>
+            <p>
+                <strong>
+                    Column Labels
+                </strong><br> 
+                    You can rename the columns for easier identification by clicking on them and entering a new name. 
+                <hr>
+            </p>
+            
 
         </div>
         <script type="text/javascript">
@@ -312,7 +350,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.25
+        ©️ 2021 Alex Salimian v0.26
     </div>
 </body>
 
