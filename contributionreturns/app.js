@@ -31,6 +31,11 @@ function loaddata() {
 
     }
 
+    if (localStorage['autosave'] == 'true') {
+        document.getElementById('autosave').checked = true
+        document.getElementById('savebox').value = localStorage['json_settings']
+    }
+
     payload = JSON.parse(document.getElementById("savebox").value)
 
     if (payload[model] == null) {
@@ -52,6 +57,9 @@ function loaddata() {
 
     calcContributions()
     calcSavings()
+
+    console.log('App Data loaded')
+
 
 }
 
@@ -104,10 +112,8 @@ function calcSavings() {
 }
 
 function updateData() {
-    if (localStorage['autosave'] == 'true') {
-        document.getElementById('autosave').checked = true
-        document.getElementById('savebox').value = localStorage['json_settings']
-    }
+    var currentTime = new Date()
+    
     time = calcContributions()
     lux = calcSavings()
     pmax_opt = document.getElementById('pmax_opt').value;
@@ -121,7 +127,6 @@ function updateData() {
     cont_opt = document.getElementById('cont_opt').value;
     cont_pes = document.getElementById('cont_pes').value;
 
-    var currentTime = new Date()
 
     payload = JSON.parse(document.getElementById('savebox').value)
     payload.ContributionCalculator = { "Optimistic Scenario": { "Principle": p0_opt, "Goal": pmax_opt, "Rate": r_opt, "Years": years_opt, "Contribution": cont_opt }, "Pessimistic Scenario": { "Principle": p0_pes, "Goal": pmax_pes, "Rate": r_pes, "Years": years_pes, "Contribution": cont_pes }, "app_url": "https://asalimian.github.io/contributionreturns/loan.html", "last_update": currentTime }

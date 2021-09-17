@@ -31,6 +31,11 @@ function loaddata() {
 
     }
 
+    if (localStorage['autosave'] == 'true') {
+        document.getElementById('autosave').checked = true
+        document.getElementById('savebox').value = localStorage['json_settings']
+    }
+
     payload = JSON.parse(document.getElementById("savebox").value)
 
     if (payload[model] == null) {
@@ -49,6 +54,9 @@ function loaddata() {
 
     calcSplit()
     calcYears()
+
+    console.log('Loan Data loaded')
+
 
 }
 
@@ -108,11 +116,6 @@ function calcSplit() {
 }
 
 function updateData() {
-    if (localStorage['autosave'] == 'true') {
-        document.getElementById('autosave').checked = true
-        document.getElementById('savebox').value = localStorage['json_settings']
-    }
-
     cont = calcSplit()
     year = calcYears()
 
