@@ -107,11 +107,17 @@ function updateData() {
         o = strip(o) * 1;
         s = strip(s) * 1;
 
+        charges = [0,d,o/(1-c)+(1-1/(1-c))*d,o/(1-c)+(1-1/(1-c))*d]
+        payment = [p*f+s,p*f+d+s,p*f+o+s,p*f+o+s]
+
+        r = interpolate(charges,payment,pmax*1e3)
+
         plotload.push({
-            x: [0,d,o/(1-c)+(1-1/(1-c))*d,Math.max(o/(1-c)+(1-1/(1-c))*d,pmax*1e3)],
-            y: [p*f+s,p*f+d+s,p*f+o+s,p*f+o+s],
+            x: r[0],
+            y: r[1],
             name: n,
         })
+        
     }
 
     payload[model].app_url = "https://asalimian.github.io/contributionreturns/loan.html"
@@ -126,3 +132,29 @@ function updateData() {
     //update the layout and all the traces
     Plotly.react(TESTER, plotload, layout);
 }
+
+function interpolate(charges,payments,maxcharge) {
+    var payment
+    var charge
+    var n = 1000
+    var index
+    x = [...Array(n + 1).keys()]
+    expgrow = x => (x+1e-8)/n*maxcharge;
+    var payarray = []
+    chgarray = x.map(expgrow)
+    for (charge of chgarray) {
+        index = charges.findIndex(n => n >= charge)
+        
+
+        payment = (payments[index]-payments[index-1])/(charges[index]-charges[index-1])*(charge-charges[index])+payments[index]
+        if (isNaN(payment)) {
+            payment = payments[payments.length-2]
+        }
+
+        payarray.push(payment)
+    }
+    console.log([chgarray,payarray])
+    console.log([charges,payments])
+    return [chgarray,payarray]
+}
+
