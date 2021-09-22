@@ -120,6 +120,7 @@ function updateData() {
     year = calcYears()
 
     p0_loan = document.getElementById('p0_loan').value
+    p0_save = document.getElementById('p0_save').value
     p_loan = document.getElementById('pay_loan').value
     r_loan = document.getElementById('r_loan').value
     r_save = document.getElementById('r_save').value
@@ -132,6 +133,7 @@ function updateData() {
     document.getElementById('savebox').value = JSON.stringify(payload)
 
     p0_loan = -Math.abs(p0_loan.replace('$', '').replace(/,/g, '') * 1);
+    p0_save = Math.abs(p0_save.replace('$', '').replace(/,/g, '') * 1);
     p_loan = p_loan.replace('$', '').replace(/,/g, '') * 1;
     r_loan = r_loan.replace('%', '') / 100;
     r_save = r_save.replace('%', '') / 100;
@@ -154,14 +156,14 @@ function updateData() {
     //} else {
     //    ylen = (time.opt)
     //}
-    optcontrib = expcont(0,
-        cont.income * 12,
+    optcontrib = expcont(p0_save,
+        cont.save * 12,
         r_save * 100,
         year.loan,
         currentTime.getFullYear() + currentTime.getMonth() / 12)
-
+        
     optsave = expcont(optcontrib[1].slice(-1),
-        cont.save * 12,
+        cont.income * 12,
         r_save * 100,
         Math.min(years_sch, years_sch - years_loan),
         optcontrib[0].slice(-1) / (1000 * 3600 * 24 * 365.24) + 1970)
