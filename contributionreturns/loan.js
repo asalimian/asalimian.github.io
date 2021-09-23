@@ -178,6 +178,8 @@ function updateData() {
         year.loan,
         currentTime.getFullYear() + currentTime.getMonth() / 12)
 
+    document.getElementById('final_value').value = Math.round(optsave[1].slice(-1),0)
+    num2text(document.getElementById('final_value'),"$")
     graphDiv = document.getElementById('tester')
 
     //update the layout and all the traces
