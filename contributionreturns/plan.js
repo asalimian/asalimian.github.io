@@ -3,9 +3,9 @@ let model = "PlanCalculator"
 function loadDefaults() {
     var currentTime = new Date()
     payload = {
-        planA: { name: 'Plan A', premium: '$ 175', frequency: 26, deductable: '$  750', coinsurance: '80 %', oop: '$ 4000', discount: '$    0' },
-        planB: { name: 'Plan B', premium: '$ 80', frequency: 26, deductable: '$ 1500', coinsurance: '80 %', oop: '$ 5000', discount: '$ -150' },
-        planC: { name: 'Plan C', premium: '$ 0', frequency: 26, deductable: '$ 3000', coinsurance: '80 %', oop: '$ 6000', discount: '$ -300' },
+        planA: { name: 'Plan A', premium: '$ 175', frequency: 26, deductable: '$  750', coinsurance: '10 %', oop: '$ 4000', discount: '$    0' },
+        planB: { name: 'Plan B', premium: '$ 80', frequency: 26, deductable: '$ 1500', coinsurance: '20 %', oop: '$ 5000', discount: '$ -150' },
+        planC: { name: 'Plan C', premium: '$ 0', frequency: 26, deductable: '$ 3000', coinsurance: '20 %', oop: '$ 6000', discount: '$ -300' },
         app_url: "https://asalimian.github.io/contributionreturns/plan.html",
         last_update: currentTime
     }
@@ -112,7 +112,7 @@ function updateData() {
         o = strip(o) * 1;
         s = strip(s) * 1;
 
-        charges = [0,d,o/(1-c)+(1-1/(1-c))*d,o/(1-c)+(1-1/(1-c))*d]
+        charges = [0,d,o/(c)+(1-1/(c))*d,o/(c)+(1-1/(c))*d]
         payment = [p*f+s,p*f+d+s,p*f+o+s,p*f+o+s]
 
         r = interpolate(charges,payment,pmax*1e3)
