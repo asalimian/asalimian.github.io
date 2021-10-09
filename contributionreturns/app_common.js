@@ -105,3 +105,17 @@ function expcont(principle, contrib, rate, years, y0) {
   yadd = y => (y / n * years + y0 - 1970) * 1000 * 3600 * 24 * 365.24;
   return [x.map(yadd), x.map(expgrow)];
 }
+
+function addarray(array1, array2){
+  var sum = array1.map(function (num, idx) {
+    return num + array2[idx];
+  }); // [6,8,10,12]
+  return sum
+}
+
+function subarray(array1, array2){
+  var sum = array1.map(function (num, idx) {
+    return num - array2[idx];
+  }); // [6,8,10,12]
+  return sum
+}

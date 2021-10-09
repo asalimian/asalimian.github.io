@@ -33,7 +33,7 @@ function loaddata() {
         document.getElementById('autosave').checked = true
         document.getElementById('savebox').value = localStorage['json_settings']
     }
-    
+
     payload = JSON.parse(document.getElementById("savebox").value)
 
     if (payload[model] == null) {
@@ -44,13 +44,13 @@ function loaddata() {
     datamodel = payload[model]
 
     for (plan of ['a', 'b', 'c']) {
-        document.getElementById('plan'+plan.toUpperCase()).innerHTML = datamodel['plan'+plan.toUpperCase()]["name"]
-        document.getElementById('prem_'+plan).value = datamodel['plan'+plan.toUpperCase()]["premium"];
-        document.getElementById('freq_'+plan).value = datamodel['plan'+plan.toUpperCase()]["frequency"];
-        document.getElementById('ded_'+plan).value = datamodel['plan'+plan.toUpperCase()]["deductable"];
-        document.getElementById('co_'+plan).value = datamodel['plan'+plan.toUpperCase()]["coinsurance"];
-        document.getElementById('oop_'+plan).value = datamodel['plan'+plan.toUpperCase()]["oop"];
-        document.getElementById('disc_'+plan).value = datamodel['plan'+plan.toUpperCase()]["discount"];
+        document.getElementById('plan' + plan.toUpperCase()).innerHTML = datamodel['plan' + plan.toUpperCase()]["name"]
+        document.getElementById('prem_' + plan).value = datamodel['plan' + plan.toUpperCase()]["premium"];
+        document.getElementById('freq_' + plan).value = datamodel['plan' + plan.toUpperCase()]["frequency"];
+        document.getElementById('ded_' + plan).value = datamodel['plan' + plan.toUpperCase()]["deductable"];
+        document.getElementById('co_' + plan).value = datamodel['plan' + plan.toUpperCase()]["coinsurance"];
+        document.getElementById('oop_' + plan).value = datamodel['plan' + plan.toUpperCase()]["oop"];
+        document.getElementById('disc_' + plan).value = datamodel['plan' + plan.toUpperCase()]["discount"];
     }
 
     document.getElementById('savebox').value = JSON.stringify(payload)
@@ -61,8 +61,8 @@ function loaddata() {
 
 function headerlabel(el) {
     el.hidden = true
-    nel = document.getElementById(el.id+'_name')
-    console.log(el.id+'_name')
+    nel = document.getElementById(el.id + '_name')
+    console.log(el.id + '_name')
     nel.hidden = false
     nel.value = el.innerHTML.trim()
     nel.focus()
@@ -70,7 +70,7 @@ function headerlabel(el) {
 
 function labelheader(el) {
     el.hidden = true
-    nelid = el.id.substring(0,5)
+    nelid = el.id.substring(0, 5)
     nel = document.getElementById(nelid)
     console.log(nelid)
     nel.hidden = false
@@ -83,11 +83,12 @@ function updateData() {
     payload = JSON.parse(document.getElementById('savebox').value)
 
     plotload = []
+    plotdiff = []
 
     pmax = strip(document.getElementById('plotmax').value)
 
     for (plan of ['a', 'b', 'c']) {
-        n = document.getElementById('plan'+plan.toUpperCase()).innerHTML
+        n = document.getElementById('plan' + plan.toUpperCase()).innerHTML
         p = document.getElementById('prem_' + plan).value
         f = document.getElementById('freq_' + plan).value
         d = document.getElementById('ded_' + plan).value
@@ -104,7 +105,7 @@ function updateData() {
             "oop": o,
             "discount": s
         }
-        
+
         p = strip(p) * 1;
         f = strip(f) * 1;
         d = strip(d) * 1;
@@ -112,18 +113,21 @@ function updateData() {
         o = strip(o) * 1;
         s = strip(s) * 1;
 
-        charges = [0,d,o/(c)+(1-1/(c))*d,o/(c)+(1-1/(c))*d]
-        payment = [p*f+s,p*f+d+s,p*f+o+s,p*f+o+s]
+        charges = [0, d, o / (c) + (1 - 1 / (c)) * d, o / (c) + (1 - 1 / (c)) * d]
+        payment = [p * f + s, p * f + d + s, p * f + o + s, p * f + o + s]
 
-        r = interpolate(charges,payment,pmax*1e3)
+        r = interpolate(p * f + s, c, d, o, pmax * 1e3)
 
         plotload.push({
             x: r[0],
             y: r[1],
             name: n,
         })
-        
     }
+
+    plotload[0].line = { color: '#1F77B4' }
+    plotload[1].line = { color: '#FF7F0E' }
+    plotload[2].line = { color: '#2CA02C' }
 
     payload[model].app_url = "https://asalimian.github.io/contributionreturns/loan.html"
     payload[model].last_update = currentTime
@@ -134,32 +138,46 @@ function updateData() {
         localStorage['logplot'] = document.getElementById('logplot').checked
     }
 
+
+    plotdiff = [
+        {
+            x: plotload[0].y,
+            y: subarray(plotload[1].y, plotload[0].y),
+            name: document.getElementById('planB').innerHTML
+        },
+        {
+            x: plotload[0].y,
+            y: subarray(plotload[2].y, plotload[0].y),
+            name: document.getElementById('planC').innerHTML
+        },
+    ]
+    difflayout.xaxis.title= document.getElementById('planA').innerHTML + ' Costs'
+
+    document.getElementById('optionA').innerHTML =  document.getElementById('planA').innerHTML
+
+    plotdiff[0].line = { color: '#FF7F0E' }
+    plotdiff[1].line = { color: '#2CA02C' }
+
     //update the layout and all the traces
+    Plotly.react(diffplot, plotdiff, difflayout);
     Plotly.react(TESTER, plotload, layout);
 }
 
-function interpolate(charges,payments,maxcharge) {
+function interpolate(p, c, d, o, maxcharge) {
     var payment
     var charge
     var n = 1000
     var index
     x = [...Array(n + 1).keys()]
-    expgrow = x => (x+1e-8)/n*maxcharge;
+    expgrow = x => (x + 1e-8) / n * maxcharge;
     var payarray = []
     chgarray = x.map(expgrow)
     for (charge of chgarray) {
         index = charges.findIndex(n => n >= charge)
-        
-
-        payment = (payments[index]-payments[index-1])/(charges[index]-charges[index-1])*(charge-charges[index])+payments[index]
-        if (isNaN(payment)) {
-            payment = payments[payments.length-2]
-        }
-
+        payment = p + charge - Math.max(0, (charge - d)) * (1 - c) - Math.max(0, charge - (d + (o - d) / c)) * (c)
         payarray.push(payment)
     }
-    console.log([chgarray,payarray])
-    console.log([charges,payments])
-    return [chgarray,payarray]
+    console.log([chgarray, payarray])
+    return [chgarray, payarray]
 }
 

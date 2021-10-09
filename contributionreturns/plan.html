@@ -202,7 +202,15 @@
 
         </div>
         <div class="plot" id="plot">
+            <h4>Total Expenses vs Healthcare Billing</h4>
             <div id="tester"></div>
+        </div>
+        <div class="plot" id="plot">
+            <h4>Cost Comparison to <select style='width:auto;border:none;'>
+                <option id="optionA">Plan A</option>
+            </select></h4>
+            
+            <div id="diffplot"></div>
         </div>
         <div class="save" id="save" style="display:none; position:fixed;">
             <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;"
@@ -319,13 +327,7 @@
             TESTER = document.getElementById('tester');
             var currentTime = new Date()
             var data = [{
-                x: [0, 0], y: [0, 0], name: 'Optimistic Coast'
-            }, {
-                x: [0, 0], y: [0, 0], name: 'Pes Coast'
-            }, {
-                x: [0, 0], y: [0, 0], name: 'Opt Contrib'
-            }, {
-                x: [0, 0], y: [0, 0], name: 'Pes Contrib'
+                x: [0, 0], y: [0, 0], name: ''
             }]
 
             var layout = {
@@ -350,10 +352,33 @@
 
             Plotly.react(TESTER, data, layout);
 
+            diffplot = document.getElementById('diffplot');
+
+            var difflayout = {
+                xaxis: {
+                    'title': 'Plan A Costs',
+                    fixedrange: true
+                },
+                yaxis: {
+                    'title': 'Difference',
+                    hoverformat: '$.0f',
+                    'type': null,
+                    fixedrange: true
+                },
+                legend: { 'orientation': 'h', 'y': -0.2 },
+                margin: { 't': 20, 'r': 5, 'l': 80 },
+                autosize: true,
+                paper_bgcolor: "#F9F9F9",
+                plot_bgcolor: "FcFcFc",
+                hovermode: 'x unified',
+
+            };
+
+            Plotly.react(diffplot, data, difflayout);
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.28
+        ©️ 2021 Alex Salimian v0.29
     </div>
 </body>
 
