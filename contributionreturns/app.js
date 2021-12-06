@@ -46,7 +46,6 @@ function loaddata() {
 
     now = new Date()
     last_update = new Date(datamodel.last_update)        
-    last_update = new Date('datamodel.last_update')    
 
     timeshift = (last_update-now)/1000/3600/24/365.25
 
