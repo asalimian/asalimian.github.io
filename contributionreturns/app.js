@@ -44,14 +44,20 @@ function loaddata() {
 
     datamodel = payload[model]
 
+    now = new Date()
+    last_update = new Date(datamodel.last_update)    
+    last_update = new Date('datamodel.last_update')    
+
+    timeshift = (last_update-now)/1000/3600/24/365.25
+
     document.getElementById('pmax_opt').value = datamodel["Optimistic Scenario"]["Goal"];
     document.getElementById('pmax_pes').value = datamodel["Pessimistic Scenario"]["Goal"];
     document.getElementById('p0_opt').value = datamodel["Optimistic Scenario"]["Principle"];
     document.getElementById('p0_pes').value = datamodel["Pessimistic Scenario"]["Principle"];
     document.getElementById('r_opt').value = datamodel["Optimistic Scenario"]["Rate"];
     document.getElementById('r_pes').value = datamodel["Pessimistic Scenario"]["Rate"];
-    document.getElementById('years_opt').value = datamodel["Optimistic Scenario"]["Years"];
-    document.getElementById('years_pes').value = datamodel["Pessimistic Scenario"]["Years"];
+    document.getElementById('years_opt').value = Number(datamodel["Optimistic Scenario"]["Years"])+timeshift;
+    document.getElementById('years_pes').value = Number(datamodel["Pessimistic Scenario"]["Years"])+timeshift;
     document.getElementById('cont_opt').value = datamodel["Optimistic Scenario"]["Contribution"];
     document.getElementById('cont_pes').value = datamodel["Pessimistic Scenario"]["Contribution"];
 
