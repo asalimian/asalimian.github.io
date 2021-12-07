@@ -10,7 +10,7 @@ function myFunction() {
   }
 
   function text2num(el) {
-    value = el.value.replace('$','').replace('%','').replace(/,/g, '').replace('k','') * 1
+  value = el.value.replace('$', '').replace('%', '').replace(/,/g, '').replace('k', '') * 1
     el.type = "number"
     el.value = value
 }
@@ -25,7 +25,7 @@ function num2text(el,pre='',suf='') {
 }
 
 function strip(str) {
-  return str.replace('$', '').replace(/,/g, '').replace('%', '').replace('k','')
+  return str.replace('$', '').replace(/,/g, '').replace('%', '').replace('k', '')
 }
 
 
@@ -36,13 +36,13 @@ function init() {
       document.getElementById("savebox").value = localStorage.json_settings
       document.getElementById("autosave").checked = true
       datamodel = JSON.parse(localStorage.json_settings)
-      if (datamodel.length>0) {
+    if (datamodel.length > 0) {
         loadDefaults(true)
       }
   }
   loaddata()
   updateData()
-  if (localStorage.secondVisit==null) {
+  if (localStorage.secondVisit == null) {
     toggleHelpWindow()
     localStorage.secondVisit = true
   }
@@ -106,14 +106,14 @@ function expcont(principle, contrib, rate, years, y0) {
   return [x.map(yadd), x.map(expgrow)];
 }
 
-function addarray(array1, array2){
+function addarray(array1, array2) {
   var sum = array1.map(function (num, idx) {
     return num + array2[idx];
   }); // [6,8,10,12]
   return sum
 }
 
-function subarray(array1, array2){
+function subarray(array1, array2) {
   var sum = array1.map(function (num, idx) {
     return num - array2[idx];
   }); // [6,8,10,12]
