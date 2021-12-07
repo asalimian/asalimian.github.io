@@ -3,8 +3,8 @@ let model = "JobCalculator"
 function loadDefaults(upgrade = false) {
     var currentTime = new Date()
     payload = {
-        "new job":{"Salary":100,"Bonus":0,"MatchRate":0,"MatchMax":0,"Healthcare":5,"COL":50,"Tax":18,"Other":0},
-        "old job":{"Salary":110,"Bonus":10,"MatchRate":3,"MatchMax":3,"Healthcare":3,"COL":75,"Tax":18,"Other":0},
+        "old job":{"Salary":'$ 45',"Bonus":'$ 0',"MatchRate":'1%',"MatchMax":'1%',"Healthcare":'$ 5',"COL":'$ 40',"Tax":'10%',"Other":'$ 0'},
+        "new job":{"Salary":'$ 50',"Bonus":'$ 5',"MatchRate":'1%',"MatchMax":'1%',"Healthcare":'$ 5',"COL":'$ 40',"Tax":'10%',"Other":'$ 0'},
         "app_url":"https://asalimian.github.io/contributionreturns/switch.html",
         'last_update': currentTime
     }
@@ -183,7 +183,7 @@ function updateData() {
     plotload.forEach(function(x) { oldtot+=x.y[0] })
     plotload.forEach(function(x) { newtot+=x.y[1] })
  
-    plotload.forEach(function(x) { x.text=[x.name+': $'+x.y[0]+'<br>Old Job: $'+oldtot,x.name+': $'+x.y[1]+'<br>New Job: $'+newtot];x.hoverinfo='text' })
+    plotload.forEach(function(x) { x.text=[x.name+': $'+x.y[0]+'<br>Old Job: $'+Math.round(oldtot*100)/100,x.name+': $'+x.y[1]+'<br>New Job: $'+Math.round(newtot*100)/100];x.hoverinfo='text' })
     
 
     payload[model].app_url = "https://asalimian.github.io/contributionreturns/switch.html"
