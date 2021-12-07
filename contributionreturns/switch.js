@@ -169,7 +169,11 @@ function updateData() {
 
     plotload = [
         {x: ['Old', 'New'],y: [0,-cl['new']+cl['old']],name: 'Cost of Living Change',type: 'bar'},
-        {x: ['Old', 'New'],y: [0,-(sa['new']-sa['old'])*(tb['old'])/100],name: 'Tax Change',type: 'bar'},
+        {x: ['Old', 'New'],y: [0,-(sa['new']-sa['old']+
+                                   bo['new']-bo['old']+
+                                   ot['new']-ot['old']+
+                                   hc['old']-hc['new']
+                                   )*(tb['old'])/100],name: 'Tax Change',type: 'bar'},
         {x: ['Old', 'New'],y: [-hc['old'],-hc['new']],name: 'Healthcare',type: 'bar'},
         {x: ['Old', 'New'],y: [sa['old'],sa['new']],name: 'Salary',type: 'bar'},
         {x: ['Old', 'New'],y: [bo['old'],bo['new']],name: 'Bonus',type: 'bar'},
