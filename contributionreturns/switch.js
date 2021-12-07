@@ -44,22 +44,22 @@ function loaddata() {
 
     datamodel = payload[model]
 
-    document.getElementById('sal_old').value = datamodel["new job"]["Salary"];
-    document.getElementById('sal_new').value = datamodel["old job"]["Salary"];
-    document.getElementById('bonus_old').value = datamodel["new job"]["Bonus"];
-    document.getElementById('bonus_new').value = datamodel["old job"]["Bonus"];
-    document.getElementById('matchrate_old').value = datamodel["new job"]["MatchRate"];
-    document.getElementById('matchrate_new').value = datamodel["old job"]["MatchRate"];
-    document.getElementById('matchmax_old').value = datamodel["new job"]["MatchMax"];
-    document.getElementById('matchmax_new').value = datamodel["old job"]["MatchMax"];
-    document.getElementById('healthcare_old').value = datamodel["new job"]["Healthcare"];
-    document.getElementById('healthcare_new').value = datamodel["old job"]["Healthcare"];
-    document.getElementById('col_old').value = datamodel["new job"]["COL"];
-    document.getElementById('col_new').value = datamodel["old job"]["COL"];
-    document.getElementById('tax_old').value = datamodel["new job"]["Tax"];
-    document.getElementById('tax_new').value = datamodel["old job"]["Tax"];
-    document.getElementById('other_old').value = datamodel["new job"]["Other"];
-    document.getElementById('other_new').value = datamodel["old job"]["Other"];
+    document.getElementById('sal_new').value = datamodel["new job"]["Salary"];
+    document.getElementById('sal_old').value = datamodel["old job"]["Salary"];
+    document.getElementById('bonus_new').value = datamodel["new job"]["Bonus"];
+    document.getElementById('bonus_old').value = datamodel["old job"]["Bonus"];
+    document.getElementById('matchrate_new').value = datamodel["new job"]["MatchRate"];
+    document.getElementById('matchrate_old').value = datamodel["old job"]["MatchRate"];
+    document.getElementById('matchmax_new').value = datamodel["new job"]["MatchMax"];
+    document.getElementById('matchmax_old').value = datamodel["old job"]["MatchMax"];
+    document.getElementById('healthcare_new').value = datamodel["new job"]["Healthcare"];
+    document.getElementById('healthcare_old').value = datamodel["old job"]["Healthcare"];
+    document.getElementById('col_new').value = datamodel["new job"]["COL"];
+    document.getElementById('col_old').value = datamodel["old job"]["COL"];
+    document.getElementById('tax_new').value = datamodel["new job"]["Tax"];
+    document.getElementById('tax_old').value = datamodel["old job"]["Tax"];
+    document.getElementById('other_new').value = datamodel["new job"]["Other"];
+    document.getElementById('other_old').value = datamodel["old job"]["Other"];
 
     /*
     calcContributions()
@@ -147,14 +147,14 @@ function updateData() {
         ot[plan] = document.getElementById('other_' + plan).value
     
         payload[model][plan +' job'] = {
-            "Salary" : sa,
-            "Bonus" : bo,
-            "MatchRate" : mr,
-            "MatchMax" : mm,
-            "Healthcare" : hc,
-            "COL" : cl,
-            "Tax" : tb,
-            "Other" : ot  
+            "Salary" : sa[plan],
+            "Bonus" : bo[plan],
+            "MatchRate" : mr[plan],
+            "MatchMax" : mm[plan],
+            "Healthcare" : hc[plan],
+            "COL" : cl[plan],
+            "Tax" : tb[plan],
+            "Other" : ot[plan]  
         }
 
         sa[plan] = strip(sa[plan])*1
