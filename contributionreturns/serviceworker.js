@@ -1,5 +1,5 @@
 var staticCacheName = "pwa";
-var version = "v0.29.2"; 
+var version = "0.30"; 
 
 self.addEventListener("install", function (e) {
   e.waitUntil(

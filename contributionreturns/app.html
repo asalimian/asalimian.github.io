@@ -52,6 +52,7 @@
         <div id="myLinks">
             <a href="loan.html">Loan Calculator</a>
             <a href="plan.html">Health Plan Calculator</a>
+            <a href="switch.html">Job Change Calculator</a>
             <hr>
             <a onclick="toggleSaveWindow();myFunction()">Settings</a>
             <a onclick="toggleHelpWindow();myFunction()">Help</a>
@@ -105,6 +106,15 @@
                              onblur="num2text(this)"></td>
                     <td><input type="text" id="years_pes" name="fav_language" onfocus="text2num(this)"
                              onblur="num2text(this)"></td>
+
+                </tr>
+                <tr hidden>
+                    <td><label for="date_opt"><abbr title="How many years till retirement">Goal Date</abbr></label>
+                    </td>
+                    <td><input type="date" id="date_opt" name="fav_language" onfocus=""
+                             onblur=""></td>
+                    <td><input type="date" id="date_pes" name="fav_language" onfocus=""
+                             onblur=""></td>
 
                 </tr>
                 <tr>
@@ -271,7 +281,7 @@
         </script>
     </div>
     <div>
-        ©️ 2021 Alex Salimian v0.29.2
+        ©️ 2021 Alex Salimian 0.30
     </div>
 </body>
 

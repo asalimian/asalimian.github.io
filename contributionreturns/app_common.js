@@ -1,26 +1,39 @@
-    /* Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
+/* Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
 
 function myFunction() {
-    var x = document.getElementById("myLinks");
-    if (x.style.display === "block") {
-      x.style.display = "none";
-    } else {
-      x.style.display = "block";
-    }
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
   }
+}
 
-  function text2num(el) {
+function text2num(el) {
+  interior = el.value.replace('$', '').replace('%', '').replace(/,/g, '').replace('k', '')
+  if (interior.includes('+')) {
+    interior = interior.split('+').reduce(function (accumVariable, curValue) {
+      return Number(accumVariable) + Number(curValue)
+    }, 0);
+  }
   value = el.value.replace('$', '').replace('%', '').replace(/,/g, '').replace('k', '') * 1
-    el.type = "number"
-    el.value = value
+  el.type = "number"
+  el.value = value
 }
 function num2text(el,pre='',suf='') {
-  value = pre+Number(el.value.replace('$','').replace('%','').replace(/,/g, '').replace('k','')).toLocaleString()+suf;
+  interior = el.value.replace('$', '').replace('%', '').replace(/,/g, '').replace('k', '')
+  if (interior.includes('+')) {
+    console.log('detected')
+    interior = interior.split('+').reduce(function (accumVariable, curValue) {
+      return Number(accumVariable) + Number(curValue)
+    }, 0);
+  }
+  value = pre+Number(interior).toLocaleString()+suf;
   el.type = "text"
   el.value = value
   if (localStorage['autosave'] == 'true') {
-      localStorage['json_settings'] = document.getElementById('savebox').value
-      localStorage['logplot'] = document.getElementById('logplot').checked
+    localStorage['json_settings'] = document.getElementById('savebox').value
+    localStorage['logplot'] = document.getElementById('logplot').checked
   }
 }
 
@@ -31,14 +44,14 @@ function strip(str) {
 
 function init() {
   if (localStorage.autosave == null || !(localStorage.autosave == "true")) {
-      loadDefaults()    
+    loadDefaults()
   } else {
-      document.getElementById("savebox").value = localStorage.json_settings
-      document.getElementById("autosave").checked = true
-      datamodel = JSON.parse(localStorage.json_settings)
+    document.getElementById("savebox").value = localStorage.json_settings
+    document.getElementById("autosave").checked = true
+    datamodel = JSON.parse(localStorage.json_settings)
     if (datamodel.length > 0) {
-        loadDefaults(true)
-      }
+      loadDefaults(true)
+    }
   }
   loaddata()
   updateData()
@@ -50,9 +63,9 @@ function init() {
 
 function toggleSaveWindow() {
   if (document.getElementById("save").style.display == "block") {
-      document.getElementById("save").style.display = "none";
+    document.getElementById("save").style.display = "none";
   } else {
-      document.getElementById("save").style.display = "block";
+    document.getElementById("save").style.display = "block";
   }
   document.getElementById("help").style.display = "none";
   document.getElementById("plot").style.display = "block";
@@ -61,34 +74,34 @@ function toggleSaveWindow() {
 function toggleAutoSave(item) {
   localStorage.setItem('autosave', item.checked)
   if (item.checked == false) {
-      delete localStorage.json_settings
-      delete localStorage.secondVisit
+    delete localStorage.json_settings
+    delete localStorage.secondVisit
   } else {
-      loadDefaults()
-      localStorage['json_settings'] = document.getElementById('savebox').value
-      updateData()
-      console.log(model)
+    loadDefaults()
+    localStorage['json_settings'] = document.getElementById('savebox').value
+    updateData()
+    console.log(model)
   }
 
 }
 function toggleLogAxis(item) {
   if (item.checked == true) {
-      layout.yaxis.type = 'log';
-      updateData()
+    layout.yaxis.type = 'log';
+    updateData()
   } else {
-      layout.yaxis.type = null;
-      updateData()
+    layout.yaxis.type = null;
+    updateData()
   }
 
 }
 function toggleHelpWindow() {
   document.getElementById("save").style.display = "none";
   if (document.getElementById("help").style.display == "block") {
-      document.getElementById("help").style.display = "none";
-      document.getElementById("plot").style.display = "block";
+    document.getElementById("help").style.display = "none";
+    document.getElementById("plot").style.display = "block";
   } else {
-      document.getElementById("help").style.display = "block";
-      document.getElementById("plot").style.display = "none";
+    document.getElementById("help").style.display = "block";
+    document.getElementById("plot").style.display = "none";
   }
 }
 function expgrowth(principle, rate, years, y0) {
