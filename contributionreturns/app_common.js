@@ -55,9 +55,10 @@ function init() {
   }
   loaddata()
   updateData()
-  if (localStorage.secondVisit == null) {
+  if (localStorage[model] == null) {
+    localStorage[model] = true
     toggleHelpWindow()
-    localStorage.secondVisit = true
+  }
   if (model != 'app') {
     localStorage.last = model
     console.log(model)
@@ -79,6 +80,10 @@ function toggleAutoSave(item) {
   if (item.checked == false) {
     delete localStorage.json_settings
     delete localStorage.secondVisit
+    delete localStorage.PlanCalculator
+    delete localStorage.JobCalculator
+    delete localStorage.LoanPayoffCalculator
+    delete localStorage.ContributionCalculator
   } else {
     loadDefaults()
     localStorage['json_settings'] = document.getElementById('savebox').value
