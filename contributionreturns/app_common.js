@@ -58,6 +58,9 @@ function init() {
   if (localStorage.secondVisit == null) {
     toggleHelpWindow()
     localStorage.secondVisit = true
+  if (model != 'app') {
+    localStorage.last = model
+    console.log(model)
   }
 }
 
