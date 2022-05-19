@@ -19,6 +19,7 @@
     <link rel="manifest" href="manifest.json">
 
     <script src="plotly-2.4.2.min.js"></script><!-- Source: https://cdn.plot.ly/ -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="app.css">
     <script src="app_common.js"></script>
     <script src="save.js"></script>
@@ -144,7 +145,7 @@
         </div>
         <div class="save" id="save" style="display:none; position:fixed;">
             <div style="text-align: right;padding-right:10px;"
-                onclick="document.getElementById('save').style.display = 'none';">✖️</div>
+                onclick="document.getElementById('save').style.display = 'none';"><i class="material-icons">close</i></div>
             <label for="savebox">Full JSON String</label><br>
             <div class="flex-container">
                 <textarea id="savebox" rows="5" onchange="loaddata();updateData()">{}</textarea><br>
@@ -166,7 +167,7 @@
                 so subsequent usages of this tool will generate different plots.</div>
         </div>
         <div class="help" id="help" style="display:none; position: absolute;">
-            <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;" onclick="toggleHelpWindow()">✖️</div>
+            <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;" onclick="toggleHelpWindow()"><i class="material-icons">close</i></div>
             <h2>The Calculator</h2>
             <p>
                 This tool helps you calculate two simultaneous paths to your savings goal. Perhaps you're flexible on
