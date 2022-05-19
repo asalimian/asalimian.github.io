@@ -3,9 +3,9 @@ let model = "PlanCalculator"
 function loadDefaults() {
     var currentTime = new Date()
     payload = {
-        planA: { name: 'Plan A', premium: '$ 175', frequency: 26, deductable: '$  750', coinsurance: '10 %', oop: '$ 4000', discount: '$    0' },
-        planB: { name: 'Plan B', premium: '$ 80', frequency: 26, deductable: '$ 1500', coinsurance: '20 %', oop: '$ 5000', discount: '$ -150' },
-        planC: { name: 'Plan C', premium: '$ 0', frequency: 26, deductable: '$ 3000', coinsurance: '20 %', oop: '$ 6000', discount: '$ -300' },
+        planA: { name: 'Plan A', premium: '$ 175', frequency: 26, deductible: '$  750', coinsurance: '10 %', oop: '$ 4000', discount: '$    0' },
+        planB: { name: 'Plan B', premium: '$ 80', frequency: 26, deductible: '$ 1500', coinsurance: '20 %', oop: '$ 5000', discount: '$ -150' },
+        planC: { name: 'Plan C', premium: '$ 0', frequency: 26, deductible: '$ 3000', coinsurance: '20 %', oop: '$ 6000', discount: '$ -300' },
         app_url: "https://asalimian.github.io/contributionreturns/plan.html",
         last_update: currentTime
     }
@@ -47,7 +47,7 @@ function loaddata() {
         document.getElementById('plan' + plan.toUpperCase()).innerHTML = datamodel['plan' + plan.toUpperCase()]["name"]
         document.getElementById('prem_' + plan).value = datamodel['plan' + plan.toUpperCase()]["premium"];
         document.getElementById('freq_' + plan).value = datamodel['plan' + plan.toUpperCase()]["frequency"];
-        document.getElementById('ded_' + plan).value = datamodel['plan' + plan.toUpperCase()]["deductable"];
+        document.getElementById('ded_' + plan).value = datamodel['plan' + plan.toUpperCase()]["deductible"];
         document.getElementById('co_' + plan).value = datamodel['plan' + plan.toUpperCase()]["coinsurance"];
         document.getElementById('oop_' + plan).value = datamodel['plan' + plan.toUpperCase()]["oop"];
         document.getElementById('disc_' + plan).value = datamodel['plan' + plan.toUpperCase()]["discount"];
@@ -100,7 +100,7 @@ function updateData() {
             "name": n,
             "premium": p,
             "frequency": f,
-            "deductable": d,
+            "deductible": d,
             "coinsurance": c,
             "oop": o,
             "discount": s
