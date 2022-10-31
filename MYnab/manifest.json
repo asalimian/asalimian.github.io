@@ -1,0 +1,18 @@
+{
+    "name": "MYnab",
+    "short_name": "MYnab",
+    "start_url": "http://localhost/index.html",
+    "display": "standalone",
+    "background_color": "#00AB7E",
+    "theme_color": "pink",
+    "scope": "http://localhost/",
+    "description": "This is a little calculator for a little savings.",
+    "icons": [
+        {
+            "src": "mynab.png",
+            "sizes": "48x48",
+            "type": "image/png"
+        }
+    ],
+    "version":"0.1"
+}

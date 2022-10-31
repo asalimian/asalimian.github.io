@@ -1,0 +1,142 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Responsive -->
+    <meta charset="utf-8">
+    <meta content="ie=edge">
+
+    <!-- Title -->
+    <title>MYnab</title>
+    <!-- Meta Tags required for
+       Progressive Web App -->
+    <meta name="apple-mobile-web-app-status-bar" content="#aa7700">
+    <link rel="apple-touch-icon" href="mynab.png">
+    <meta name="theme-color" content="black">
+
+    <!-- Manifest File link -->
+    <link rel="manifest" href="manifest.json">
+    <script type="text/javascript">
+        window.addEventListener('load', () => {
+            registerSW();
+        });
+
+        // Register the Service Worker
+        async function registerSW() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    await navigator
+                        .serviceWorker
+                        .register('serviceworker.js');
+                }
+                catch (e) {
+                    console.log('SW registration failed');
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.plot.ly/plotly-2.4.2.min.js"></script><!-- Source: https://cdn.plot.ly/ -->
+    <script src="mynab.js"></script>
+    <script>
+        function loadviews() {
+            try {
+                sumthisdata()
+            } catch (error) {
+                console.error(error)
+            }
+            plotthisdata()
+            if (sessionStorage.getItem('api') != null) {
+                document.getElementById('ynabauth').hidden = true
+                console.log(DB_NAME)
+                findlastdata()
+            } else {
+                document.getElementById('load').disabled = true;
+                url = document.location.href.split("#")
+                if (url[1] != null) {
+                    c = url[1].split('&')[0].split('=')[0]
+                    t = url[1].split('&')[0].split('=')[1]
+                    if (c == 'access_token') {
+                        sessionStorage.setItem('api', t);
+                        setTimeout(showAuth, 72000);
+                        document.location.href = url[0]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        td {
+            border: 1px black solid;
+        }
+        tr {
+            transition: 0.1s;
+        }
+        tr:hover {
+            background-color: rgba(144, 238, 144, 0.788);
+            transition: 0s;
+        }
+        table {
+            border: 1px black solid;
+            border-collapse: collapse;
+            text-align: right;
+            margin: auto;
+            
+        }
+    </style>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 48
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+    </style>
+</head>
+
+<body onload="loadviews()">
+
+    <div style="margin-bottom:4px;text-align:center;">
+        <a href="https://app.youneedabudget.com/oauth/authorize?client_id=DvaUZ-8ASceIrp7j-HQZdke1Vhcn9knMXmQYc6BCm_Y&redirect_uri=http://localhost&response_type=token&scope=read-only"
+            id="ynabauth">Login</a>
+        <button onclick="getdata()" id="load">Load Data</button>
+        <div class="material-symbols-outlined" style="animation:spin 1s linear infinite;visibility: hidden;"
+            id="spinner" hidden>
+            sync
+        </div>
+    </div>
+
+    <textarea id='result' style="width:400px;height:150px" hidden></textarea>
+    <div id="tablearea"></div>
+
+    <div class="plot" id="plot">
+        <div id="tester"></div>
+    </div>
+    <script type="text/javascript">
+
+
+
+
+        TESTER = document.getElementById('tester');
+        var currentTime = new Date()
+        var data = [{
+            x: ['A', 'b'], y: [2, 3],
+            'type': 'bar'
+        }];
+
+
+
+        Plotly.react(TESTER, data);
+
+    </script>
+</body>
+
+</html>
