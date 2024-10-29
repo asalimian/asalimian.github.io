@@ -20,7 +20,7 @@ function text2num(el) {
   el.type = "number"
   el.value = value
 }
-function num2text(el,pre='',suf='') {
+function num2text(el, pre = '', suf = '') {
   interior = el.value.replace('$', '').replace('%', '').replace(/,/g, '').replace('k', '')
   if (interior.includes('+')) {
     console.log('detected')
@@ -28,7 +28,7 @@ function num2text(el,pre='',suf='') {
       return Number(accumVariable) + Number(curValue)
     }, 0);
   }
-  value = pre+Number(interior).toLocaleString()+suf;
+  value = pre + Number(interior).toLocaleString() + suf;
   el.type = "text"
   el.value = value
   if (localStorage['autosave'] == 'true') {

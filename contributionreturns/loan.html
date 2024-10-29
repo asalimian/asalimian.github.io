@@ -57,25 +57,25 @@
 
                     </td>
                     <td><input type="text" class="currency" id="p0_loan" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
+                            onblur="num2text(this,'$ ')">
                     </td>
                     <td> <input type="text" class="currency" id="p0_save" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
+                            onblur="num2text(this,'$ ')">
                 </tr>
                 <tr>
                     <td> Rate
                     </td>
                     <td><input type="text" class="currency" id="r_loan" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%')">
+                            onblur="num2text(this,'','%')">
                     </td>
                     <td> <input type="text" class="currency" id="r_save" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%')"></td>
+                            onblur="num2text(this,'','%')"></td>
                 </tr>
                 <tr>
                     <td>Min payment
                     </td>
                     <td><input type="text" class="currency" id="pay_loan" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                     <td>
                     </td>
                 </tr>
@@ -86,7 +86,7 @@
                         Income
                     </td>
                     <td> <input type="text" class="currency" id="income" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
+                            onblur="num2text(this,'$ ')">
                     </td>
                     <td>
                     </td>
@@ -96,8 +96,7 @@
                         Savings
                     </td>
                     <td colspan="2">
-                        <input type="range" style="width:80%" id="income_split" min="0" max="1" step=".01"
-                            >
+                        <input type="range" style="width:80%" id="income_split" min="0" max="1" step=".01">
                     </td>
                     <td id="min_split">
 
@@ -110,11 +109,11 @@
                     </td>
                     <td> <input type="text" class="currency" id="cont_loan" name="fav_language"
                             style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
+                            onblur="num2text(this,'$ ')">
                     </td>
                     <td> <input type="text" class="currency" id="cont_save" name="fav_language"
                             style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
+                            onblur="num2text(this,'$ ')">
 
                     </td>
                 </tr>
@@ -123,7 +122,7 @@
                     </td>
                     <td><input type="text" class="currency" id="years_sch" name="fav_language"
                             style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td>
@@ -132,11 +131,11 @@
                     </td>
                     <td> <input type="text" class="currency" id="years_loan" name="fav_language"
                             style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'','yrs')">
+                            onblur="num2text(this,'','yrs')">
                     </td>
                     <td> <input type="text" class="currency" id="years_save" name="fav_language"
                             style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
+                            onblur="num2text(this,'$ ')">
                     </td>
                 </tr>
                 <tr>
@@ -144,11 +143,11 @@
 
                         Final Value
                     </td>
-                    <td> 
+                    <td>
                     </td>
                     <td> <input type="text" class="currency" id="final_value" name="fav_language"
                             style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
+                            onblur="num2text(this,'$ ')">
                     </td>
                 </tr>
 
@@ -161,7 +160,8 @@
         </div>
         <div class="save" id="save" style="display:none; position:fixed;">
             <div style="text-align: right;padding-right:10px;"
-                onclick="document.getElementById('save').style.display = 'none';"><i class="material-icons">close</i></div>
+                onclick="document.getElementById('save').style.display = 'none';"><i class="material-icons">close</i>
+            </div>
             <label for="savebox">Full JSON String</label><br>
             <div class="flex-container">
                 <textarea id="savebox" rows="5" onchange="loaddata();updateData()">{}</textarea><br>
@@ -183,14 +183,16 @@
                 so subsequent usages of this tool will generate different plots.</div>
         </div>
         <div class="help" id="help" style="display:none; position: absolute;">
-            <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;" onclick="toggleHelpWindow()"><i class="material-icons">close</i></div>
+            <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;"
+                onclick="toggleHelpWindow()"><i class="material-icons">close</i></div>
             <h2>The Loan Payoff Calculator</h2>
             <p>
                 This tool can help you figure out how best to pay off your loan, and figure out if you have any "good
                 debt"
             </p>
             <p>
-                <a href="#help" onclick="toggleSaveWindow()">Auto-save can be enabled in the settings menu</a>, and all data is stored in your device (not on this
+                <a href="#help" onclick="toggleSaveWindow()">Auto-save can be enabled in the settings menu</a>, and all
+                data is stored in your device (not on this
                 server), or you can copy out the JSON string so that you can keep your own back-up. As a progressive web
                 app, you can install this on your device for easy access. Though it will default to the main
                 contribution calculator probably.
@@ -269,20 +271,24 @@
             }]
 
             var layout = {
-                xaxis: { 'title': 'Year',
-                         type: 'date',
-                         fixedrange:true},
-                yaxis: { 'title': '',
-                         hoverformat: '$.0f', 
-                         'type': null,
-                         fixedrange:true},
+                xaxis: {
+                    'title': 'Year',
+                    type: 'date',
+                    fixedrange: true
+                },
+                yaxis: {
+                    'title': '',
+                    hoverformat: '$.0f',
+                    'type': null,
+                    fixedrange: true
+                },
                 legend: { 'orientation': 'h', 'y': -0.2 },
                 margin: { 't': 20, 'r': 5, 'l': 40 },
                 autosize: true,
                 paper_bgcolor: "#F9F9F9",
                 plot_bgcolor: "FcFcFc",
                 hovermode: 'x unified',
-                
+
             };
 
             Plotly.react(TESTER, data, layout);

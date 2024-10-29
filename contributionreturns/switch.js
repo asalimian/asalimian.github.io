@@ -3,9 +3,9 @@ let model = "JobCalculator"
 function loadDefaults(upgrade = false) {
     var currentTime = new Date()
     payload = {
-        "old job":{"Salary":'$ 45',"Bonus":'$ 0',"MatchRate":'1%',"MatchMax":'1%',"Healthcare":'$ 5',"COL":'$ 40',"Tax":'10%',"Other":'$ 0'},
-        "new job":{"Salary":'$ 50',"Bonus":'$ 5',"MatchRate":'1%',"MatchMax":'1%',"Healthcare":'$ 5',"COL":'$ 40',"Tax":'10%',"Other":'$ 0'},
-        "app_url":"https://asalimian.github.io/contributionreturns/switch.html",
+        "old job": { "Salary": '$ 45', "Bonus": '$ 0', "MatchRate": '1%', "MatchMax": '1%', "Healthcare": '$ 5', "COL": '$ 40', "Tax": '10%', "Other": '$ 0' },
+        "new job": { "Salary": '$ 50', "Bonus": '$ 5', "MatchRate": '1%', "MatchMax": '1%', "Healthcare": '$ 5', "COL": '$ 40', "Tax": '10%', "Other": '$ 0' },
+        "app_url": "https://asalimian.github.io/contributionreturns/switch.html",
         'last_update': currentTime
     }
 
@@ -126,7 +126,7 @@ function updateData() {
     plotload = []
     plotdiff = []
 
-    
+
     sa = []
     bo = []
     mr = []
@@ -145,50 +145,52 @@ function updateData() {
         cl[plan] = document.getElementById('col_' + plan).value
         tb[plan] = document.getElementById('tax_' + plan).value
         ot[plan] = document.getElementById('other_' + plan).value
-    
-        payload[model][plan +' job'] = {
-            "Salary" : sa[plan],
-            "Bonus" : bo[plan],
-            "MatchRate" : mr[plan],
-            "MatchMax" : mm[plan],
-            "Healthcare" : hc[plan],
-            "COL" : cl[plan],
-            "Tax" : tb[plan],
-            "Other" : ot[plan]  
+
+        payload[model][plan + ' job'] = {
+            "Salary": sa[plan],
+            "Bonus": bo[plan],
+            "MatchRate": mr[plan],
+            "MatchMax": mm[plan],
+            "Healthcare": hc[plan],
+            "COL": cl[plan],
+            "Tax": tb[plan],
+            "Other": ot[plan]
         }
 
-        sa[plan] = strip(sa[plan])*1
-        bo[plan] = strip(bo[plan])*1
-        mr[plan] = strip(mr[plan])*1
-        mm[plan] = strip(mm[plan])*1
-        hc[plan] = strip(hc[plan])*1
-        cl[plan] = strip(cl[plan])*1
-        tb[plan] = strip(tb[plan])*1
-        ot[plan] = strip(ot[plan])*1
+        sa[plan] = strip(sa[plan]) * 1
+        bo[plan] = strip(bo[plan]) * 1
+        mr[plan] = strip(mr[plan]) * 1
+        mm[plan] = strip(mm[plan]) * 1
+        hc[plan] = strip(hc[plan]) * 1
+        cl[plan] = strip(cl[plan]) * 1
+        tb[plan] = strip(tb[plan]) * 1
+        ot[plan] = strip(ot[plan]) * 1
     }
 
     plotload = [
-        {x: ['Old', 'New'],y: [0,-cl['new']+cl['old']],name: 'Cost of Living Change',type: 'bar'},
-        {x: ['Old', 'New'],y: [0,-(sa['new']-sa['old']+
-                                   bo['new']-bo['old']+
-                                   ot['new']-ot['old']+
-                                   hc['old']-hc['new']
-                                   )*(tb['old'])/100],name: 'Tax Change',type: 'bar'},
-        {x: ['Old', 'New'],y: [-hc['old'],-hc['new']],name: 'Healthcare',type: 'bar'},
-        {x: ['Old', 'New'],y: [sa['old'],sa['new']],name: 'Salary',type: 'bar'},
-        {x: ['Old', 'New'],y: [bo['old'],bo['new']],name: 'Bonus',type: 'bar'},
-        {x: ['Old', 'New'],y: [mm['old']*sa['old']/100,mm['new']*sa['new']/100],name: '401k Match',type: 'bar'},
-        {x: ['Old', 'New'],y: [mr['old']*sa['old']/100,mr['new']*sa['new']/100],name: '401k Employer',type: 'bar'},
-        {x: ['Old', 'New'],y: [ot['old'],ot['new']],name: 'Other',type: 'bar'}
+        { x: ['Old', 'New'], y: [0, -cl['new'] + cl['old']], name: 'Cost of Living Change', type: 'bar' },
+        {
+            x: ['Old', 'New'], y: [0, -(sa['new'] - sa['old'] +
+                bo['new'] - bo['old'] +
+                ot['new'] - ot['old'] +
+                hc['old'] - hc['new']
+            ) * (tb['old']) / 100], name: 'Tax Change', type: 'bar'
+        },
+        { x: ['Old', 'New'], y: [-hc['old'], -hc['new']], name: 'Healthcare', type: 'bar' },
+        { x: ['Old', 'New'], y: [sa['old'], sa['new']], name: 'Salary', type: 'bar' },
+        { x: ['Old', 'New'], y: [bo['old'], bo['new']], name: 'Bonus', type: 'bar' },
+        { x: ['Old', 'New'], y: [mm['old'] * sa['old'] / 100, mm['new'] * sa['new'] / 100], name: '401k Match', type: 'bar' },
+        { x: ['Old', 'New'], y: [mr['old'] * sa['old'] / 100, mr['new'] * sa['new'] / 100], name: '401k Employer', type: 'bar' },
+        { x: ['Old', 'New'], y: [ot['old'], ot['new']], name: 'Other', type: 'bar' }
     ]
 
     oldtot = 0
     newtot = 0
-    plotload.forEach(function(x) { oldtot+=x.y[0] })
-    plotload.forEach(function(x) { newtot+=x.y[1] })
- 
-    plotload.forEach(function(x) { x.text=[x.name+': $'+x.y[0]+'<br>Old Job: $'+Math.round(oldtot*100)/100,x.name+': $'+x.y[1]+'<br>New Job: $'+Math.round(newtot*100)/100];x.hoverinfo='text' })
-    
+    plotload.forEach(function (x) { oldtot += x.y[0] })
+    plotload.forEach(function (x) { newtot += x.y[1] })
+
+    plotload.forEach(function (x) { x.text = [x.name + ': $' + x.y[0] + '<br>Old Job: $' + Math.round(oldtot * 100) / 100, x.name + ': $' + x.y[1] + '<br>New Job: $' + Math.round(newtot * 100) / 100]; x.hoverinfo = 'text' })
+
 
     payload[model].app_url = "https://asalimian.github.io/contributionreturns/switch.html"
     payload[model].last_update = currentTime
@@ -199,7 +201,7 @@ function updateData() {
         localStorage['logplot'] = document.getElementById('logplot').checked
     }
 
-    
+
     //update the layout and all the traces
     Plotly.react(TESTER, plotload, layout);
 }

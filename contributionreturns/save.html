@@ -23,14 +23,14 @@
     <link rel="stylesheet" href="app.css">
     <script src="app_common.js"></script>
     <script src="save.js"></script>
-    
+
 
 </head>
 
 <body onload="init()">
 
     <div class="topnav">
-        <a href="#home" class="active" >Contribution Calculator</a>
+        <a href="#home" class="active">Contribution Calculator</a>
         <!-- Navigation links (hidden by default) -->
         <div id="myLinks">
             <a href="save.html" style="color:black;">Contribution Calculator</a>
@@ -43,9 +43,9 @@
         </div>
         <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-          <hamburger></hamburger>
+            <hamburger></hamburger>
         </a>
-      </div>
+    </div>
     <div class="flex-container">
 
         <div class="input" onchange="updateData()">
@@ -59,18 +59,18 @@
 
                     <td><label for="p0_opt"><abbr title="How much you have now">Starting Amount</label><br></td>
                     <td><input type="text" class="currency" id="p0_opt" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                     <td><input type="text" class="currency" id="p0_pes" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td><label for=" pmax_opt"><abbr title="How much you think you'll need">Goal Amount</abbr></label>
                     </td>
                     <td><input type="text" class="currency" id="pmax_opt" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
+                            onblur="num2text(this,'$ ')">
                     </td>
                     <td><input type="text" class="currency" id="pmax_pes" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')">
+                            onblur="num2text(this,'$ ')">
                     </td>
 
                 </tr>
@@ -78,27 +78,25 @@
                     <td><label for=" r_opt"><abbr title="Total investment return rate">Rate of Return</abbr></label>
                     </td>
                     <td><input type="text" class="currency" id="r_opt" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%')"></td>
+                            onblur="num2text(this,'','%')"></td>
                     <td><input type="text" class="currency" id="r_pes" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%')"></td>
+                            onblur="num2text(this,'','%')"></td>
 
                 </tr>
                 <tr>
                     <td><label for="years_opt"><abbr title="How many years till retirement">Years to Goal</abbr></label>
                     </td>
                     <td><input type="text" id="years_opt" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this)"></td>
+                            onblur="num2text(this)"></td>
                     <td><input type="text" id="years_pes" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this)"></td>
+                            onblur="num2text(this)"></td>
 
                 </tr>
                 <tr hidden>
                     <td><label for="date_opt"><abbr title="How many years till retirement">Goal Date</abbr></label>
                     </td>
-                    <td><input type="date" id="date_opt" name="fav_language" onfocus=""
-                             onblur=""></td>
-                    <td><input type="date" id="date_pes" name="fav_language" onfocus=""
-                             onblur=""></td>
+                    <td><input type="date" id="date_opt" name="fav_language" onfocus="" onblur=""></td>
+                    <td><input type="date" id="date_pes" name="fav_language" onfocus="" onblur=""></td>
 
                 </tr>
                 <tr>
@@ -106,18 +104,18 @@
                                 Contribution</abbr></label>
                     </td>
                     <td><input type="text" class="currency" id="cont_opt" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                     <td><input type="text" class="currency" id="cont_pes" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
 
                 </tr>
                 <tr>
                     <td><label for=" time_opt"><abbr title="How long you'd need to contribute to hit coast">Contribution
                                 Time</abbr></label></td>
                     <td><input type="number" id="time_opt" name="fav_language" style="background-color: lightgray;"
-                            readonly ></td>
+                            readonly></td>
                     <td><input type="number" id="time_pes" name="fav_language" style="background-color: lightgray;"
-                            readonly ></td>
+                            readonly></td>
                 </tr>
                 <tr>
                     <td><label for="lux_opt"><abbr
@@ -128,24 +126,25 @@
                             style="background-color: lightgray;" readonly></td>
                     <td><input type="text" class="currency" id="lux_pes" name="fav_language"
                             style="background-color: lightgray;" readonly onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td><label for=" status_opt"><abbr title="">Funding Status</abbr></label></td>
                     <td><input type="text" id="status_opt" name="fav_language"
-                            style="background-color: lightgray;width:5em;" readonly ></td>
+                            style="background-color: lightgray;width:5em;" readonly></td>
                     <td><input type="text" id="status_pes" name="fav_language"
-                            style="background-color: lightgray;width:5em;" readonly ></td>
+                            style="background-color: lightgray;width:5em;" readonly></td>
                 </tr>
             </table>
-            
+
         </div>
         <div class="plot" id="plot">
             <div id="tester"></div>
         </div>
         <div class="save" id="save" style="display:none; position:fixed;">
             <div style="text-align: right;padding-right:10px;"
-                onclick="document.getElementById('save').style.display = 'none';"><i class="material-icons">close</i></div>
+                onclick="document.getElementById('save').style.display = 'none';"><i class="material-icons">close</i>
+            </div>
             <label for="savebox">Full JSON String</label><br>
             <div class="flex-container">
                 <textarea id="savebox" rows="5" onchange="loaddata();updateData()">{}</textarea><br>
@@ -167,7 +166,8 @@
                 so subsequent usages of this tool will generate different plots.</div>
         </div>
         <div class="help" id="help" style="display:none; position: absolute;">
-            <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;" onclick="toggleHelpWindow()"><i class="material-icons">close</i></div>
+            <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;"
+                onclick="toggleHelpWindow()"><i class="material-icons">close</i></div>
             <h2>The Calculator</h2>
             <p>
                 This tool helps you calculate two simultaneous paths to your savings goal. Perhaps you're flexible on
@@ -175,12 +175,15 @@
             </p>
             <hr>
             <p>
-                <a href="#help" onclick="toggleSaveWindow()">Auto-save can be enabled in the settings menu</a>, and all data is stored in your device (not on this
+                <a href="#help" onclick="toggleSaveWindow()">Auto-save can be enabled in the settings menu</a>, and all
+                data is stored in your device (not on this
                 server), or you can copy out the JSON string so that you can keep your own back-up. As a progressive web
-                app, you can install this on your device for easy access. 
+                app, you can install this on your device for easy access.
             </p>
             <p>
-                Lastly, this should work on either mobile or desktop. Please post an issue on <a href="https://github.com/asalimian/asalimian.github.io/issues">my GitHub page</a> if you find any bugs. 
+                Lastly, this should work on either mobile or desktop. Please post an issue on <a
+                    href="https://github.com/asalimian/asalimian.github.io/issues">my GitHub page</a> if you find any
+                bugs.
             </p>
             <hr>
             <h2>The Inputs</h2>
@@ -244,13 +247,17 @@
             }]
 
             var layout = {
-                xaxis: { 'title': 'Year',
-                         type: 'date',
-                         fixedrange:true},
-                yaxis: { 'title': '',
-                         hoverformat: '$.0f', 
-                         'type': null,
-                         fixedrange:true},
+                xaxis: {
+                    'title': 'Year',
+                    type: 'date',
+                    fixedrange: true
+                },
+                yaxis: {
+                    'title': '',
+                    hoverformat: '$.0f',
+                    'type': null,
+                    fixedrange: true
+                },
                 legend: { 'orientation': 'h', 'y': -0.2 },
                 margin: { 't': 20, 'r': 5, 'l': 40 },
                 autosize: true,

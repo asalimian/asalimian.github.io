@@ -48,7 +48,7 @@
 <body onload="init()">
 
     <div class="topnav">
-        <a href="#home" class="active" >Job Change Calculator</a>
+        <a href="#home" class="active">Job Change Calculator</a>
         <!-- Navigation links (hidden by default) -->
         <div id="myLinks">
             <a href="save.html">Contribution Calculator</a>
@@ -61,9 +61,9 @@
         </div>
         <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-          <hamburger></hamburger>
+            <hamburger></hamburger>
         </a>
-      </div>
+    </div>
     <div class="flex-container">
 
         <div class="input" onchange="updateData()">
@@ -76,68 +76,69 @@
                 <tr>
                     <td><label for="p0_opt">Salary<br></td>
                     <td><input type="text" class="currency" id="sal_old" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                     <td><input type="text" class="currency" id="sal_new" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td><label for="p0_opt">Bonus<br></td>
                     <td><input type="text" class="currency" id="bonus_old" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                     <td><input type="text" class="currency" id="bonus_new" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td><label for="p0_opt">401k Match Rate<br></td>
-                    <td><input type="text" class="currency" id="matchrate_old" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%')"></td>
-                    <td><input type="text" class="currency" id="matchrate_new" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%')"></td>
+                    <td><input type="text" class="currency" id="matchrate_old" name="fav_language"
+                            onfocus="text2num(this)" onblur="num2text(this,'','%')"></td>
+                    <td><input type="text" class="currency" id="matchrate_new" name="fav_language"
+                            onfocus="text2num(this)" onblur="num2text(this,'','%')"></td>
                 </tr>
                 <tr>
                     <td><label for="p0_opt">401k Match Max<br></td>
-                    <td><input type="text" class="currency" id="matchmax_old" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%')"></td>
-                    <td><input type="text" class="currency" id="matchmax_new" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%')"></td>
+                    <td><input type="text" class="currency" id="matchmax_old" name="fav_language"
+                            onfocus="text2num(this)" onblur="num2text(this,'','%')"></td>
+                    <td><input type="text" class="currency" id="matchmax_new" name="fav_language"
+                            onfocus="text2num(this)" onblur="num2text(this,'','%')"></td>
                 </tr>
                 <tr>
                     <td><label for="p0_opt">Healthcare<br></td>
-                    <td><input type="text" class="currency" id="healthcare_old" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
-                    <td><input type="text" class="currency" id="healthcare_new" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                    <td><input type="text" class="currency" id="healthcare_old" name="fav_language"
+                            onfocus="text2num(this)" onblur="num2text(this,'$ ')"></td>
+                    <td><input type="text" class="currency" id="healthcare_new" name="fav_language"
+                            onfocus="text2num(this)" onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td><label for="p0_opt">Cost of Living Adjustment<br></td>
                     <td><input type="text" class="currency" id="col_old" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                     <td><input type="text" class="currency" id="col_new" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                 </tr>
                 <tr>
                     <td><label for="p0_opt">Tax Bracket<br></td>
                     <td><input type="text" class="currency" id="tax_old" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%')"></td>
-                    <td><input hidden type="text" class="currency" id="tax_new" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'','%'   )"></td>
+                            onblur="num2text(this,'','%')"></td>
+                    <td><input hidden type="text" class="currency" id="tax_new" name="fav_language"
+                            onfocus="text2num(this)" onblur="num2text(this,'','%'   )"></td>
                 </tr>
                 <tr>
                     <td><label for="p0_opt">Other<br></td>
                     <td><input type="text" class="currency" id="other_old" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                     <td><input type="text" class="currency" id="other_new" name="fav_language" onfocus="text2num(this)"
-                             onblur="num2text(this,'$ ')"></td>
+                            onblur="num2text(this,'$ ')"></td>
                 </tr>
             </table>
-            
+
         </div>
         <div class="plot" id="plot">
             <div id="tester"></div>
         </div>
         <div class="save" id="save" style="display:none; position:fixed;">
             <div style="text-align: right;padding-right:10px;"
-                onclick="document.getElementById('save').style.display = 'none';"><i class="material-icons">close</i></div>
+                onclick="document.getElementById('save').style.display = 'none';"><i class="material-icons">close</i>
+            </div>
             <label for="savebox">Full JSON String</label><br>
             <div class="flex-container">
                 <textarea id="savebox" rows="5" onchange="loaddata();updateData()">{}</textarea><br>
@@ -159,28 +160,32 @@
                 so subsequent usages of this tool will generate different plots.</div>
         </div>
         <div class="help" id="help" style="display:none; position: absolute;">
-            <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;" onclick="toggleHelpWindow()"><i class="material-icons">close</i></div>
+            <div style="text-align: right;padding-top:5px;padding-bottom:5px;padding-right:12px;"
+                onclick="toggleHelpWindow()"><i class="material-icons">close</i></div>
             <h2>The Calculator</h2>
             <p>
                 This tool helps you compare two jobs. It under construction 🚸👷🏻‍♂️
             </p>
             <hr>
             <p>
-                <a href="#help" onclick="toggleSaveWindow()">Auto-save can be enabled in the settings menu</a>, and all data is stored in your device (not on this
+                <a href="#help" onclick="toggleSaveWindow()">Auto-save can be enabled in the settings menu</a>, and all
+                data is stored in your device (not on this
                 server), or you can copy out the JSON string so that you can keep your own back-up. As a progressive web
-                app, you can install this on your device for easy access. 
+                app, you can install this on your device for easy access.
             </p>
             <p>
-                Lastly, this should work on either mobile or desktop. Please post an issue on <a href="https://github.com/asalimian/asalimian.github.io/issues">my GitHub page</a> if you find any bugs. 
+                Lastly, this should work on either mobile or desktop. Please post an issue on <a
+                    href="https://github.com/asalimian/asalimian.github.io/issues">my GitHub page</a> if you find any
+                bugs.
             </p>
             <hr>
             <h2>The Inputs</h2>
             <p>
-                <strong>Salary</strong><br>How much you'll gross in a year (i.e. before taxes). 
+                <strong>Salary</strong><br>How much you'll gross in a year (i.e. before taxes).
                 <hr>
             </p>
             <p>
-                <strong>Bonus</strong><br>How much bonus/commission/tips you expect to get in a year. 
+                <strong>Bonus</strong><br>How much bonus/commission/tips you expect to get in a year.
                 <hr>
             </p>
             <p>
@@ -192,23 +197,29 @@
                 <hr>
             </p>
             <p>
-                <strong>Healthcare</strong><br>How much healthcare will cost (see the <a href="plan.html">healthcare calculator</a>).
+                <strong>Healthcare</strong><br>How much healthcare will cost (see the <a href="plan.html">healthcare
+                    calculator</a>).
                 <hr>
             </p>
             <p>
-                <strong>Cost of Living Adjustment</strong><br>How much the area costs to live in (in $1000's of dollars). Use the <a href="https://livingwage.mit.edu/">MIT Living Wage</a> tool and input the "Required annual income before taxes" from the Typical Expenses table. 
+                <strong>Cost of Living Adjustment</strong><br>How much the area costs to live in (in $1000's of
+                dollars). Use the <a href="https://livingwage.mit.edu/">MIT Living Wage</a> tool and input the "Required
+                annual income before taxes" from the Typical Expenses table.
                 <hr>
             </p>
             <p>
-                <strong>Tax Bracket</strong><br>What your current tax bracket is. The resulting calculation is simplistic and takes the difference between the two salaries and applies this rate, and applies only the new job. 
+                <strong>Tax Bracket</strong><br>What your current tax bracket is. The resulting calculation is
+                simplistic and takes the difference between the two salaries and applies this rate, and applies only the
+                new job.
                 <hr>
             </p>
             <p>
-                <strong>Other</strong><br>Whatever other secret money you may get (relocation bonus, stock options, etc).
+                <strong>Other</strong><br>Whatever other secret money you may get (relocation bonus, stock options,
+                etc).
                 <hr>
             </p>
-            
-            
+
+
 
         </div>
         <script type="text/javascript">
@@ -228,10 +239,12 @@
             }]
 
             var layout = {
-                xaxis: { 'title': '',
-                         },
-                yaxis: { 'title': '',
-                         },
+                xaxis: {
+                    'title': '',
+                },
+                yaxis: {
+                    'title': '',
+                },
                 autosize: true,
                 paper_bgcolor: "#F9F9F9",
                 plot_bgcolor: "FcFcFc",

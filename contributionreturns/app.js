@@ -17,6 +17,6 @@ function redirect(lastmodel) {
         default:
             window.location.href = "save.html";
     }
-    
+
 
 }

@@ -9,53 +9,53 @@
 
 /* Style the navigation menu */
 .topnav {
-  overflow: hidden;
-  background-color: #333;
-  position: fixed;
-  width:100%;
-  z-index: 100;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
 }
 
 /* Hide the links inside the navigation menu (except for logo/home) */
 .topnav #myLinks {
-  display: none;
-  
-  z-index: 100;
+    display: none;
+
+    z-index: 100;
 }
 
 /* Style navigation menu links */
 .topnav a {
-  color: white;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-  display: block;
-  
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+
 }
 
 /* Style the hamburger menu */
 .topnav a.icon {
-  background: black;
-  display: block;
-  position: absolute;
-  right: 0;
-  top: 0;
-  height:22px;
-  width:22px;
-  padding-top:10px;
-  padding-bottom:18px;
+    background: black;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 22px;
+    width: 22px;
+    padding-top: 10px;
+    padding-bottom: 18px;
 }
 
 /* Add a grey background color on mouse-over */
 .topnav a:hover {
-  /*background-color: #ddd;*/
-  color: black;
+    /*background-color: #ddd;*/
+    color: black;
 }
 
 /* Style the active link (or home/logo) */
 .active {
-  background-color: #04AA6D;
-  color: white;
+    background-color: #04AA6D;
+    color: white;
 }
 
 .switch input {
@@ -113,41 +113,41 @@ input:checked+.slider:before {
 
 input[type=number] {
     width: 70px;
-    text-align: right; 
-    
-    padding-top:5px;
-    padding-bottom:5px;
-    }
+    text-align: right;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 
 input[type=text] {
     width: 70px;
-    text-align: right; 
-    padding-top:5px;
-    padding-bottom:5px;
-    margin-bottom:4px;
-    margin-top:4px;
+    text-align: right;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 4px;
+    margin-top: 4px;
 }
 
 input[type=date] {
     /*width: 70px;*/
-    text-align: right; 
-    padding-top:5px;
-    padding-bottom:5px;
-    margin-bottom:4px;
-    margin-top:4px;
+    text-align: right;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 4px;
+    margin-top: 4px;
 }
 
 select {
     width: 77px;
-    text-align: right; 
-    padding-top:5px;
-    padding-bottom:5px;
-    margin-bottom:4px;
-    margin-top:4px;
+    text-align: right;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 4px;
+    margin-top: 4px;
 }
 
 input[type=range] {
-    height:32px
+    height: 32px
 }
 
 input[type=button] {
@@ -193,7 +193,7 @@ input.oversaved {
 }
 
 .flex-container>textarea {
-    flex: 1 ;
+    flex: 1;
 }
 
 .input {
@@ -209,13 +209,13 @@ input.oversaved {
 
 hamburger {
     content: "";
-    
+
     display: block;
     width: 22px;
-    padding-top:0;
-    
-    -webkit-box-shadow: 1px 10px 1px 1px #ddd,1px 16px 1px 1px     #ddd,1px 22px 1px 1px #ddd;
-    box-shadow: 0 10px 0 1px #ddd,0 16px 0 1px #ddd,0 22px 0 1px #ddd;
+    padding-top: 0;
+
+    -webkit-box-shadow: 1px 10px 1px 1px #ddd, 1px 16px 1px 1px #ddd, 1px 22px 1px 1px #ddd;
+    box-shadow: 0 10px 0 1px #ddd, 0 16px 0 1px #ddd, 0 22px 0 1px #ddd;
 }
 
 body {
@@ -243,6 +243,7 @@ body {
     right: 18px;
     left: 18px;
 }
+
 .currency {
     width: 5em
 }
