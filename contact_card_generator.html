@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Finder Card Generator</title>
+    <script src="https://unpkg.com/qrcode@1.2.0/build/qrcode.min.js"></script>
+    <style>
+        :root {
+            --emphasis: #ff6700ff;
+            --other: #ebebebff;
+            --secondary: #c0c0c0ff;
+            --active: #3a6ea5ff;
+            --main: #004e98ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--main);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--active);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .form-section {
+            padding: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--active);
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .aspect-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .aspect-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .aspect-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .aspect-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .aspect-input input {
+            width: 80px;
+            text-align: center;
+        }
+
+       
+
+       
+        .card-preview {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .card-container {
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            width: 100%;
+            max-width: calc(100vw - 80px);
+            overflow: hidden;
+        }
+
+        .card-container canvas {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .download-section {
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            background: var(--active);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .download-btn:hover {
+            background: var(--emphasis);
+            transform: translateY(-1px);
+        }
+
+        .usage-tips {
+            background: #e8f5e8;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .usage-tips h4 {
+            color: #155724;
+            margin-bottom: 10px;
+        }
+
+        .usage-tips ul {
+            color: #155724;
+            margin-left: 20px;
+        }
+
+        .usage-tips li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .aspect-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Contact Card Generator</h1>
+            <p>Create a contact card image and save to your camera's memory card.</p>
+        </div>
+
+        <div class="form-section">
+
+
+            <form id="contactForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="+X XXX XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city">
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State/Province</label>
+                        <input type="text" id="state">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" id="country">
+                    </div>
+                </div>
+
+                <div class="aspect-section">
+                    <h3>Card Dimensions</h3>
+                    <div class="aspect-controls">
+                        <div class="aspect-input">
+                            <label>Aspect Ratio:</label>
+                            <select id="aspectRatio">
+                                <option value="1:1">1:1 (Square)</option>
+                                <option value="3:2" selected>3:2 (Standard)</option>
+                                <option value="4:3">4:3 (Classic)</option>
+                                <option value="16:9">16:9 (Widescreen)</option>
+                            </select>
+                        </div>
+                        <div class="aspect-input" style="display:none;">
+                            <label>Size:</label>
+                            <select id="cardSize">
+                                <option value="900" selected>Medium (900px)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="download-section">
+                        <button class="download-btn" onclick="downloadCard()">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6" style="width:24px;">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                            </svg>
+
+                            Download Card (JPEG)</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="card-preview" id="cardPreview">
+                <div class="card-container">
+                    <canvas id="finderCard"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let finderCanvas;
+        let contactData = {};
+
+        // Add event listeners for live updates
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputs = ['name', 'phone', 'email', 'city', 'state', 'country'];
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', generateCard);
+            });
+
+            document.getElementById('aspectRatio').addEventListener('change', generateCard);
+            document.getElementById('cardSize').addEventListener('change', generateCard);
+
+            // Generate initial card
+            generateCard();
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+        });
+
+        function generateCard() {
+            // Collect form data
+            contactData = {
+                name: document.getElementById('name').value || 'Your Name',
+                phone: document.getElementById('phone').value || 'Your Phone',
+                email: document.getElementById('email').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                country: document.getElementById('country').value
+            };
+
+            const aspectRatio = document.getElementById('aspectRatio').value;
+            const cardSize = parseInt(document.getElementById('cardSize').value);
+
+            // Parse aspect ratio
+            const [aspectWidth, aspectHeight] = aspectRatio.split(':').map(Number);
+
+            // Calculate dimensions
+            const width = cardSize;
+            const height = Math.round((cardSize * aspectHeight) / aspectWidth);
+
+            // Create canvas
+            finderCanvas = document.getElementById('finderCard');
+            finderCanvas.width = width;
+            finderCanvas.height = height;
+
+            // Generate card
+            drawFinderCard(finderCanvas, contactData);
+
+            // Show preview
+            document.getElementById('cardPreview').style.display = 'block';
+        }
+
+        function drawFinderCard(canvas, data) {
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // White background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, width, height);
+
+            // Add border
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(2, 2, width - 4, height - 4);
+
+            // Split into two halves
+            const leftWidth = width * 0.6;
+            const rightWidth = width * 0.4;
+
+            // Draw separator line
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(leftWidth, 10);
+            ctx.lineTo(leftWidth, height - 10);
+            ctx.stroke();
+
+            // LEFT SIDE - Contact Information
+            drawContactInfo(ctx, data, leftWidth, height);
+
+            // RIGHT SIDE - QR Code
+            drawQRCode(ctx, data, leftWidth, rightWidth, height);
+        }
+
+        function drawContactInfo(ctx, data, leftWidth, height) {
+            ctx.fillStyle = '#333';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+
+            const margin = 20;
+            const startX = margin;
+            let currentY = margin;
+
+            // Header 
+            const maxHeaderSize = Math.min(leftWidth / 8, height / 8);
+            const headerSize = Math.max(16, maxHeaderSize);
+            ctx.font = `bold 42pt Arial, sans-serif`;
+            ctx.fillStyle = '#444';
+
+            // Split header into two lines for better fit
+            const line1 = 'Owner Information';
+
+
+            ctx.fillText(line1, startX, currentY);
+            currentY += headerSize + 2;
+
+            currentY += headerSize + 15;
+
+            // Contact details
+            ctx.fillStyle = '#000';
+            const nameFontSize = Math.max(48, leftWidth / 20);
+            ctx.font = `bold ${nameFontSize}px Arial, sans-serif`;
+
+            // Name
+            ctx.fillText(data.name, startX, currentY);
+            currentY += nameFontSize + 8;
+
+            // Phone
+            const phoneFontSize = Math.max(38, leftWidth / 25);
+            ctx.font = `bold ${phoneFontSize}px Arial, sans-serif`;
+            ctx.fillStyle = '#333';
+            ctx.fillText(data.phone, startX, currentY);
+            currentY += phoneFontSize + 6;
+
+            // Email (if provided)
+            if (data.email) {
+                const emailFontSize = Math.max(38, leftWidth / 35);
+                ctx.font = `${emailFontSize}px Arial, sans-serif`;
+                ctx.fillText(data.email, startX, currentY);
+                currentY += emailFontSize + 6;
+            }
+
+            // Location (if provided)
+            if (data.city || data.state || data.country) {
+                const locationFontSize = Math.max(38, leftWidth / 35);
+                ctx.font = `${locationFontSize}px Arial, sans-serif`;
+                let location = '';
+                if (data.city) location += data.city;
+                if (data.state) location += (location ? ', ' : '') + data.state;
+                if (data.country) location += (location ? ', ' : '') + data.country;
+                ctx.fillText(location, startX, currentY);
+                currentY += locationFontSize + 10;
+            }
+
+            // Thank you message
+            const thanksFontSize = Math.max(32, leftWidth / 40);
+            ctx.font = `italic ${thanksFontSize}px Arial, sans-serif`;
+            ctx.fillStyle = '#666';
+            ctx.fillText('Thank you!', startX, height - margin - thanksFontSize);
+        }
+
+        function drawQRCode(ctx, data, leftWidth, rightWidth, height) {
+            // Create vCard data
+            const vCard = createVCard(data);
+
+            // Calculate QR code size to fit in right side with padding
+            const padding = 15;
+            const availableSpace = Math.min(rightWidth - (padding * 2), height - (padding * 2));
+            const qrSize = Math.max(80, availableSpace);
+
+            const qrCanvas = document.createElement('canvas');
+
+            QRCode.toCanvas(qrCanvas, vCard, {
+                width: qrSize,
+                margin: 1,
+                color: {
+                    dark: '#333333',
+                    light: '#FFFFFF'
+                }
+            }, function (error) {
+                if (error) {
+                    console.error('QR Code generation error:', error);
+                    return;
+                }
+
+                // Draw QR code centered in right half
+                const qrX = leftWidth + (rightWidth - qrSize) / 2;
+                const qrY = (height - qrSize) / 2;
+                ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize);
+            });
+        }
+
+        function createVCard(data) {
+            let vCard = 'BEGIN:VCARD\nVERSION:3.0\n';
+
+            // Only add fields that have actual values (not placeholder text)
+            if (data.name && data.name !== 'Your Name') {
+                vCard += `FN:${data.name}\n`;
+                vCard += `N:${data.name};;;;\n`;
+            }
+
+            if (data.phone && data.phone !== 'Your Phone') vCard += `TEL:${data.phone}\n`;
+            if (data.email) vCard += `EMAIL:${data.email}\n`;
+
+            if (data.city || data.state || data.country) {
+                vCard += `ADR:;;${data.city || ''};${data.state || ''};${data.country || ''};;;\n`;
+            }
+
+            vCard += 'END:VCARD';
+            return vCard;
+        }
+
+        function downloadCard() {
+            const nameForFile = contactData.name && contactData.name !== 'Your Name'
+                ? contactData.name.replace(/\s+/g, '-').toLowerCase()
+                : 'camera-finder-card';
+
+            const link = document.createElement('a');
+            link.download = `${nameForFile}.jpg`;
+
+            // Convert to high-quality JPEG
+            link.href = finderCanvas.toDataURL('image/jpeg', 0.95);
+            link.click();
+        }
+    </script>
+</body>
+
+</html>
