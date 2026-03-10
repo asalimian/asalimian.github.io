@@ -55,8 +55,8 @@ function loaddata() {
     document.getElementById('p0_pes').value = datamodel["Pessimistic Scenario"]["Principle"];
     document.getElementById('r_opt').value = datamodel["Optimistic Scenario"]["Rate"];
     document.getElementById('r_pes').value = datamodel["Pessimistic Scenario"]["Rate"];
-    document.getElementById('years_opt').value = Number(datamodel["Optimistic Scenario"]["Years"])+timeshift;
-    document.getElementById('years_pes').value = Number(datamodel["Pessimistic Scenario"]["Years"])+timeshift;
+    document.getElementById('years_opt').value = (Number(datamodel["Optimistic Scenario"]["Years"])+timeshift).toFixed(2);
+    document.getElementById('years_pes').value = (Number(datamodel["Pessimistic Scenario"]["Years"])+timeshift).toFixed(2);
     document.getElementById('cont_opt').value = datamodel["Optimistic Scenario"]["Contribution"];
     document.getElementById('cont_pes').value = datamodel["Pessimistic Scenario"]["Contribution"];
 
