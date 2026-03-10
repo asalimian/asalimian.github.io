@@ -93,8 +93,11 @@ function updateData() {
         f = document.getElementById('freq_' + plan).value
         d = document.getElementById('ded_' + plan).value
         c = document.getElementById('co_' + plan).value
+        e = document.getElementById('coe_' + plan)
         o = document.getElementById('oop_' + plan).value
         s = document.getElementById('disc_' + plan).value
+
+        e.value = (100 - Number(c.replace(' %', ''))) + " %"
 
         payload[model]["plan" + plan.toUpperCase()] = {
             "name": n,
@@ -151,9 +154,9 @@ function updateData() {
             name: document.getElementById('planC').innerHTML
         },
     ]
-    difflayout.xaxis.title= document.getElementById('planA').innerHTML + ' Costs'
+    difflayout.xaxis.title = document.getElementById('planA').innerHTML + ' Costs'
 
-    document.getElementById('optionA').innerHTML =  document.getElementById('planA').innerHTML
+    document.getElementById('optionA').innerHTML = document.getElementById('planA').innerHTML
 
     plotdiff[0].line = { color: '#FF7F0E' }
     plotdiff[1].line = { color: '#2CA02C' }
