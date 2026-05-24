@@ -125,6 +125,18 @@ input[type="text"] {
   padding-bottom: 5px;
   margin-bottom: 4px;
   margin-top: 4px;
+  border-radius: 5px;
+  border: solid 1px rgb(175, 175, 175);
+}
+
+.outcome {
+  background-color: #e5e7e7 !important;
+  border: solid 1px black;
+  text-align: center;
+  padding: 0px 0;
+  font-size: 1em;
+  right: 18px;
+  left: 18px;
 }
 
 input[type="date"] {

@@ -210,24 +210,24 @@ function updateData() {
   }
 
   if (lux.opt * 1 > cont_opt * 1) {
-    document.getElementById("status_opt").value = "❌off-track";
+    document.getElementById("status_opt").value = "Off Track";
     document.getElementById("status_opt").className = "offtrack";
   } else if (time.opt * 1 <= 0) {
-    document.getElementById("status_opt").value = "⚠️oversaved";
+    document.getElementById("status_opt").value = "Oversaved";
     document.getElementById("status_opt").className = "oversaved";
   } else {
-    document.getElementById("status_opt").value = "✔️on-track";
+    document.getElementById("status_opt").value = "On Track";
     document.getElementById("status_opt").className = "ontrack";
   }
 
   if (lux.pes * 1 > cont_pes * 1) {
-    document.getElementById("status_pes").value = "❌off-track";
+    document.getElementById("status_pes").value = "Off Track";
     document.getElementById("status_pes").className = "offtrack";
   } else if (time.pes * 1 <= 0) {
-    document.getElementById("status_pes").value = "⚠️oversaved";
+    document.getElementById("status_pes").value = "Oversaved";
     document.getElementById("status_pes").className = "oversaved";
   } else {
-    document.getElementById("status_pes").value = "✔️on-track";
+    document.getElementById("status_pes").value = "On Track";
     document.getElementById("status_pes").className = "ontrack";
   }
 
