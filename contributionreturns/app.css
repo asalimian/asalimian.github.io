@@ -1,249 +1,248 @@
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 48px;
-    height: 22px;
-    margin-top: 2px;
-    margin-bottom: 2px;
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 22px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 /* Style the navigation menu */
 .topnav {
-    overflow: hidden;
-    background-color: #333;
-    position: fixed;
-    width: 100%;
-    z-index: 100;
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
 }
 
 /* Hide the links inside the navigation menu (except for logo/home) */
 .topnav #myLinks {
-    display: none;
+  display: none;
 
-    z-index: 100;
+  z-index: 100;
 }
 
 /* Style navigation menu links */
 .topnav a {
-    color: white;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-    display: block;
-
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
 }
 
 /* Style the hamburger menu */
 .topnav a.icon {
-    background: black;
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 22px;
-    width: 22px;
-    padding-top: 10px;
-    padding-bottom: 18px;
+  background: black;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 22px;
+  width: 22px;
+  padding-top: 10px;
+  padding-bottom: 18px;
 }
 
 /* Add a grey background color on mouse-over */
 .topnav a:hover {
-    /*background-color: #ddd;*/
-    color: black;
+  /*background-color: #ddd;*/
+  color: black;
 }
 
 /* Style the active link (or home/logo) */
 .active {
-    background-color: #04AA6D;
-    color: white;
+  background-color: #04aa6d;
+  color: white;
 }
 
 .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
-    position: absolute;
-    content: "";
-    height: 15px;
-    width: 15px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
-input:checked+.slider {
-    background-color: #21f380;
+input:checked + .slider {
+  background-color: #21f380;
 }
 
-input:focus+.slider {
-    box-shadow: 0 0 1px #21f380;
+input:focus + .slider {
+  box-shadow: 0 0 1px #21f380;
 }
 
-input:checked+.slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 
 /* Rounded sliders */
 .slider.round {
-    border-radius: 34px;
+  border-radius: 34px;
 }
 
 .slider.round:before {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
-input[type=number] {
-    width: 70px;
-    text-align: right;
+input[type="number"] {
+  width: 70px;
+  text-align: right;
 
-    padding-top: 5px;
-    padding-bottom: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
-input[type=text] {
-    width: 70px;
-    text-align: right;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-bottom: 4px;
-    margin-top: 4px;
+input[type="text"] {
+  width: 70px;
+  text-align: right;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 4px;
+  margin-top: 4px;
 }
 
-input[type=date] {
-    /*width: 70px;*/
-    text-align: right;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-bottom: 4px;
-    margin-top: 4px;
+input[type="date"] {
+  /*width: 70px;*/
+  text-align: right;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 4px;
+  margin-top: 4px;
 }
 
 select {
-    width: 77px;
-    text-align: right;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-bottom: 4px;
-    margin-top: 4px;
+  width: 77px;
+  text-align: right;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 4px;
+  margin-top: 4px;
 }
 
-input[type=range] {
-    height: 32px
+input[type="range"] {
+  height: 32px;
 }
 
-input[type=button] {
-    width: 10em;
+input[type="button"] {
+  width: 10em;
 }
 
 input.ontrack {
-    background-color: #25DA6F !important;
-    border: none;
-    border-radius: 5px;
+  background-color: #25da6f !important;
+  border: none;
+  border-radius: 5px;
 }
 
 input.offtrack {
-    background-color: #FF2B3F !important;
-    border: none;
-    border-radius: 5px;
+  background-color: #ff2b3f !important;
+  border: none;
+  border-radius: 5px;
 }
 
 input.oversaved {
-    background-color: gold !important;
-    border: none;
-    border-radius: 5px;
+  background-color: gold !important;
+  border: none;
+  border-radius: 5px;
 }
-
-
 
 .flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    grid-gap: 10px;
-    background-color: #74747436;
-    padding: 10px;
-    padding-top: 60px;
-
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 10px;
+  background-color: #74747436;
+  padding: 10px;
+  padding-top: 60px;
 }
 
-.flex-container>div {
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    padding: 10px 0;
-    font-size: 1em;
-    flex: 1 0 auto;
+.flex-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 10px 0;
+  font-size: 1em;
+  flex: 1 0 auto;
 }
 
-.flex-container>textarea {
-    flex: 1;
+.flex-container > textarea {
+  flex: 1;
 }
 
 .input {
-    width: auto;
-    min-width: 300px;
-    flex: auto;
+  width: auto;
+  min-width: 300px;
+  flex: auto;
 }
 
 .plot {
-    min-width: 300px;
-    height: 100%;
+  min-width: 300px;
+  height: 100%;
 }
 
 hamburger {
-    content: "";
+  content: "";
 
-    display: block;
-    width: 22px;
-    padding-top: 0;
+  display: block;
+  width: 22px;
+  padding-top: 0;
 
-    -webkit-box-shadow: 1px 10px 1px 1px #ddd, 1px 16px 1px 1px #ddd, 1px 22px 1px 1px #ddd;
-    box-shadow: 0 10px 0 1px #ddd, 0 16px 0 1px #ddd, 0 22px 0 1px #ddd;
+  -webkit-box-shadow:
+    1px 10px 1px 1px #ddd,
+    1px 16px 1px 1px #ddd,
+    1px 22px 1px 1px #ddd;
+  box-shadow: 0 10px 0 1px #ddd, 0 16px 0 1px #ddd, 0 22px 0 1px #ddd;
 }
 
 body {
-    margin: 0;
-    font-family: system-ui;
+  margin: 0;
+  font-family: system-ui;
 }
 
 .save {
-    background-color: #A2DAC6 !important;
-    border: solid 1px black;
-    text-align: center;
-    border: solid 1px black;
-    padding: 0px 0;
-    font-size: 1em;
-    right: 18px;
-    left: 18px;
+  background-color: #a2dac6 !important;
+  border: solid 1px black;
+  text-align: center;
+  border: solid 1px black;
+  padding: 0px 0;
+  font-size: 1em;
+  right: 18px;
+  left: 18px;
 }
 
 .help {
-    background-color: #A2DAC6 !important;
-    text-align: center;
-    border: solid 1px black;
-    padding: 0px 0;
-    font-size: 1em;
-    right: 18px;
-    left: 18px;
+  background-color: #a2dac6 !important;
+  text-align: center;
+  border: solid 1px black;
+  padding: 0px 0;
+  font-size: 1em;
+  right: 18px;
+  left: 18px;
 }
 
 .currency {
-    width: 5em
+  width: 5em;
 }
