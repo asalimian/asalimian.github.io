@@ -79,6 +79,7 @@ function loaddata() {
 
   calcContributions();
   calcSavings();
+  syncDatesFromYears();
 
   console.log("App Data loaded");
 }
@@ -170,6 +171,7 @@ function updateData() {
   r_pes = document.getElementById("r_pes").value;
   years_opt = document.getElementById("years_opt").value;
   years_pes = document.getElementById("years_pes").value;
+  syncDatesFromYears();
   cont_opt = document.getElementById("cont_opt").value;
   cont_pes = document.getElementById("cont_pes").value;
 
@@ -270,34 +272,103 @@ function updateData() {
 
   graphDiv = document.getElementById("tester");
 
+  // Design token colors (kept in sync with app.css)
+  // RGB equivalents of --opt / --pes tokens (Plotly doesn't parse oklch())
+  var COLOR_OPT          = "rgb(60, 134, 73)";    // --opt        (contributions)
+  var COLOR_OPT_RETURNS  = "rgb(140, 196, 152)";  // lighter green (returns)
+  var COLOR_PES          = "rgb(62, 105, 156)";   // --pes        (contributions)
+  var COLOR_PES_RETURNS  = "rgb(144, 184, 226)";  // lighter blue  (returns)
+
   //update the layout and all the traces
   Plotly.react(TESTER, [{
     x: pescontrib[0],
     y: pescontrib[1],
     name: "Contributions Pessimistic",
-    marker: {
-      color: "#951b1c",
-    },
+    marker: { color: COLOR_PES },
+    line: { color: COLOR_PES, width: 2 },
   }, {
     x: pescoast[0],
     y: pescoast[1],
     name: "Returns Pessimistic",
-    marker: {
-      color: "#e36667",
-    },
+    marker: { color: COLOR_PES_RETURNS },
+    line: { color: COLOR_PES_RETURNS, width: 2.5 },
   }, {
     x: optcontrib[0],
     y: optcontrib[1],
     name: "Contribution Optimistic",
-    marker: {
-      color: "#144c73",
-    },
+    marker: { color: COLOR_OPT },
+    line: { color: COLOR_OPT, width: 2 },
   }, {
     x: optcoast[0],
     y: optcoast[1],
     name: "Returns Optimistic",
-    marker: {
-      color: "#419ede",
-    },
+    marker: { color: COLOR_OPT_RETURNS },
+    line: { color: COLOR_OPT_RETURNS, width: 2.5 },
   }], layout);
+
+  // Populate desktop status cards + mobile chips
+  updateStatusCards(time, lux, cont_opt, cont_pes);
+}
+
+function updateStatusCards(time, lux, cont_opt, cont_pes) {
+  var optEl = document.getElementById("status_card_opt");
+  var pesEl = document.getElementById("status_card_pes");
+  var doneOpt = document.getElementById("done_opt");
+  var donePes = document.getElementById("done_pes");
+  var chipOpt = document.getElementById("chip_opt");
+  var chipPes = document.getElementById("chip_pes");
+
+  function labelFor(luxVal, timeVal, contVal) {
+    if (luxVal * 1 > contVal * 1) return "Off Track";
+    if (timeVal * 1 <= 0) return "Oversaved";
+    return "On Track";
+  }
+
+  var optLabel = labelFor(lux.opt, time.opt, cont_opt);
+  var pesLabel = labelFor(lux.pes, time.pes, cont_pes);
+
+  if (optEl) optEl.textContent = optLabel;
+  if (pesEl) pesEl.textContent = pesLabel;
+  if (doneOpt) {
+    doneOpt.textContent = Math.max(0, Math.round(time.opt * 10) / 10);
+  }
+  if (donePes) {
+    donePes.textContent = Math.max(0, Math.round(time.pes * 10) / 10);
+  }
+  if (chipOpt) chipOpt.textContent = "Optimistic: " + optLabel;
+  if (chipPes) chipPes.textContent = "Pessimistic: " + pesLabel;
+}
+
+// Convert years (number) to an ISO date string `today + years*365.25 days`.
+function yearsToISODate(years) {
+  var ms = Date.now() + Number(years) * 365.25 * 24 * 3600 * 1000;
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
+// Refresh both date inputs from the current years values.
+// Skipped while the user is mid-edit on a date input (see dateToYears).
+function syncDatesFromYears() {
+  if (_dateEditInFlight) return;
+  var dateOpt = document.getElementById("date_opt");
+  var datePes = document.getElementById("date_pes");
+  if (dateOpt) {
+    dateOpt.value = yearsToISODate(document.getElementById("years_opt").value);
+  }
+  if (datePes) {
+    datePes.value = yearsToISODate(document.getElementById("years_pes").value);
+  }
+}
+
+// User edited a date input — convert back to fractional years and recompute.
+// Sets a flag so updateData() skips the years→date round-trip that would
+// drift the user's selected date by a day or two due to rounding.
+var _dateEditInFlight = false;
+function dateToYears(el, scenario) {
+  if (!el.value) return;
+  var goal = new Date(el.value).getTime();
+  var years = (goal - Date.now()) / (365.25 * 24 * 3600 * 1000);
+  years = Math.max(0, years);
+  document.getElementById("years_" + scenario).value = years.toFixed(2);
+  _dateEditInFlight = true;
+  try { updateData(); } finally { _dateEditInFlight = false; }
 }

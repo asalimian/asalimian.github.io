@@ -349,8 +349,7 @@
           country: document.getElementById("country").value,
         };
 
-        const aspectRatio =
-          document.getElementById("aspectRatio").value;
+        const aspectRatio = document.getElementById("aspectRatio").value;
         const cardSize = parseInt(
           document.getElementById("cardSize").value,
         );
@@ -544,10 +543,9 @@
       }
 
       function downloadCard() {
-        const nameForFile =
-          contactData.name && contactData.name !== "Your Name"
-            ? contactData.name.replace(/\s+/g, "-").toLowerCase()
-            : "camera-finder-card";
+        const nameForFile = contactData.name && contactData.name !== "Your Name"
+          ? contactData.name.replace(/\s+/g, "-").toLowerCase()
+          : "camera-finder-card";
 
         const link = document.createElement("a");
         link.download = `${nameForFile}.jpg`;
