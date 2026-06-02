@@ -73,13 +73,13 @@ function init() {
 }
 
 function toggleSaveWindow() {
-  if (document.getElementById("save").style.display == "block") {
-    document.getElementById("save").style.display = "none";
-  } else {
-    document.getElementById("save").style.display = "block";
+  var save = document.getElementById("save");
+  var isOpen = save.style.display == "block";
+  closeAllModals();
+  if (!isOpen) {
+    save.style.display = "block";
+    openBackdrop();
   }
-  document.getElementById("help").style.display = "none";
-  document.getElementById("plot").style.display = "block";
 }
 function toggleAutoSave(item) {
   localStorage.setItem("autosave", item.checked);
@@ -107,15 +107,43 @@ function toggleLogAxis(item) {
   }
 }
 function toggleHelpWindow() {
-  document.getElementById("save").style.display = "none";
-  if (document.getElementById("help").style.display == "block") {
-    document.getElementById("help").style.display = "none";
-    document.getElementById("plot").style.display = "block";
-  } else {
-    document.getElementById("help").style.display = "block";
-    document.getElementById("plot").style.display = "none";
+  var help = document.getElementById("help");
+  var isOpen = help.style.display == "block";
+  closeAllModals();
+  if (!isOpen) {
+    help.style.display = "block";
+    openBackdrop();
   }
 }
+
+function ensureBackdrop() {
+  var backdrop = document.getElementById("modal-backdrop");
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.id = "modal-backdrop";
+    backdrop.className = "modal-backdrop";
+    backdrop.onclick = closeAllModals;
+    document.body.appendChild(backdrop);
+  }
+  return backdrop;
+}
+
+function closeAllModals() {
+  var save = document.getElementById("save");
+  var help = document.getElementById("help");
+  if (save) save.style.display = "none";
+  if (help) help.style.display = "none";
+  ensureBackdrop().classList.remove("is-open");
+}
+
+function openBackdrop() {
+  ensureBackdrop().classList.add("is-open");
+}
+
+// Escape closes any open modal
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") closeAllModals();
+});
 function expgrowth(principle, rate, years, y0) {
   n = 100;
   x = [...Array(n + 1).keys()];
@@ -123,6 +151,10 @@ function expgrowth(principle, rate, years, y0) {
   yadd = (y) => (y / n * years + y0 - 1970) * 1000 * 3600 * 24 * 365.24;
   return [x.map(yadd), x.map(expgrow)];
 }
+function growWithContributions(principle, contrib, rate, years) {
+  return principle * Math.exp(years * rate / 100 ) +
+    contrib / (rate / 100) * (Math.exp(years * rate / 100 ) - 1);
+};
 function expcont(principle, contrib, rate, years, y0) {
   n = 100;
   x = [...Array(n + 1).keys()];

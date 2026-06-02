@@ -469,6 +469,15 @@ input.oversaved {
 }
 
 /* ─── SETTINGS / HELP MODALS ────────────────────────────────────── */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 199;
+}
+.modal-backdrop.is-open { display: block; }
+
 .save,
 .help {
   background: var(--surface) !important;
@@ -477,9 +486,14 @@ input.oversaved {
   box-shadow: var(--shadow-md);
   padding: 16px 18px;
   text-align: left;
-  max-width: 480px;
-  top: 80px;
-  right: 24px;
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translate(-50%, -50%);
   z-index: 200;
 }
 
@@ -898,13 +912,8 @@ input:checked + .slider::before {
     min-height: 200px;
   }
 
-  /* save/help modal: full-width on mobile */
-  .save, .help {
-    left: 16px;
-    right: 16px;
-    top: 70px;
-    max-width: none;
-  }
+  /* save/help modal: already centered + width: min(480, vw-32) by default;
+     nothing extra needed on mobile. */
 }
 
 /* Hide the legacy hamburger icon (replaced by .mobile-bar button) */

@@ -128,7 +128,7 @@ myFunction()">Help</a>
 
           <div class="card-row">
             <div class="row-label">
-              <label for="p0_opt">Starting Amount</label>
+              <label for="p0_opt">Current Balance</label>
               <span class="row-hint">Current savings or net worth</span>
             </div>
             <div class="row-value row-value--opt">
@@ -286,7 +286,7 @@ myFunction()">Help</a>
 
           <div class="card-row card-row--out">
             <div class="row-label">
-              <label for="time_opt">Contribution Time</label>
+              <label for="time_opt">Years of Saving</label>
             </div>
             <div class="row-value row-value--opt">
               <input type="number" id="time_opt" name="fav_language" readonly>
@@ -300,7 +300,7 @@ myFunction()">Help</a>
             <div class="row-label">
               <label for="lux_opt"><abbr
                   title="How much you'd need to save continuously till retirement. If negative, how much you can afford to spend each year and still meet your goal."
-                >Req Save or Spend</abbr></label>
+                >Annual funding</abbr></label>
             </div>
             <div class="row-value row-value--opt">
               <input
@@ -400,7 +400,7 @@ myFunction()">Help</a>
       <div class="save" id="save" style="display: none; position: fixed">
         <div
           style="text-align: right; padding-right: 10px"
-          onclick='document.getElementById("save").style.display = "none"'
+          onclick="closeAllModals()"
         >
           <i class="material-icons">close</i>
         </div>
@@ -579,7 +579,7 @@ updateData()"
     <div
       style="text-align: center; padding: 16px; color: var(--text-3); font-size: 11px"
     >
-      © 2022 Alex Salimian 0.31
+      © 2026 Alex Salimian 0.33
     </div>
 
     <script>
