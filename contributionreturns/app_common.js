@@ -73,13 +73,7 @@ function init() {
 }
 
 function toggleSaveWindow() {
-  var save = document.getElementById("save");
-  var isOpen = save.style.display == "block";
-  closeAllModals();
-  if (!isOpen) {
-    save.style.display = "block";
-    openBackdrop();
-  }
+  toggleModal("save");
 }
 function toggleAutoSave(item) {
   localStorage.setItem("autosave", item.checked);
@@ -107,42 +101,31 @@ function toggleLogAxis(item) {
   }
 }
 function toggleHelpWindow() {
-  var help = document.getElementById("help");
-  var isOpen = help.style.display == "block";
-  closeAllModals();
-  if (!isOpen) {
-    help.style.display = "block";
-    openBackdrop();
-  }
+  toggleModal("help");
 }
 
-function ensureBackdrop() {
-  var backdrop = document.getElementById("modal-backdrop");
-  if (!backdrop) {
-    backdrop = document.createElement("div");
-    backdrop.id = "modal-backdrop";
-    backdrop.className = "modal-backdrop";
-    backdrop.onclick = closeAllModals;
-    document.body.appendChild(backdrop);
+function toggleModal(id) {
+  var dialog = document.getElementById(id);
+  if (!dialog) return;
+  if (dialog.open) {
+    dialog.close();
+    return;
   }
-  return backdrop;
+  closeAllModals();
+  dialog.showModal();
 }
 
 function closeAllModals() {
-  var save = document.getElementById("save");
-  var help = document.getElementById("help");
-  if (save) save.style.display = "none";
-  if (help) help.style.display = "none";
-  ensureBackdrop().classList.remove("is-open");
+  ["save", "help"].forEach(function (id) {
+    var dialog = document.getElementById(id);
+    if (dialog && dialog.open) dialog.close();
+  });
 }
 
-function openBackdrop() {
-  ensureBackdrop().classList.add("is-open");
-}
-
-// Escape closes any open modal
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") closeAllModals();
+// Click on the dialog's backdrop (i.e. outside its content box) closes it.
+document.addEventListener("click", function (e) {
+  var target = e.target;
+  if (target.tagName === "DIALOG" && target.open) target.close();
 });
 function expgrowth(principle, rate, years, y0) {
   n = 100;

@@ -469,18 +469,10 @@ input.oversaved {
 }
 
 /* ─── SETTINGS / HELP MODALS ────────────────────────────────────── */
-.modal-backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 199;
-}
-.modal-backdrop.is-open { display: block; }
-
-.save,
-.help {
-  background: var(--surface) !important;
+dialog.save,
+dialog.help {
+  background: var(--surface);
+  color: inherit;
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-md);
@@ -489,12 +481,11 @@ input.oversaved {
   width: min(480px, calc(100vw - 32px));
   max-height: calc(100vh - 64px);
   overflow-y: auto;
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  right: auto !important;
-  transform: translate(-50%, -50%);
-  z-index: 200;
+}
+
+dialog.save::backdrop,
+dialog.help::backdrop {
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .save .flex-container,
@@ -513,6 +504,7 @@ input.oversaved {
   border-radius: var(--r-sm);
   padding: 8px;
   resize: vertical;
+  field-sizing: content;
 }
 
 .save input[type="button"] {
