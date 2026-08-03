@@ -183,6 +183,17 @@ function updateData() {
   cont_opt = document.getElementById("cont_opt").value;
   cont_pes = document.getElementById("cont_pes").value;
 
+  pmax_opt = pmax_opt.replace("$", "").replace(/,/g, "") * 1;
+  pmax_pes = pmax_pes.replace("$", "").replace(/,/g, "") * 1;
+  p0_opt = p0_opt.replace("$", "").replace(/,/g, "") * 1;
+  p0_pes = p0_pes.replace("$", "").replace(/,/g, "") * 1;
+  r_opt = r_opt.replace("%", "");
+  r_pes = r_pes.replace("%", "");
+  years_opt = years_opt;
+  years_pes = years_pes;
+  cont_opt = cont_opt.replace("$", "").replace(/,/g, "") * 1;
+  cont_pes = cont_pes.replace("$", "").replace(/,/g, "") * 1;
+
   payload = JSON.parse(document.getElementById("savebox").value);
   payload.ContributionCalculator = {
     "Optimistic Scenario": {
@@ -204,16 +215,7 @@ function updateData() {
   };
   document.getElementById("savebox").value = JSON.stringify(payload);
 
-  pmax_opt = pmax_opt.replace("$", "").replace(/,/g, "") * 1;
-  pmax_pes = pmax_pes.replace("$", "").replace(/,/g, "") * 1;
-  p0_opt = p0_opt.replace("$", "").replace(/,/g, "") * 1;
-  p0_pes = p0_pes.replace("$", "").replace(/,/g, "") * 1;
-  r_opt = r_opt.replace("%", "");
-  r_pes = r_pes.replace("%", "");
-  years_opt = years_opt;
-  years_pes = years_pes;
-  cont_opt = cont_opt.replace("$", "").replace(/,/g, "") * 1;
-  cont_pes = cont_pes.replace("$", "").replace(/,/g, "") * 1;
+  
   if (localStorage["autosave"] == "true") {
     localStorage["json_settings"] = document.getElementById("savebox").value;
     localStorage["logplot"] = document.getElementById("logplot").checked;
