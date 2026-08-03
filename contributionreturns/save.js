@@ -246,19 +246,19 @@ function updateData() {
   optcoast = expgrowth(
     pmax_opt / Math.exp(r_opt / 100 * (years_opt - time_opt)),
     r_opt,
-    years_opt * 1 - time.opt * 1,
-    currentTime.getFullYear() + currentTime.getMonth() / 12 + time.opt,
+    years_opt - time_opt ,
+    currentTime.getFullYear() + currentTime.getMonth() / 12 + time_opt * 1,
   );
   pescoast = expgrowth(
     pmax_pes / Math.exp(r_pes / 100 * (years_pes - time_pes)),
     r_pes,
     years_pes - time_pes,
-    currentTime.getFullYear() + currentTime.getMonth() / 12 + time_pes,
+    currentTime.getFullYear() + currentTime.getMonth() / 12 + time_pes * 1,
   );
-  if (time.opt == 0) {
+  if (time_opt == 0) {
     ylen = years_opt;
   } else {
-    ylen = time.opt;
+    ylen = time_opt;
   }
   optcontrib = expcont(
     p0_opt,
@@ -311,10 +311,11 @@ function updateData() {
   }, {
     x: optcoast[0],
     y: optcoast[1],
-    name: "Optimistic Returns",
+   name: "Optimistic Returns",
     marker: { color: COLOR_OPT_RETURNS },
     line: { color: COLOR_OPT_RETURNS, width: 2.5 },
   }], layout);
+  console.log(optcoast)
 
   // Populate desktop status cards + mobile chips
   updateStatusCards(time, lux, cont_opt, cont_pes);
