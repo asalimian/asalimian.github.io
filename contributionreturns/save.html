@@ -526,7 +526,7 @@ updateData()"
         }];
 
         var layout = {
-          //showlegend: false,
+          showlegend: window.matchMedia("(min-width: 768px)").matches,
           xaxis: {
             "title": "",
             type: "date",
@@ -574,6 +574,12 @@ updateData()"
         };
 
         Plotly.react(TESTER, data, layout);
+
+        window
+          .matchMedia("(min-width: 768px)")
+          .addEventListener("change", function (e) {
+            Plotly.relayout(TESTER, { showlegend: e.matches });
+          });
       </script>
     </div>
 
