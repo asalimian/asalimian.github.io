@@ -93,35 +93,19 @@ function loaddata() {
 }
 
 function calcContributions() {
-  Tm = document.getElementById("years_opt").value * 1;
-  r = document.getElementById("r_opt").value.replace("%", "") / 100;
-  c = document.getElementById("cont_opt").value.replace("$", "").replace(
-    /,/g,
-    "",
-  ) * 1;
-  P0 =
-    document.getElementById("p0_opt").value.replace("$", "").replace(/,/g, "") *
-    1;
-  Pm = document.getElementById("pmax_opt").value.replace("$", "").replace(
-    /,/g,
-    "",
-  ) * 1;
+  Tm = strip(document.getElementById("years_opt").value);
+  r = strip(document.getElementById("r_opt").value) / 100;
+  c = strip(document.getElementById("cont_opt").value);
+  P0 = strip(document.getElementById("p0_opt").value);
+  Pm = strip(document.getElementById("pmax_opt").value);
   t = Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm);
   t = Math.min(Math.max(0, t), Tm);
   time_opt = t.toFixed(2);
-  Tm = document.getElementById("years_pes").value * 1;
-  r = document.getElementById("r_pes").value.replace("%", "") / 100;
-  c = document.getElementById("cont_pes").value.replace("$", "").replace(
-    /,/g,
-    "",
-  ) * 1;
-  P0 =
-    document.getElementById("p0_pes").value.replace("$", "").replace(/,/g, "") *
-    1;
-  Pm = document.getElementById("pmax_pes").value.replace("$", "").replace(
-    /,/g,
-    "",
-  ) * 1;
+  Tm = strip(document.getElementById("years_pes").value);
+  r = strip(document.getElementById("r_pes").value) / 100;
+  c = strip(document.getElementById("cont_pes").value);
+  P0 = strip(document.getElementById("p0_pes").value);
+  Pm = strip(document.getElementById("pmax_pes").value);
   t = Tm - 1 / r * Math.log((r / c * P0 + 1) * Math.exp(r * Tm) - r / c * Pm);
   t = Math.min(Math.max(0, t), Tm);
   time_pes = t.toFixed(2);
@@ -134,26 +118,16 @@ function calcContributions() {
   return { "opt": time_opt, "pes": time_pes };
 }
 function calcSavings() {
-  Tm = document.getElementById("years_opt").value * 1;
-  r = document.getElementById("r_opt").value.replace("%", "") / 100;
-  P0 =
-    document.getElementById("p0_opt").value.replace("$", "").replace(/,/g, "") *
-    1 * 1;
-  Pm = document.getElementById("pmax_opt").value.replace("$", "").replace(
-    /,/g,
-    "",
-  ) * 1 * 1;
+  Tm = strip(document.getElementById("years_opt").value);
+  r = strip(document.getElementById("r_opt").value) / 100;
+  P0 = strip(document.getElementById("p0_opt").value);
+  Pm = strip(document.getElementById("pmax_opt").value);
   c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1);
   lux_opt = Math.round(c * 100) / 100;
-  Tm = document.getElementById("years_pes").value * 1;
-  r = document.getElementById("r_pes").value.replace("%", "") / 100;
-  P0 =
-    document.getElementById("p0_pes").value.replace("$", "").replace(/,/g, "") *
-    1 * 1;
-  Pm = document.getElementById("pmax_pes").value.replace("$", "").replace(
-    /,/g,
-    "",
-  ) * 1 * 1;
+  Tm = strip(document.getElementById("years_pes").value);
+  r = strip(document.getElementById("r_pes").value) / 100;
+  P0 = strip(document.getElementById("p0_pes").value);
+  Pm = strip(document.getElementById("pmax_pes").value);
   c = -r * (P0 * Math.exp(r * Tm) - Pm) / (Math.exp(r * Tm) - 1);
   lux_pes = Math.round(c * 100) / 100;
 
@@ -171,28 +145,18 @@ function updateData() {
 
   time = calcContributions();
   lux = calcSavings();
-  pmax_opt = document.getElementById("pmax_opt").value;
-  pmax_pes = document.getElementById("pmax_pes").value;
-  p0_opt = document.getElementById("p0_opt").value;
-  p0_pes = document.getElementById("p0_pes").value;
-  r_opt = document.getElementById("r_opt").value;
-  r_pes = document.getElementById("r_pes").value;
-  years_opt = document.getElementById("years_opt").value;
-  years_pes = document.getElementById("years_pes").value;
   syncDatesFromYears();
-  cont_opt = document.getElementById("cont_opt").value;
-  cont_pes = document.getElementById("cont_pes").value;
 
-  pmax_opt = pmax_opt.replace("$", "").replace(/,/g, "") * 1;
-  pmax_pes = pmax_pes.replace("$", "").replace(/,/g, "") * 1;
-  p0_opt = p0_opt.replace("$", "").replace(/,/g, "") * 1;
-  p0_pes = p0_pes.replace("$", "").replace(/,/g, "") * 1;
-  r_opt = r_opt.replace("%", "");
-  r_pes = r_pes.replace("%", "");
-  years_opt = years_opt;
-  years_pes = years_pes;
-  cont_opt = cont_opt.replace("$", "").replace(/,/g, "") * 1;
-  cont_pes = cont_pes.replace("$", "").replace(/,/g, "") * 1;
+  pmax_opt = strip(document.getElementById("pmax_opt").value);
+  pmax_pes = strip(document.getElementById("pmax_pes").value);
+  p0_opt = strip(document.getElementById("p0_opt").value);
+  p0_pes = strip(document.getElementById("p0_pes").value);
+  r_opt = strip(document.getElementById("r_opt").value);
+  r_pes = strip(document.getElementById("r_pes").value);
+  years_opt = strip(document.getElementById("years_opt").value);
+  years_pes = strip(document.getElementById("years_pes").value);
+  cont_opt = strip(document.getElementById("cont_opt").value);
+  cont_pes = strip(document.getElementById("cont_pes").value);
 
   payload = JSON.parse(document.getElementById("savebox").value);
   payload.ContributionCalculator = {
@@ -353,9 +317,9 @@ function updateStatusCards(time, lux, cont_opt, cont_pes) {
 // Project balance forward by `t` years under continuous contribution at rate `r`.
 // Solves dP/dt = rP + c, giving P(t) = P0*e^(rt) + (c/r)*(e^(rt) - 1).
 function projectBalance(p0Str, rStr, cStr, t) {
-  const P0 = text2num(p0Str);
-  const r = text2num(rStr) / 100;
-  const c = text2num(cStr);
+  const P0 = strip(p0Str);
+  const r = strip(rStr) / 100;
+  const c = strip(cStr);
   if (Math.abs(r) < 1e-9) return P0 + c * t;
   return 1000; //P0 * Math.exp(r * t) + (c / r) * (Math.exp(r * t) - 1);
 }

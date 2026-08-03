@@ -9,44 +9,30 @@ function myFunction() {
   }
 }
 
-function text2num(el) {
-  interior = el.value.replace("$", "").replace("%", "").replace(/,/g, "")
-    .replace("k", "");
-  if (interior.includes("+")) {
-    interior = interior.split("+").reduce(function (accumVariable, curValue) {
-      return Number(accumVariable) + Number(curValue);
-    }, 0);
-  }
-  value = el.value.replace("$", "").replace("%", "").replace(/,/g, "").replace(
+function strip(str) {
+  interior = str.replace("$", "").replace("%", "").replace(/,/g, "").replace(
     "k",
     "",
-  ) * 1;
-  el.type = "number";
-  el.value = value;
-}
-function num2text(el, pre = "", suf = "") {
-  interior = el.value.replace("$", "").replace("%", "").replace(/,/g, "")
-    .replace("k", "");
+  );
   if (interior.includes("+")) {
-    console.log("detected");
     interior = interior.split("+").reduce(function (accumVariable, curValue) {
       return Number(accumVariable) + Number(curValue);
     }, 0);
   }
-  value = pre + Number(interior).toLocaleString() + suf;
+  return Number(interior);
+}
+
+function text2num(el) {
+  el.type = "number";
+  el.value = strip(el.value);
+}
+function num2text(el, pre = "", suf = "") {
   el.type = "text";
-  el.value = value;
+  el.value = pre + strip(el.value).toLocaleString() + suf;
   if (localStorage["autosave"] == "true") {
     localStorage["json_settings"] = document.getElementById("savebox").value;
     localStorage["logplot"] = document.getElementById("logplot").checked;
   }
-}
-
-function strip(str) {
-  return str.replace("$", "").replace(/,/g, "").replace("%", "").replace(
-    "k",
-    "",
-  );
 }
 
 function init() {
