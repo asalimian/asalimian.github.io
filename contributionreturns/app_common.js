@@ -23,8 +23,9 @@ function strip(str) {
 }
 
 function text2num(el) {
+  var val = strip(el.value);
   el.type = "number";
-  el.value = strip(el.value);
+  el.value = val;
 }
 function num2text(el, pre = "", suf = "") {
   el.type = "text";
