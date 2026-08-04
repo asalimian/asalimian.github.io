@@ -122,9 +122,9 @@ function expgrowth(principle, rate, years, y0) {
   return [x.map(yadd), x.map(expgrow)];
 }
 function growWithContributions(principle, contrib, rate, years) {
-  return principle * Math.exp(years * rate / 100 ) +
-    contrib / (rate / 100) * (Math.exp(years * rate / 100 ) - 1);
-};
+  return principle * Math.exp(years * rate / 100) +
+    contrib / (rate / 100) * (Math.exp(years * rate / 100) - 1);
+}
 function expcont(principle, contrib, rate, years, y0) {
   n = 100;
   x = [...Array(n + 1).keys()];

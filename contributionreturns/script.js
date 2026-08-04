@@ -24,7 +24,7 @@ function text2per(el) {
 
 function loadDefaults() {
   payload =
-    '[{"Optimistic Scenario":{"Principle":"$ 100","Goal":"$ 2,000","Rate":"7","Years":"30","Contribution":"$ 25"},"Pessimistic Scenario":{"Principle":"$ 200","Goal":"$ 2,000","Rate":"4","Years":"30","Contribution":"$ 25"}}]';
+    '[{"Optimistic Scenario":{"Principle":100,"Goal":2000,"Rate":7,"Years":30,"Contribution":25},"Pessimistic Scenario":{"Principle":200,"Goal":2000,"Rate":4,"Years":30,"Contribution":25}}]';
   document.getElementById("savebox").value = payload;
   loaddata();
 }
@@ -221,26 +221,16 @@ function updateData() {
   }
   time = calcContributions();
   lux = calcSavings();
-  pmax_opt = document.getElementById("pmax_opt").value.replace("$", "").replace(
-    ",",
-    "",
-  ) * 1;
-  pmax_pes = document.getElementById("pmax_pes").value.replace("$", "").replace(
-    ",",
-    "",
-  ) * 1;
-  p0_opt =
-    document.getElementById("p0_opt").value.replace("$", "").replace(",", "") *
-    1;
-  p0_pes =
-    document.getElementById("p0_pes").value.replace("$", "").replace(",", "") *
-    1;
-  r_opt = document.getElementById("r_opt").value.replace("%", "");
-  r_pes = document.getElementById("r_pes").value.replace("%", "");
-  years_opt = document.getElementById("years_opt").value;
-  years_pes = document.getElementById("years_pes").value;
-  cont_opt = document.getElementById("cont_opt").value;
-  cont_pes = document.getElementById("cont_pes").value;
+  pmax_opt = strip(document.getElementById("pmax_opt").value);
+  pmax_pes = strip(document.getElementById("pmax_pes").value);
+  p0_opt = strip(document.getElementById("p0_opt").value);
+  p0_pes = strip(document.getElementById("p0_pes").value);
+  r_opt = strip(document.getElementById("r_opt").value);
+  r_pes = strip(document.getElementById("r_pes").value);
+  years_opt = strip(document.getElementById("years_opt").value);
+  years_pes = strip(document.getElementById("years_pes").value);
+  cont_opt = strip(document.getElementById("cont_opt").value);
+  cont_pes = strip(document.getElementById("cont_pes").value);
 
   document.getElementById("savebox").value = JSON.stringify([{
     "Optimistic Scenario": {

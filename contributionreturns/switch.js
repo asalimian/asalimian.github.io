@@ -4,24 +4,24 @@ function loadDefaults(upgrade = false) {
   var currentTime = new Date();
   payload = {
     "old job": {
-      "Salary": "$ 45",
-      "Bonus": "$ 0",
-      "MatchRate": "1%",
-      "MatchMax": "1%",
-      "Healthcare": "$ 5",
-      "COL": "$ 40",
-      "Tax": "10%",
-      "Other": "$ 0",
+      "Salary": 45,
+      "Bonus": 0,
+      "MatchRate": 1,
+      "MatchMax": 1,
+      "Healthcare": 5,
+      "COL": 40,
+      "Tax": 10,
+      "Other": 0,
     },
     "new job": {
-      "Salary": "$ 50",
-      "Bonus": "$ 5",
-      "MatchRate": "1%",
-      "MatchMax": "1%",
-      "Healthcare": "$ 5",
-      "COL": "$ 40",
-      "Tax": "10%",
-      "Other": "$ 0",
+      "Salary": 50,
+      "Bonus": 5,
+      "MatchRate": 1,
+      "MatchMax": 1,
+      "Healthcare": 5,
+      "COL": 40,
+      "Tax": 10,
+      "Other": 0,
     },
     "app_url": "https://asalimian.github.io/contributionreturns/switch.html",
     "last_update": currentTime,
@@ -186,6 +186,15 @@ function updateData() {
     tb[plan] = document.getElementById("tax_" + plan).value;
     ot[plan] = document.getElementById("other_" + plan).value;
 
+    sa[plan] = strip(sa[plan]) * 1;
+    bo[plan] = strip(bo[plan]) * 1;
+    mr[plan] = strip(mr[plan]) * 1;
+    mm[plan] = strip(mm[plan]) * 1;
+    hc[plan] = strip(hc[plan]) * 1;
+    cl[plan] = strip(cl[plan]) * 1;
+    tb[plan] = strip(tb[plan]) * 1;
+    ot[plan] = strip(ot[plan]) * 1;
+
     payload[model][plan + " job"] = {
       "Salary": sa[plan],
       "Bonus": bo[plan],
@@ -196,15 +205,6 @@ function updateData() {
       "Tax": tb[plan],
       "Other": ot[plan],
     };
-
-    sa[plan] = strip(sa[plan]) * 1;
-    bo[plan] = strip(bo[plan]) * 1;
-    mr[plan] = strip(mr[plan]) * 1;
-    mm[plan] = strip(mm[plan]) * 1;
-    hc[plan] = strip(hc[plan]) * 1;
-    cl[plan] = strip(cl[plan]) * 1;
-    tb[plan] = strip(tb[plan]) * 1;
-    ot[plan] = strip(ot[plan]) * 1;
   }
 
   plotload = [

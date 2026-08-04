@@ -11,7 +11,8 @@
     <meta name="theme-color" content="black">
 
     <script src="plotly-2.4.2.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="app.css">
     <script src="app_common.js"></script>
     <script src="loan.js"></script>
@@ -23,7 +24,8 @@
         <span class="brand-mark">
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
             <path d="M1.5 11.5L5 6.5L8.5 9L13.5 2.5" stroke="white"
-              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+              stroke-width="2.2" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </span>
         <span class="brand-name">principea</span>
@@ -46,7 +48,8 @@
           <span></span><span></span><span></span>
         </button>
         <span class="mobile-title">principea</span>
-        <button class="settings-btn" onclick="toggleSaveWindow()" aria-label="Settings">
+        <button class="settings-btn" onclick="toggleSaveWindow()"
+          aria-label="Settings">
           <i class="material-icons" style="font-size: 18px">settings</i>
         </button>
       </div>
@@ -63,13 +66,14 @@
     </div>
 
     <div class="flex-container" data-active-tab="opt">
-
       <div class="mobile-tabs">
         <div class="mobile-tabs-inner">
-          <button class="tab-btn opt active" data-tab="opt" onclick="setMobileTab('opt')">
+          <button class="tab-btn opt active" data-tab="opt"
+            onclick="setMobileTab('opt')">
             <span class="tab-dot"></span>Loan
           </button>
-          <button class="tab-btn pes" data-tab="pes" onclick="setMobileTab('pes')">
+          <button class="tab-btn pes" data-tab="pes"
+            onclick="setMobileTab('pes')">
             <span class="tab-dot"></span>Savings
           </button>
         </div>
@@ -95,11 +99,13 @@
               <span class="row-hint">Current balance</span>
             </div>
             <div class="row-value row-value--opt">
-              <input type="text" class="currency" id="p0_loan" name="fav_language"
+              <input type="text" class="currency" id="p0_loan"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
             <div class="row-value row-value--pes">
-              <input type="text" class="currency" id="p0_save" name="fav_language"
+              <input type="text" class="currency" id="p0_save"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
           </div>
@@ -110,11 +116,13 @@
               <span class="row-hint">Annual loan/return rate</span>
             </div>
             <div class="row-value row-value--opt">
-              <input type="text" class="currency" id="r_loan" name="fav_language"
+              <input type="text" class="currency" id="r_loan"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "", "%")'>
             </div>
             <div class="row-value row-value--pes">
-              <input type="text" class="currency" id="r_save" name="fav_language"
+              <input type="text" class="currency" id="r_save"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "", "%")'>
             </div>
           </div>
@@ -125,7 +133,8 @@
               <span class="row-hint">Used to calculate repayment period</span>
             </div>
             <div class="row-value row-value--opt row-value--span2">
-              <input type="text" class="currency" id="pay_loan" name="fav_language"
+              <input type="text" class="currency" id="pay_loan"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
           </div>
@@ -136,7 +145,8 @@
               <span class="row-hint">Income available for debt or savings</span>
             </div>
             <div class="row-value row-value--opt row-value--span2">
-              <input type="text" class="currency" id="income" name="fav_language"
+              <input type="text" class="currency" id="income"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
           </div>
@@ -144,7 +154,8 @@
           <div class="card-row">
             <div class="row-label">
               <label for="income_split">Loan / Savings split</label>
-              <span class="row-hint">Left = pay loan faster, right = save more</span>
+              <span
+                class="row-hint">Left = pay loan faster, right = save more</span>
             </div>
             <div class="row-value row-value--opt row-value--span2">
               <input type="range" id="income_split" min="0" max="1" step=".01">
@@ -159,11 +170,13 @@
               <span class="row-hint">Allocated per scenario</span>
             </div>
             <div class="row-value row-value--opt">
-              <input type="text" class="currency" id="cont_loan" name="fav_language"
+              <input type="text" class="currency" id="cont_loan"
+                name="fav_language"
                 readonly onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
             <div class="row-value row-value--pes">
-              <input type="text" class="currency" id="cont_save" name="fav_language"
+              <input type="text" class="currency" id="cont_save"
+                name="fav_language"
                 readonly onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
           </div>
@@ -174,7 +187,8 @@
               <span class="row-hint">Standard repayment period</span>
             </div>
             <div class="row-value row-value--opt row-value--span2">
-              <input type="text" class="currency" id="years_sch" name="fav_language"
+              <input type="text" class="currency" id="years_sch"
+                name="fav_language"
                 readonly onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
           </div>
@@ -185,11 +199,14 @@
               <span class="row-hint">Time to payoff / time saving</span>
             </div>
             <div class="row-value row-value--opt">
-              <input type="text" class="currency" id="years_loan" name="fav_language"
-                readonly onfocus="text2num(this)" onblur='num2text(this, "", "yrs")'>
+              <input type="text" class="currency" id="years_loan"
+                name="fav_language"
+                readonly onfocus="text2num(this)"
+                onblur='num2text(this, "", "yrs")'>
             </div>
             <div class="row-value row-value--pes">
-              <input type="text" class="currency" id="years_save" name="fav_language"
+              <input type="text" class="currency" id="years_save"
+                name="fav_language"
                 readonly onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
           </div>
@@ -201,7 +218,8 @@
             </div>
             <div class="row-value row-value--opt"></div>
             <div class="row-value row-value--pes">
-              <input type="text" class="currency" id="final_value" name="fav_language"
+              <input type="text" class="currency" id="final_value"
+                name="fav_language"
                 readonly onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
           </div>
@@ -279,53 +297,79 @@
       </dialog>
 
       <script type="text/javascript">
-        TESTER = document.getElementById("tester");
-        var currentTime = new Date();
-        var data = [{ x: [0,0], y: [0,0], name: "Optimistic Coast" },
-                    { x: [0,0], y: [0,0], name: "Pes Coast" },
-                    { x: [0,0], y: [0,0], name: "Opt Contrib" },
-                    { x: [0,0], y: [0,0], name: "Pes Contrib" }];
+      TESTER = document.getElementById("tester");
+      var currentTime = new Date();
+      var data = [
+        { x: [0, 0], y: [0, 0], name: "Optimistic Coast" },
+        { x: [0, 0], y: [0, 0], name: "Pes Coast" },
+        { x: [0, 0], y: [0, 0], name: "Opt Contrib" },
+        { x: [0, 0], y: [0, 0], name: "Pes Contrib" },
+      ];
 
-        var layout = {
-          xaxis: {
-            "title": "Year", type: "date", fixedrange: true,
-            gridcolor: "rgb(229, 227, 222)", gridwidth: 1,
-            tickfont: { color: "rgb(155, 144, 134)", size: 10, family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" },
-            linecolor: "rgb(229, 227, 222)", zeroline: false,
+      var layout = {
+        xaxis: {
+          "title": "Year",
+          type: "date",
+          fixedrange: true,
+          gridcolor: "rgb(229, 227, 222)",
+          gridwidth: 1,
+          tickfont: {
+            color: "rgb(155, 144, 134)",
+            size: 10,
+            family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
           },
-          yaxis: {
-            "title": "", hoverformat: "$.0f", "type": null, fixedrange: true,
-            gridcolor: "rgb(229, 227, 222)", gridwidth: 1,
-            tickfont: { color: "rgb(155, 144, 134)", size: 10, family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" },
-            linecolor: "rgb(229, 227, 222)", zeroline: false,
+          linecolor: "rgb(229, 227, 222)",
+          zeroline: false,
+        },
+        yaxis: {
+          "title": "",
+          hoverformat: "$.0f",
+          "type": null,
+          fixedrange: true,
+          gridcolor: "rgb(229, 227, 222)",
+          gridwidth: 1,
+          tickfont: {
+            color: "rgb(155, 144, 134)",
+            size: 10,
+            family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
           },
-          legend: { "orientation": "h", "y": -0.2,
-            font: { size: 11, color: "rgb(155, 144, 134)", family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" },
+          linecolor: "rgb(229, 227, 222)",
+          zeroline: false,
+        },
+        legend: {
+          "orientation": "h",
+          "y": -0.2,
+          font: {
+            size: 11,
+            color: "rgb(155, 144, 134)",
+            family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
           },
-          margin: { "t": 10, "r": 10, "l": 50, "b": 40 },
-          autosize: true,
-          paper_bgcolor: "#ffffff",
-          plot_bgcolor: "#ffffff",
-          hovermode: "x unified",
-          font: { family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" },
-        };
+        },
+        margin: { "t": 10, "r": 10, "l": 50, "b": 40 },
+        autosize: true,
+        paper_bgcolor: "#ffffff",
+        plot_bgcolor: "#ffffff",
+        hovermode: "x unified",
+        font: { family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" },
+      };
 
-        Plotly.react(TESTER, data, layout);
+      Plotly.react(TESTER, data, layout);
       </script>
     </div>
 
-    <div style="text-align: center; padding: 16px; color: var(--text-3); font-size: 11px;">
+    <div
+      style="text-align: center; padding: 16px; color: var(--text-3); font-size: 11px;">
       &copy; 2026 Alex Salimian 0.33
     </div>
 
     <script>
-      function setMobileTab(tab) {
-        var container = document.querySelector('.flex-container');
-        container.setAttribute('data-active-tab', tab);
-        document.querySelectorAll('.tab-btn').forEach(function (btn) {
-          btn.classList.toggle('active', btn.getAttribute('data-tab') === tab);
-        });
-      }
+    function setMobileTab(tab) {
+      var container = document.querySelector(".flex-container");
+      container.setAttribute("data-active-tab", tab);
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
+      });
+    }
     </script>
   </body>
 </html>

@@ -505,81 +505,81 @@ updateData()"
       </dialog>
 
       <script type="text/javascript">
-        TESTER = document.getElementById("tester");
-        var currentTime = new Date();
-        var data = [{
-          x: [0, 0],
-          y: [0, 0],
-          name: "Optimistic Coast",
-        }, {
-          x: [0, 0],
-          y: [0, 0],
-          name: "Pes Coast",
-        }, {
-          x: [0, 0],
-          y: [0, 0],
-          name: "Opt Contrib",
-        }, {
-          x: [0, 0],
-          y: [0, 0],
-          name: "Pes Contrib",
-        }];
+      TESTER = document.getElementById("tester");
+      var currentTime = new Date();
+      var data = [{
+        x: [0, 0],
+        y: [0, 0],
+        name: "Optimistic Coast",
+      }, {
+        x: [0, 0],
+        y: [0, 0],
+        name: "Pes Coast",
+      }, {
+        x: [0, 0],
+        y: [0, 0],
+        name: "Opt Contrib",
+      }, {
+        x: [0, 0],
+        y: [0, 0],
+        name: "Pes Contrib",
+      }];
 
-        var layout = {
-          showlegend: window.matchMedia("(min-width: 768px)").matches,
-          xaxis: {
-            "title": "",
-            type: "date",
-            fixedrange: true,
-            gridcolor: "rgb(229, 227, 222)",
-            gridwidth: 1,
-            tickfont: {
-              color: "rgb(155, 144, 134)",
-              size: 10,
-              family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-            },
-            linecolor: "rgb(229, 227, 222)",
-            zeroline: false,
+      var layout = {
+        showlegend: window.matchMedia("(min-width: 768px)").matches,
+        xaxis: {
+          "title": "",
+          type: "date",
+          fixedrange: true,
+          gridcolor: "rgb(229, 227, 222)",
+          gridwidth: 1,
+          tickfont: {
+            color: "rgb(155, 144, 134)",
+            size: 10,
+            family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
           },
-          yaxis: {
-            "title": "",
-            hoverformat: "$.0f",
-            "type": null,
-            fixedrange: true,
-            gridcolor: "rgb(229, 227, 222)",
-            gridwidth: 1,
-            tickfont: {
-              color: "rgb(155, 144, 134)",
-              size: 10,
-              family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-            },
-            linecolor: "rgb(229, 227, 222)",
-            zeroline: false,
+          linecolor: "rgb(229, 227, 222)",
+          zeroline: false,
+        },
+        yaxis: {
+          "title": "",
+          hoverformat: "$.0f",
+          "type": null,
+          fixedrange: true,
+          gridcolor: "rgb(229, 227, 222)",
+          gridwidth: 1,
+          tickfont: {
+            color: "rgb(155, 144, 134)",
+            size: 10,
+            family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
           },
-          legend: {
-            "orientation": "h",
-            "y": -0.2,
-            font: {
-              size: 11,
-              color: "rgb(155, 144, 134)",
-              family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-            },
+          linecolor: "rgb(229, 227, 222)",
+          zeroline: false,
+        },
+        legend: {
+          "orientation": "h",
+          "y": -0.2,
+          font: {
+            size: 11,
+            color: "rgb(155, 144, 134)",
+            family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
           },
-          margin: { "t": 10, "r": 10, "l": 50, "b": 40 },
-          autosize: true,
-          paper_bgcolor: "#ffffff",
-          plot_bgcolor: "#ffffff",
-          hovermode: "x unified",
-          font: { family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" },
-        };
+        },
+        margin: { "t": 10, "r": 10, "l": 50, "b": 40 },
+        autosize: true,
+        paper_bgcolor: "#ffffff",
+        plot_bgcolor: "#ffffff",
+        hovermode: "x unified",
+        font: { family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" },
+      };
 
-        Plotly.react(TESTER, data, layout);
+      Plotly.react(TESTER, data, layout);
 
-        window
-          .matchMedia("(min-width: 768px)")
-          .addEventListener("change", function (e) {
-            Plotly.relayout(TESTER, { showlegend: e.matches });
-          });
+      window
+        .matchMedia("(min-width: 768px)")
+        .addEventListener("change", function (e) {
+          Plotly.relayout(TESTER, { showlegend: e.matches });
+        });
       </script>
     </div>
 
@@ -590,13 +590,13 @@ updateData()"
     </div>
 
     <script>
-      function setMobileTab(tab) {
-        var container = document.querySelector(".flex-container");
-        container.setAttribute("data-active-tab", tab);
-        document.querySelectorAll(".tab-btn").forEach(function (btn) {
-          btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
-        });
-      }
+    function setMobileTab(tab) {
+      var container = document.querySelector(".flex-container");
+      container.setAttribute("data-active-tab", tab);
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
+      });
+    }
     </script>
   </body>
 </html>

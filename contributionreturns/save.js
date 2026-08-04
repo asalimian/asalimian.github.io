@@ -179,7 +179,6 @@ function updateData() {
   };
   document.getElementById("savebox").value = JSON.stringify(payload);
 
-  
   if (localStorage["autosave"] == "true") {
     localStorage["json_settings"] = document.getElementById("savebox").value;
     localStorage["logplot"] = document.getElementById("logplot").checked;
@@ -210,7 +209,7 @@ function updateData() {
   optcoast = expgrowth(
     pmax_opt / Math.exp(r_opt / 100 * (years_opt - time_opt)),
     r_opt,
-    years_opt - time_opt ,
+    years_opt - time_opt,
     currentTime.getFullYear() + currentTime.getMonth() / 12 + time_opt * 1,
   );
   pescoast = expgrowth(
@@ -275,11 +274,11 @@ function updateData() {
   }, {
     x: optcoast[0],
     y: optcoast[1],
-   name: "Optimistic Returns",
+    name: "Optimistic Returns",
     marker: { color: COLOR_OPT_RETURNS },
     line: { color: COLOR_OPT_RETURNS, width: 2.5 },
   }], layout);
-  console.log(optcoast)
+  console.log(optcoast);
 
   // Populate desktop status cards + mobile chips
   updateStatusCards(time, lux, cont_opt, cont_pes);

@@ -5,30 +5,30 @@ function loadDefaults() {
   payload = {
     planA: {
       name: "Plan A",
-      premium: "$ 175",
+      premium: 175,
       frequency: 26,
-      deductible: "$  750",
-      coinsurance: "10 %",
-      oop: "$ 4000",
-      discount: "$    0",
+      deductible: 750,
+      coinsurance: 10,
+      oop: 4000,
+      discount: 0,
     },
     planB: {
       name: "Plan B",
-      premium: "$ 80",
+      premium: 80,
       frequency: 26,
-      deductible: "$ 1500",
-      coinsurance: "20 %",
-      oop: "$ 5000",
-      discount: "$ -150",
+      deductible: 1500,
+      coinsurance: 20,
+      oop: 5000,
+      discount: -150,
     },
     planC: {
       name: "Plan C",
-      premium: "$ 0",
+      premium: 0,
       frequency: 26,
-      deductible: "$ 3000",
-      coinsurance: "20 %",
-      oop: "$ 6000",
-      discount: "$ -300",
+      deductible: 3000,
+      coinsurance: 20,
+      oop: 6000,
+      discount: -300,
     },
     app_url: "https://asalimian.github.io/contributionreturns/plan.html",
     last_update: currentTime,
@@ -127,22 +127,23 @@ function updateData() {
 
     e.value = (100 - strip(c)) + "%";
 
+    p = strip(p) * 1;
+    f = strip(f) * 1;
+    d = strip(d) * 1;
+    cRaw = strip(c) * 1;
+    c = strip(c) * .01;
+    o = strip(o) * 1;
+    s = strip(s) * 1;
+
     payload[model]["plan" + plan.toUpperCase()] = {
       "name": n,
       "premium": p,
       "frequency": f,
       "deductible": d,
-      "coinsurance": c,
+      "coinsurance": cRaw,
       "oop": o,
       "discount": s,
     };
-
-    p = strip(p) * 1;
-    f = strip(f) * 1;
-    d = strip(d) * 1;
-    c = strip(c) * .01;
-    o = strip(o) * 1;
-    s = strip(s) * 1;
 
     charges = [0, d, o / c + (1 - 1 / c) * d, o / c + (1 - 1 / c) * d];
     payment = [p * f + s, p * f + d + s, p * f + o + s, p * f + o + s];

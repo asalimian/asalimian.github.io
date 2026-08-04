@@ -11,7 +11,8 @@
     <meta name="theme-color" content="black">
 
     <script src="plotly-2.4.2.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="app.css">
     <script src="app_common.js"></script>
     <script src="plan.js"></script>
@@ -23,7 +24,8 @@
         <span class="brand-mark">
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
             <path d="M1.5 11.5L5 6.5L8.5 9L13.5 2.5" stroke="white"
-              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+              stroke-width="2.2" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </span>
         <span class="brand-name">principea</span>
@@ -46,7 +48,8 @@
           <span></span><span></span><span></span>
         </button>
         <span class="mobile-title">principea</span>
-        <button class="settings-btn" onclick="toggleSaveWindow()" aria-label="Settings">
+        <button class="settings-btn" onclick="toggleSaveWindow()"
+          aria-label="Settings">
           <i class="material-icons" style="font-size: 18px">settings</i>
         </button>
       </div>
@@ -63,16 +66,17 @@
     </div>
 
     <div class="flex-container" data-active-tab="a">
-
       <div class="mobile-tabs">
         <div class="mobile-tabs-inner">
-          <button class="tab-btn opt active" data-tab="a" onclick="setMobileTab('a')">
+          <button class="tab-btn opt active" data-tab="a"
+            onclick="setMobileTab('a')">
             <span class="tab-dot"></span>Plan A
           </button>
           <button class="tab-btn pes" data-tab="b" onclick="setMobileTab('b')">
             <span class="tab-dot"></span>Plan B
           </button>
-          <button class="tab-btn accent" data-tab="c" onclick="setMobileTab('c')">
+          <button class="tab-btn accent" data-tab="c"
+            onclick="setMobileTab('c')">
             <span class="tab-dot"></span>Plan C
           </button>
         </div>
@@ -85,31 +89,40 @@
           <div class="card-row card-header-row">
             <div class="row-label row-label--head">Parameter</div>
             <div class="row-value row-value--a row-value--head">
-              <div id="planA" onclick="headerlabel(this)" style="font-weight: 700; font-size: 12px; cursor: pointer;"></div>
-              <input type="text" id="planA_name" onblur="labelheader(this)" hidden>
+              <div id="planA" onclick="headerlabel(this)"
+                style="font-weight: 700; font-size: 12px; cursor: pointer;"></div>
+              <input type="text" id="planA_name" onblur="labelheader(this)"
+                hidden>
             </div>
             <div class="row-value row-value--b row-value--head">
-              <div id="planB" onclick="headerlabel(this)" style="font-weight: 700; font-size: 12px; cursor: pointer;"></div>
-              <input type="text" id="planB_name" onblur="labelheader(this)" hidden>
+              <div id="planB" onclick="headerlabel(this)"
+                style="font-weight: 700; font-size: 12px; cursor: pointer;"></div>
+              <input type="text" id="planB_name" onblur="labelheader(this)"
+                hidden>
             </div>
             <div class="row-value row-value--c row-value--head">
-              <div id="planC" onclick="headerlabel(this)" style="font-weight: 700; font-size: 12px; cursor: pointer;"></div>
-              <input type="text" id="planC_name" onblur="labelheader(this)" hidden>
+              <div id="planC" onclick="headerlabel(this)"
+                style="font-weight: 700; font-size: 12px; cursor: pointer;"></div>
+              <input type="text" id="planC_name" onblur="labelheader(this)"
+                hidden>
             </div>
           </div>
 
           <div class="card-row">
             <div class="row-label"><label for="prem_a">Premium</label></div>
             <div class="row-value row-value--a">
-              <input type="text" class="currency" id="prem_a" name="fav_language"
+              <input type="text" class="currency" id="prem_a"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
             <div class="row-value row-value--b">
-              <input type="text" class="currency" id="prem_b" name="fav_language"
+              <input type="text" class="currency" id="prem_b"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
             <div class="row-value row-value--c">
-              <input type="text" class="currency" id="prem_c" name="fav_language"
+              <input type="text" class="currency" id="prem_c"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
           </div>
@@ -184,20 +197,24 @@
             <div class="row-label"><label for="coe_a">Employer</label></div>
             <div class="row-value row-value--a">
               <input type="text" class="currency" id="coe_a" name="fav_language"
-                onfocus="text2num(this)" onblur='num2text(this, "", "%")' disabled>
+                onfocus="text2num(this)" onblur='num2text(this, "", "%")'
+                disabled>
             </div>
             <div class="row-value row-value--b">
               <input type="text" class="currency" id="coe_b" name="fav_language"
-                onfocus="text2num(this)" onblur='num2text(this, "", "%")' disabled>
+                onfocus="text2num(this)" onblur='num2text(this, "", "%")'
+                disabled>
             </div>
             <div class="row-value row-value--c">
               <input type="text" class="currency" id="coe_c" name="fav_language"
-                onfocus="text2num(this)" onblur='num2text(this, "", "%")' disabled>
+                onfocus="text2num(this)" onblur='num2text(this, "", "%")'
+                disabled>
             </div>
           </div>
 
           <div class="card-row">
-            <div class="row-label"><label for="oop_a">Out of Pocket Max</label></div>
+            <div
+              class="row-label"><label for="oop_a">Out of Pocket Max</label></div>
             <div class="row-value row-value--a">
               <input type="text" class="currency" id="oop_a" name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
@@ -215,15 +232,18 @@
           <div class="card-row">
             <div class="row-label"><label for="disc_a">Discount</label></div>
             <div class="row-value row-value--a">
-              <input type="text" class="currency" id="disc_a" name="fav_language"
+              <input type="text" class="currency" id="disc_a"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
             <div class="row-value row-value--b">
-              <input type="text" class="currency" id="disc_b" name="fav_language"
+              <input type="text" class="currency" id="disc_b"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
             <div class="row-value row-value--c">
-              <input type="text" class="currency" id="disc_c" name="fav_language"
+              <input type="text" class="currency" id="disc_c"
+                name="fav_language"
                 onfocus="text2num(this)" onblur='num2text(this, "$ ")'>
             </div>
           </div>
@@ -236,8 +256,10 @@
               <span class="row-hint">Max amount billed shown on chart</span>
             </div>
             <div class="row-value row-value--a">
-              <input type="text" class="currency" id="plotmax" name="fav_language"
-                onfocus="text2num(this)" onblur='num2text(this, "$ ", "k")' value="$ 45k">
+              <input type="text" class="currency" id="plotmax"
+                name="fav_language"
+                onfocus="text2num(this)" onblur='num2text(this, "$ ", "k")'
+                value="$ 45k">
             </div>
             <div class="row-value row-value--b"></div>
             <div class="row-value row-value--c"></div>
@@ -248,7 +270,8 @@
       <div class="right-col">
         <div class="plot">
           <div class="plot-title">Total Expenses vs Healthcare Billing</div>
-          <div class="plot-subtitle">How much you'll spend across each plan</div>
+          <div
+            class="plot-subtitle">How much you'll spend across each plan</div>
           <div id="tester"></div>
         </div>
         <div class="plot">
@@ -322,68 +345,87 @@
       </dialog>
 
       <script type="text/javascript">
-        TESTER = document.getElementById("tester");
-        var currentTime = new Date();
-        var data = [{ x: [0, 0], y: [0, 0], name: "" }];
+      TESTER = document.getElementById("tester");
+      var currentTime = new Date();
+      var data = [{ x: [0, 0], y: [0, 0], name: "" }];
 
-        var sharedFont = { family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" };
-        var sharedAxis = {
-          gridcolor: "rgb(229, 227, 222)",
-          gridwidth: 1,
-          tickfont: { color: "rgb(155, 144, 134)", size: 10, family: sharedFont.family },
-          linecolor: "rgb(229, 227, 222)",
-          zeroline: false,
-          fixedrange: true,
-        };
+      var sharedFont = {
+        family: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      };
+      var sharedAxis = {
+        gridcolor: "rgb(229, 227, 222)",
+        gridwidth: 1,
+        tickfont: {
+          color: "rgb(155, 144, 134)",
+          size: 10,
+          family: sharedFont.family,
+        },
+        linecolor: "rgb(229, 227, 222)",
+        zeroline: false,
+        fixedrange: true,
+      };
 
-        var layout = {
-          xaxis: Object.assign({}, sharedAxis, { "title": "Amount Billed" }),
-          yaxis: Object.assign({}, sharedAxis, { "title": "Amount Spent", hoverformat: "$.0f", "type": null }),
-          legend: { "orientation": "h", "y": -0.2,
-            font: { size: 11, color: "rgb(155, 144, 134)", family: sharedFont.family },
-          },
-          margin: { "t": 10, "r": 10, "l": 60, "b": 50 },
-          autosize: true,
-          paper_bgcolor: "#ffffff",
-          plot_bgcolor: "#ffffff",
-          hovermode: "x unified",
-          font: sharedFont,
-        };
+      var layout = {
+        xaxis: Object.assign({}, sharedAxis, { "title": "Amount Billed" }),
+        yaxis: Object.assign({}, sharedAxis, {
+          "title": "Amount Spent",
+          hoverformat: "$.0f",
+          "type": null,
+        }),
+        legend: {
+          "orientation": "h",
+          "y": -0.2,
+          font: { size: 11, color: "rgb(155, 144, 134)", family: sharedFont.family },
+        },
+        margin: { "t": 10, "r": 10, "l": 60, "b": 50 },
+        autosize: true,
+        paper_bgcolor: "#ffffff",
+        plot_bgcolor: "#ffffff",
+        hovermode: "x unified",
+        font: sharedFont,
+      };
 
-        Plotly.react(TESTER, data, layout);
+      Plotly.react(TESTER, data, layout);
 
-        diffplot = document.getElementById("diffplot");
+      diffplot = document.getElementById("diffplot");
 
-        var difflayout = {
-          xaxis: Object.assign({}, sharedAxis, { "title": "Plan A Costs" }),
-          yaxis: Object.assign({}, sharedAxis, { "title": "Difference", hoverformat: "$.0f", "type": null }),
-          legend: { "orientation": "h", "y": -0.2,
-            font: { size: 11, color: "rgb(155, 144, 134)", family: sharedFont.family },
-          },
-          margin: { "t": 10, "r": 10, "l": 60, "b": 50 },
-          autosize: true,
-          paper_bgcolor: "#ffffff",
-          plot_bgcolor: "#ffffff",
-          hovermode: "x unified",
-          font: sharedFont,
-        };
+      var difflayout = {
+        xaxis: Object.assign({}, sharedAxis, { "title": "Plan A Costs" }),
+        yaxis: Object.assign({}, sharedAxis, {
+          "title": "Difference",
+          hoverformat: "$.0f",
+          "type": null,
+        }),
+        legend: {
+          "orientation": "h",
+          "y": -0.2,
+          font: { size: 11, color: "rgb(155, 144, 134)", family: sharedFont.family },
+        },
+        margin: { "t": 10, "r": 10, "l": 60, "b": 50 },
+        autosize: true,
+        paper_bgcolor: "#ffffff",
+        plot_bgcolor: "#ffffff",
+        hovermode: "x unified",
+        font: sharedFont,
+      };
 
-        Plotly.react(diffplot, data, difflayout);
+      Plotly.react(diffplot, data, difflayout);
       </script>
     </div>
 
-    <div style="text-align: center; padding: 16px; color: var(--text-3); font-size: 11px;">
+    <div
+      style="text-align: center; padding: 16px; color: var(--text-3); font-size: 11px;">
       &copy; 2026 Alex Salimian 0.33
     </div>
 
     <script>
-      function setMobileTab(tab) {
-        var container = document.querySelector('.flex-container');
-        container.setAttribute('data-active-tab', tab);
-        document.querySelectorAll('.tab-btn').forEach(function (btn) {
-          btn.classList.toggle('active', btn.getAttribute('data-tab') === tab);
-        });
-      }
+    function setMobileTab(tab) {
+      var container = document.querySelector(".flex-container");
+      container.setAttribute("data-active-tab", tab);
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
+      });
+    }
     </script>
   </body>
 </html>
