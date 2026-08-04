@@ -55,21 +55,11 @@ function loaddata() {
 }
 
 function calcYears() {
-  p0_loan = -Math.abs(
-    document.getElementById("p0_loan").value.replace("$", "").replace(/,/g, ""),
-  );
-  r_loan =
-    document.getElementById("r_loan").value.replace("$", "").replace(/,/g, "")
-      .replace("%", "") / 100;
-  p_loan = document.getElementById("pay_loan").value.replace("$", "").replace(
-    /,/g,
-    "",
-  );
+  p0_loan = -Math.abs(strip(document.getElementById("p0_loan").value));
+  r_loan = strip(document.getElementById("r_loan").value) / 100;
+  p_loan = strip(document.getElementById("pay_loan").value);
 
-  c_loan = document.getElementById("cont_loan").value.replace("$", "").replace(
-    /,/g,
-    "",
-  );
+  c_loan = strip(document.getElementById("cont_loan").value);
 
   years_sch = 1 / r_loan *
     Math.log(12 * p_loan / (r_loan * p0_loan + 12 * p_loan));
@@ -92,25 +82,13 @@ function calcYears() {
   };
 }
 function calcSplit() {
-  income = document.getElementById("income").value.replace("$", "").replace(
-    /,/g,
-    "",
-  );
+  income = strip(document.getElementById("income").value);
   split = document.getElementById("income_split").value;
   if (split > 0.99) split = 1;
 
-  p0_loan = -Math.abs(
-    document.getElementById("p0_loan").value.replace("$", "").replace(/,/g, ""),
-  );
-  p_loan = -Math.abs(
-    document.getElementById("pay_loan").value.replace("$", "").replace(
-      /,/g,
-      "",
-    ),
-  );
-  r_loan =
-    document.getElementById("r_loan").value.replace("$", "").replace(/,/g, "")
-      .replace("%", "") / 100;
+  p0_loan = -Math.abs(strip(document.getElementById("p0_loan").value));
+  p_loan = -Math.abs(strip(document.getElementById("pay_loan").value));
+  r_loan = strip(document.getElementById("r_loan").value) / 100;
 
   document.getElementById("income_split").max = 1 +
     r_loan * p0_loan / (12 * income);
@@ -156,11 +134,11 @@ function updateData() {
 
   document.getElementById("savebox").value = JSON.stringify(payload);
 
-  p0_loan = -Math.abs(p0_loan.replace("$", "").replace(/,/g, "") * 1);
-  p0_save = Math.abs(p0_save.replace("$", "").replace(/,/g, "") * 1);
-  p_loan = p_loan.replace("$", "").replace(/,/g, "") * 1;
-  r_loan = r_loan.replace("%", "") / 100;
-  r_save = r_save.replace("%", "") / 100;
+  p0_loan = -Math.abs(strip(p0_loan));
+  p0_save = Math.abs(strip(p0_save));
+  p_loan = strip(p_loan);
+  r_loan = strip(r_loan) / 100;
+  r_save = strip(r_save) / 100;
   if (localStorage["autosave"] == "true") {
     localStorage["json_settings"] = document.getElementById("savebox").value;
     localStorage["logplot"] = document.getElementById("logplot").checked;

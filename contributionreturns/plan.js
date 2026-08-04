@@ -125,7 +125,7 @@ function updateData() {
     o = document.getElementById("oop_" + plan).value;
     s = document.getElementById("disc_" + plan).value;
 
-    e.value = (100 - Number(c.replace(" %", ""))) + " %";
+    e.value = (100 - strip(c)) + "%";
 
     payload[model]["plan" + plan.toUpperCase()] = {
       "name": n,
