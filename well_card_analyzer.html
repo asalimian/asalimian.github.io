@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Well Card Analyzer — ODNR Production Overview</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  /* Minimal print pagination control — not part of Bootstrap's utilities. */
+  @media print{
+    .card, .table, #statGrid > div, .well-header{ break-inside: avoid; page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark d-print-none">
+  <div class="container">
+    <span class="navbar-brand mb-0 h1">Well Card Analyzer</span>
+    <span class="navbar-text small">ODNR Production &amp; Revenue Overview</span>
+  </div>
+</nav>
+
+<div class="container py-4">
+
+  <div class="card mb-4 d-print-none" id="inputPanel">
+    <div class="card-body">
+      <h5 class="card-title">Paste the production table</h5>
+      <p class="card-text text-muted">Find a well on <a href="https://experience.arcgis.com/experience/5fd9c17bc933417d9bd8d7c1dff404aa/" target="_blank">gis.ohiodnr.gov</a>, click on the link for "Well Summary Report Link" and copy the report. Paste the text below.</p>
+      <textarea class="form-control" id="pasteInput" rows="6" placeholder="Paste the copied production table here…"></textarea>
+      <div class="mt-3 d-flex gap-2 flex-wrap align-items-center">
+        <button class="btn btn-primary" id="parseBtn">Parse &amp; plot</button>
+        <button class="btn btn-outline-secondary" id="sampleBtn">Load sample data</button>
+      </div>
+      <div class="alert mt-3 mb-0" id="parseStatus" style="display:none;"></div>
+      <details class="mt-3">
+        <summary class="text-muted small">Accepted formats</summary>
+        <pre class="bg-light border rounded p-2 small mt-2 mb-0">Plain copied text (columns separated by spaces or tabs):
+Year  Quarter  Source  Oil (Barrels)  Gas (MCF)  Water (Barrels)  Remarks
+2007  N\A      RBDMS   869            33108      396              -
+
+Markdown-style table:
+| Year | Quarter | Source | Oil (Barrels) | Gas (MCF) | Water (Barrels) | Remarks |
+| 2007 | N\A     | RBDMS  | 869            | 33108     | 396              |         |
+
+Html source code:
+&#60&#116&#97&#98&#108&#101&#32&#99&#108&#97&#115&#115&#61&#34&#115&#101&#99&#111&#110&#100&#34&#32&#98&#111&#114&#100&#101&#114&#61&#34&#48&#34&#32&#98&#111&#114&#100&#101&#114&#99&#111&#108&#111&#114&#61&#34&#35&#48&#48&#48&#48&#48&#48&#34&#32&#99&#101&#108&#108&#115&#112&#97&#99&#105&#110&#103&#61&#34&#49&#34&#32&#99&#101&#108&#108&#112&#97&#100&#100&#105&#110&#103&#61&#34&#51&#34&#32&#119&#105&#100&#116&#104&#61&#34&#56&#48&#48&#34&#62&#32&#60&#116&#98&#111&#100&#121&#62&#60&#116&#114&#32&#99&#108&#97&#115&#115&#61&#34&#104&#101&#97&#100&#34&#62&#32&#60&#116&#100&#32&#99&#111&#108&#115&#112&#97&#110&#61&#34&#55&#34&#62&#60&#102&#111&#110&#116&#32&#115&#105&#122&#101&#61&#34&#43&#49&#34&#62&#60&#98&#62&#65&#110&#110&#117&#97&#108&#32&#80&#114&#111&#100&#117&#99&#116&#105&#111&#110&#60&#47&#98&#62&#60&#47&#102&#111&#110&#116&#62&#60&#47&#116&#100&#62&#32&#60&#47&#116&#114&#62&#32&#60&#116&#114&#32&#99&#108&#97&#115&#115&#61&#34&#104&#101&#97&#100&#34&#62&#32&#60&#116&#100&#62&#89&#101&#97&#114&#60&#47&#116&#100&#62&#32&#60&#116&#100&#32&#99&#108&#97&#115&#115&#61&#34&#81&#117&#97&#114&#116&#101&#114&#115&#34&#62&#81&#117&#97&#114&#116&#101&#114&#60&#47&#116&#100&#62&#32&#60&#116&#100&#32&#99&#108&#97&#115&#115&#61&#34&#83&#111&#117&#114&#99&#101&#34&#62&#83&#111&#117&#114&#99&#101&#60&#47&#116&#100&#62&#32&#60&#116&#100&#62&#79&#105&#108&#32&#40&#66&#97&#114&#114&#101&#108&#115&#41&#60&#47&#116&#100&#62&#32&#60&#116&#100&#62&#71&#97&#115&#32&#40&#77&#67&#70&#41&#32&#60&#47&#116&#100&#62&#32&#60&#116&#100&#62&#87&#97&#116&#101&#114&#32&#40&#66&#97&#114&#114&#101&#108&#115&#41&#32&#60&#47&#116&#100&#62&#32&#60&#116&#100&#62&#82&#101&#109&#97&#114&#107&#115&#60&#47&#116&#100&#62&#32&#60&#47&#116&#114&#62
+</pre>
+      </details>
+    </div>
+  </div>
+
+  <div id="results" style="display:none;">
+
+    <div class="d-flex justify-content-end mb-3 d-print-none">
+      <button class="btn btn-outline-dark" id="printBtn">🖨 Print report</button>
+    </div>
+
+    <div class="well-header mb-4">
+      <div class="text-muted text-uppercase small" id="wellId">API — · pasted data</div>
+      <h2 id="wellTitle">Well Production Overview</h2>
+      <div class="text-muted small" id="wellMeta"></div>
+      <div class="text-muted small fst-italic" id="wellGenerated" style="display:none;"></div>
+    </div>
+
+    <div class="row g-3 mb-4" id="statGrid"></div>
+
+    <div class="mb-5">
+      <h4 class="border-bottom pb-2 mb-3">Annual production</h4>
+      <div class="mb-2">
+        <span class="badge text-bg-danger">Oil (bbl)</span>
+        <span class="badge text-bg-primary">Water (bbl)</span>
+      </div>
+      <div class="card mb-3"><div class="card-body"><canvas id="chartOilWater" height="90"></canvas></div></div>
+      <div class="mb-2">
+        <span class="badge text-bg-success">Gas (MCF)</span>
+      </div>
+      <div class="card"><div class="card-body"><canvas id="chartGas" height="90"></canvas></div></div>
+    </div>
+
+    <div class="mb-5">
+      <h4 class="border-bottom pb-2 mb-3">Estimated revenue</h4>
+      <div class="mb-2">
+        <span class="badge text-bg-danger">Oil revenue</span>
+        <span class="badge text-bg-success">Gas revenue</span>
+      </div>
+      <div class="card mb-3"><div class="card-body"><canvas id="chartRevAnnual" height="90"></canvas></div></div>
+      <div class="card mb-3"><div class="card-body"><canvas id="chartRevCum" height="90"></canvas></div></div>
+      <div class="alert alert-light border mb-0" id="revNote"></div>
+    </div>
+
+    <div class="mb-5">
+      <h4 class="border-bottom pb-2 mb-3">Cumulative share of lifetime production</h4>
+      <div class="mb-2">
+        <span class="badge text-bg-danger">Oil</span>
+        <span class="badge text-bg-success">Gas</span>
+        <span class="badge text-bg-primary">Water</span>
+      </div>
+      <div class="card"><div class="card-body"><canvas id="chartShare" height="90"></canvas></div></div>
+    </div>
+
+    <div class="mb-5">
+      <h4 class="border-bottom pb-2 mb-3">Parsed data <span class="badge text-bg-secondary" id="rowCount"></span></h4>
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover" id="dataTable"></table>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="text-muted small border-top pt-3 mt-5 d-print-none">
+    Runs client-side only — no data leaves your browser. Revenue estimates use annual average WTI (oil) and Henry Hub (gas) benchmark spot prices, not this well's actual sale price, and exclude taxes, royalties, and operating costs. Produced water is treated as a disposal item, not revenue.
+  </footer>
+
+</div>
+
+<script>
+/* ---------------- Benchmark annual average prices ----------------
+   Oil: WTI average closing price, $/bbl (Macrotrends).
+   Gas: Henry Hub spot, average $/MMBtu (EIA), applied per Mcf as a
+   standard ~1:1 approximation. 2025 figures are partial-year. */
+const OIL_PRICE = {2006:66.05,2007:72.34,2008:99.67,2009:61.95,2010:79.48,2011:94.88,2012:94.05,2013:97.98,2014:93.17,2015:48.66,2016:43.29,2017:50.80,2018:65.23,2019:56.99,2020:39.68,2021:68.17,2022:94.53,2023:77.64,2024:75.83,2025:68.66};
+const GAS_PRICE = {2006:6.73,2007:6.97,2008:8.86,2009:3.92,2010:4.37,2011:4.02,2012:2.77,2013:3.73,2014:4.37,2015:2.63,2016:2.51,2017:2.99,2018:3.15,2019:2.57,2020:2.03,2021:3.91,2022:6.45,2023:2.53,2024:2.19,2025:3.52};
+
+function priceFor(table, year){
+  if(table[year] !== undefined) return table[year];
+  const years = Object.keys(table).map(Number);
+  const clamped = Math.max(Math.min(year, Math.max(...years)), Math.min(...years));
+  return table[clamped];
+}
+
+let charts = [];
+function destroyCharts(){ charts.forEach(c=>c.destroy()); charts = []; }
+
+document.getElementById('printBtn').addEventListener('click', () => {
+  window.print();
+});
+
+/* ---------------- Sample data ---------------- */
+const SAMPLE = `| Year | Quarter | Source | Oil (Barrels) | Gas (MCF) | Water (Barrels) | Remarks |
+| 2006 | N\\A | RBDMS | 305 | 0 | 3212 |  |
+| 2007 | N\\A | RBDMS | 869 | 33108 | 396 |  |
+| 2008 | N\\A | RBDMS | 426 | 35496 | 313 |  |
+| 2009 | N\\A | RBDMS | 353 | 25674 | 208 |  |
+| 2010 | N\\A | RBDMS | 278 | 22706 | 147 |  |
+| 2011 | N\\A | RBDMS | 167 | 15911 | 103 |  |
+| 2012 | N\\A | RBDMS | 115 | 10317 | 87 |  |
+| 2013 | N\\A | RBDMS | 136 | 3617 | 103 |  |
+| 2014 | N\\A | RBDMS | 118 | 5503 | 168 |  |
+| 2015 | N\\A | RBDMS | 82 | 5376 | 59 |  |
+| 2016 | N\\A | RBDMS | 0 | 3969 | 56 |  |
+| 2017 | N\\A | RBDMS | 99 | 3004 | 60 |  |
+| 2018 | N\\A | RBDMS | 165 | 3765 | 103 |  |
+| 2019 | N\\A | RBDMS | 104 | 3517 | 96 |  |
+| 2020 | N\\A | RBDMS | 87 | 3110 | 91 |  |
+| 2021 | N\\A | RBDMS | 39 | 3174 | 63 |  |
+| 2022 | N\\A | RBDMS | 63 | 2792 | 81 |  |
+| 2023 | N\\A | RBDMS | 35 | 2712 | 125 |  |
+| 2024 | N\\A | RBDMS | 102 | 2083 | 171 |  |
+| 2025 | N\\A | RBDMS | 0 | 332 | 130 |  |`;
+document.getElementById('sampleBtn').addEventListener('click', () => {
+  document.getElementById('pasteInput').value = SAMPLE;
+  parseAndRender(SAMPLE);
+});
+
+/* ---------------- Parse button ---------------- */
+document.getElementById('parseBtn').addEventListener('click', () => {
+  const text = document.getElementById('pasteInput').value;
+  parseAndRender(text);
+});
+
+/* ---------------- Parsing ---------------- */
+function headerIndex(headers, keywords){
+  for(let i=0;i<headers.length;i++){
+    const h = headers[i].toLowerCase();
+    if(keywords.some(k => h.includes(k))) return i;
+  }
+  return -1;
+}
+
+function numOr0(s){
+  const n = parseFloat(String(s).replace(/[^0-9.\-]/g,''));
+  return isNaN(n) ? 0 : n;
+}
+
+/* Some source records contain duplicate rows for the same year (seen in the
+   wild on ODNR cards). Combine them by summing, so charts don't get two
+   points on the same x-axis label. */
+function dedupeByYear(rows){
+  const byYear = new Map();
+  for(const r of rows){
+    if(byYear.has(r.year)){
+      const e = byYear.get(r.year);
+      e.oil += r.oil; e.gas += r.gas; e.water += r.water;
+    }else{
+      byYear.set(r.year, {...r});
+    }
+  }
+  return Array.from(byYear.values());
+}
+
+function parseHtmlTable(doc){
+  const tables = Array.from(doc.querySelectorAll('table'));
+  for(const table of tables){
+    const rows = Array.from(table.querySelectorAll('tr'));
+    if(rows.length < 2) continue;
+
+    // The header row isn't always the first <tr> — some sources (e.g. ODNR)
+    // put a caption/title row first. Scan the first several rows for one
+    // whose cells match Year/Oil/Gas/Water.
+    let headerRowIdx = -1, yi=-1, oi=-1, gi=-1, wi=-1;
+    const scanLimit = Math.min(6, rows.length);
+    for(let r=0;r<scanLimit;r++){
+      const headerCells = Array.from(rows[r].querySelectorAll('th,td')).map(c => c.textContent.trim());
+      const yi_ = headerIndex(headerCells, ['year']);
+      const oi_ = headerIndex(headerCells, ['oil']);
+      const gi_ = headerIndex(headerCells, ['gas']);
+      const wi_ = headerIndex(headerCells, ['water']);
+      if(yi_!==-1 && oi_!==-1 && gi_!==-1 && wi_!==-1){
+        headerRowIdx = r; yi=yi_; oi=oi_; gi=gi_; wi=wi_;
+        break;
+      }
+    }
+    if(headerRowIdx === -1) continue;
+
+    const out = [];
+    for(let r=headerRowIdx+1;r<rows.length;r++){
+      const cells = Array.from(rows[r].querySelectorAll('th,td')).map(c => c.textContent.trim());
+      if(cells.length <= Math.max(yi,oi,gi,wi)) continue;
+      const year = parseInt(cells[yi].replace(/\D/g,''));
+      if(!year || year < 1900 || year > 2100) continue;
+      out.push({
+        year,
+        oil: numOr0(cells[oi]),
+        gas: numOr0(cells[gi]),
+        water: numOr0(cells[wi])
+      });
+    }
+    if(out.length) return dedupeByYear(out);
+  }
+  return null;
+}
+
+function parseMarkdownTable(text){
+  const lines = text.split('\n').map(l=>l.trim()).filter(l => l.startsWith('|'));
+  if(lines.length < 2) return null;
+  const rowsRaw = lines.filter(l => !/^\|[\s:\-|]+\|$/.test(l))
+                       .map(l => l.slice(1,-1).split('|').map(c=>c.trim()));
+  const headers = rowsRaw[0].map(h=>h.toLowerCase());
+  const yi = headerIndex(headers, ['year']);
+  const oi = headerIndex(headers, ['oil']);
+  const gi = headerIndex(headers, ['gas']);
+  const wi = headerIndex(headers, ['water']);
+  if(yi === -1 || oi === -1 || gi === -1 || wi === -1) return null;
+  const out = [];
+  for(let r=1;r<rowsRaw.length;r++){
+    const cells = rowsRaw[r];
+    if(cells.length <= Math.max(yi,oi,gi,wi)) continue;
+    const year = parseInt(cells[yi].replace(/\D/g,''));
+    if(!year || year < 1900 || year > 2100) continue;
+    out.push({year, oil:numOr0(cells[oi]), gas:numOr0(cells[gi]), water:numOr0(cells[wi])});
+  }
+  return out.length ? dedupeByYear(out) : null;
+}
+
+function parsePlainTable(text){
+  const lines = text.split('\n').map(l=>l.trim()).filter(Boolean);
+  const out = [];
+  const re = /^(\d{4})\s+\S+\s+\S+\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)/;
+  for(const line of lines){
+    const m = line.match(re);
+    if(m){
+      out.push({year:parseInt(m[1]), oil:numOr0(m[2]), gas:numOr0(m[3]), water:numOr0(m[4])});
+    }
+  }
+  return out.length ? dedupeByYear(out) : null;
+}
+
+function extractWellMeta(text, doc){
+  const meta = {};
+  const patterns = {
+    api: /API\s*(?:Well\s*)?(?:Number)?[\s#:]*([\d\-]{8,})/i,
+    name: /Well\s*Name\s*([A-Za-z0-9 .#'&\-]{2,40}?)\s+(?:Acres|Well No|Date)/i,
+    owner: /(?:Owner|Operator)\s*([A-Za-z0-9 .,&'\-]{2,50}?)\s+(?:Well No|Logging|Date)/i,
+    county: /County\s*([A-Za-z]{2,30})\s+Township/i,
+    township: /Township\s*([A-Za-z]{2,30})\s+Quadrangle/i,
+    status: /(?<!Orphan\s)(?:Well\s*)?Status\s*([A-Za-z]{2,20})/i,
+    prodForm: /Prod\.?\s*Form\.?\s*([A-Za-z0-9 .\-]{2,40}?)\s+Status/i,
+    generated: /Generated\s+(\d{1,2}\/\d{1,2}\/\d{4}\s+\d{1,2}:\d{2}:\d{2}\s*[AP]M)/i
+  };
+  // Normalize whitespace once so label/value pairs (which may be split
+  // across table cells) line up on a single line for the regexes above.
+  const plain = (doc ? doc.body.innerText : text).replace(/\s+/g, ' ');
+  const fallbackPlain = text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  for(const key in patterns){
+    const m = plain.match(patterns[key]) || fallbackPlain.match(patterns[key]);
+    if(m) meta[key] = m[1].trim().replace(/\s{2,}/g,' ');
+  }
+  return meta;
+}
+
+function parseAndRender(rawText){
+  const statusEl = document.getElementById('parseStatus');
+  const text = rawText || '';
+  if(!text.trim()){
+    statusEl.style.display = '';
+    statusEl.className = 'alert mt-3 mb-0 alert-danger';
+    statusEl.textContent = 'Paste the production table first.';
+    return;
+  }
+
+  let rows = null;
+  let doc = null;
+  let meta = {};
+
+  if(/<table/i.test(text)){
+    doc = new DOMParser().parseFromString(text, 'text/html');
+    rows = parseHtmlTable(doc);
+  }
+  if(!rows) rows = parseMarkdownTable(text);
+  if(!rows) rows = parsePlainTable(text);
+
+  if(!rows || rows.length === 0){
+    statusEl.style.display = '';
+    statusEl.className = 'alert mt-3 mb-0 alert-danger';
+    statusEl.textContent = "Couldn't find a Year / Oil / Gas / Water table in that text. Copy the well card's \"Annual Production\" table and paste it in.";
+    return;
+  }
+
+  rows.sort((a,b)=>a.year-b.year);
+  meta = extractWellMeta(text, doc);
+
+  statusEl.style.display = '';
+  statusEl.className = 'alert mt-3 mb-0 alert-success';
+  statusEl.textContent = `Parsed ${rows.length} year(s) of production data.`;
+
+  renderResults(rows, meta);
+}
+
+/* ---------------- Rendering ---------------- */
+function renderResults(rows, meta){
+  destroyCharts();
+  const years = rows.map(r=>r.year);
+  const oil = rows.map(r=>r.oil);
+  const gas = rows.map(r=>r.gas);
+  const water = rows.map(r=>r.water);
+
+  const totOil = oil.reduce((a,b)=>a+b,0);
+  const totGas = gas.reduce((a,b)=>a+b,0);
+  const totWater = water.reduce((a,b)=>a+b,0);
+
+  const oilRev = years.map((y,i)=>oil[i]*priceFor(OIL_PRICE,y));
+  const gasRev = years.map((y,i)=>gas[i]*priceFor(GAS_PRICE,y));
+  const totOilRev = oilRev.reduce((a,b)=>a+b,0);
+  const totGasRev = gasRev.reduce((a,b)=>a+b,0);
+  const totRev = totOilRev + totGasRev;
+
+  const cumOilRev = cumsum(oilRev);
+  const cumGasRev = cumsum(gasRev);
+  const cumOilShare = cumsum(oil.map(v=>100*v/(totOil||1)));
+  const cumGasShare = cumsum(gas.map(v=>100*v/(totGas||1)));
+  const cumWaterShare = cumsum(water.map(v=>100*v/(totWater||1)));
+
+  /* header / meta */
+  document.getElementById('wellId').textContent =
+    'API ' + (meta.api || '—') + ' · ' + years[0] + '–' + years[years.length-1];
+  document.getElementById('wellTitle').textContent = meta.name || 'Well Production Overview';
+  const metaBits = [];
+  if(meta.owner) metaBits.push('Owner/Operator: ' + meta.owner);
+  if(meta.county) metaBits.push('County: ' + meta.county);
+  if(meta.township) metaBits.push('Township: ' + meta.township);
+  if(meta.status) metaBits.push('Status: ' + meta.status);
+  if(meta.prodForm) metaBits.push('Producing formation: ' + meta.prodForm);
+  document.getElementById('wellMeta').innerHTML = metaBits.map(b=>`<span class="me-3">${b}</span>`).join('');
+
+  const genEl = document.getElementById('wellGenerated');
+  if(meta.generated){
+    genEl.textContent = 'Source card generated ' + meta.generated;
+    genEl.style.display = '';
+  }else{
+    genEl.style.display = 'none';
+  }
+
+  /* stat grid */
+  const stat = document.getElementById('statGrid');
+  stat.innerHTML = `
+    <div class="col-6 col-md">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted text-uppercase small">Total Oil</div>
+        <div class="fs-4 fw-semibold text-danger">${fmt(totOil)}</div>
+        <div class="text-muted small">barrels</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted text-uppercase small">Total Gas</div>
+        <div class="fs-4 fw-semibold text-success">${fmt(totGas)}</div>
+        <div class="text-muted small">MCF</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted text-uppercase small">Total Water</div>
+        <div class="fs-4 fw-semibold text-primary">${fmt(totWater)}</div>
+        <div class="text-muted small">barrels</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted text-uppercase small">Est. Total Revenue</div>
+        <div class="fs-4 fw-semibold">$${fmt(totRev)}</div>
+        <div class="text-muted small">oil + gas, gross</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted text-uppercase small">Years Reported</div>
+        <div class="fs-4 fw-semibold">${years.length}</div>
+        <div class="text-muted small">${years[0]}–${years[years.length-1]}</div>
+      </div></div>
+    </div>
+  `;
+
+  document.getElementById('revNote').innerHTML =
+    `<strong>Est. revenue:</strong> $${fmt(totOilRev)} from oil, $${fmt(totGasRev)} from gas — using annual average WTI and Henry Hub benchmark prices (not this well's actual sale price), gross of taxes, royalties, and costs. Produced water isn't included; it's typically a disposal cost rather than revenue.`;
+
+  /* charts — Bootstrap default theme colors */
+  const gridColor = '#e9ecef';
+  const tickColor = '#6c757d';
+  const oilColor = '#dc3545';
+  const gasColor = '#198754';
+  const waterColor = '#0d6efd';
+
+  charts.push(new Chart(document.getElementById('chartOilWater'), {
+    type:'line',
+    data:{labels:years, datasets:[
+      {label:'Oil (bbl)', data:oil, borderColor:oilColor, backgroundColor:'rgba(220,53,69,0.08)', borderWidth:2, pointRadius:2, tension:0.2},
+      {label:'Water (bbl)', data:water, borderColor:waterColor, backgroundColor:'rgba(13,110,253,0.08)', borderWidth:2, pointRadius:2, tension:0.2, borderDash:[5,3]}
+    ]},
+    options:{responsive:true, maintainAspectRatio:true, plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false}, ticks:{color:tickColor, maxRotation:45}}, y:{beginAtZero:true, grid:{color:gridColor}, ticks:{color:tickColor}}}}
+  }));
+
+  charts.push(new Chart(document.getElementById('chartGas'), {
+    type:'line',
+    data:{labels:years, datasets:[
+      {label:'Gas (MCF)', data:gas, borderColor:gasColor, backgroundColor:'rgba(25,135,84,0.12)', borderWidth:2, pointRadius:2, tension:0.2, fill:true}
+    ]},
+    options:{responsive:true, maintainAspectRatio:true, plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false}, ticks:{color:tickColor, maxRotation:45}}, y:{beginAtZero:true, grid:{color:gridColor}, ticks:{color:tickColor}}}}
+  }));
+
+  charts.push(new Chart(document.getElementById('chartRevAnnual'), {
+    type:'bar',
+    data:{labels:years, datasets:[
+      {label:'Oil revenue', data:oilRev.map(Math.round), backgroundColor:oilColor, stack:'s'},
+      {label:'Gas revenue', data:gasRev.map(Math.round), backgroundColor:gasColor, stack:'s'}
+    ]},
+    options:{responsive:true, maintainAspectRatio:true,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y.toLocaleString()}}},
+      scales:{x:{stacked:true, grid:{display:false}, ticks:{color:tickColor, maxRotation:45}},
+        y:{stacked:true, beginAtZero:true, grid:{color:gridColor}, ticks:{color:tickColor, callback:v=>'$'+v.toLocaleString()}}}}
+  }));
+
+  charts.push(new Chart(document.getElementById('chartRevCum'), {
+    type:'line',
+    data:{labels:years, datasets:[
+      {label:'Oil revenue', data:cumOilRev.map(Math.round), borderColor:oilColor, backgroundColor:'rgba(220,53,69,0.12)', borderWidth:2, pointRadius:0, fill:true, stack:'s'},
+      {label:'Gas revenue', data:cumGasRev.map(Math.round), borderColor:gasColor, backgroundColor:'rgba(25,135,84,0.12)', borderWidth:2, pointRadius:0, fill:true, stack:'s'}
+    ]},
+    options:{responsive:true, maintainAspectRatio:true,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y.toLocaleString()}}},
+      scales:{x:{stacked:true, grid:{display:false}, ticks:{color:tickColor, maxRotation:45}},
+        y:{stacked:true, beginAtZero:true, grid:{color:gridColor}, ticks:{color:tickColor, callback:v=>'$'+v.toLocaleString()}}}}
+  }));
+
+  charts.push(new Chart(document.getElementById('chartShare'), {
+    type:'line',
+    data:{labels:years, datasets:[
+      {label:'Oil', data:cumOilShare.map(v=>+v.toFixed(1)), borderColor:oilColor, borderWidth:2, pointRadius:2, tension:0.15},
+      {label:'Gas', data:cumGasShare.map(v=>+v.toFixed(1)), borderColor:gasColor, borderWidth:2, pointRadius:2, tension:0.15},
+      {label:'Water', data:cumWaterShare.map(v=>+v.toFixed(1)), borderColor:waterColor, borderWidth:2, pointRadius:2, tension:0.15, borderDash:[5,3]}
+    ]},
+    options:{responsive:true, maintainAspectRatio:true,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}}},
+      scales:{x:{grid:{display:false}, ticks:{color:tickColor, maxRotation:45}},
+        y:{beginAtZero:true, max:100, grid:{color:gridColor}, ticks:{color:tickColor, callback:v=>v+'%'}}}}
+  }));
+
+  /* table */
+  const table = document.getElementById('dataTable');
+  let html = '<thead class="table-light"><tr><th>Year</th><th>Oil (bbl)</th><th>Gas (MCF)</th><th>Water (bbl)</th><th>Est. Oil Rev.</th><th>Est. Gas Rev.</th></tr></thead><tbody>';
+  years.forEach((y,i)=>{
+    html += `<tr><td>${y}</td><td>${fmt(oil[i])}</td><td>${fmt(gas[i])}</td><td>${fmt(water[i])}</td><td>$${fmt(oilRev[i])}</td><td>$${fmt(gasRev[i])}</td></tr>`;
+  });
+  html += '</tbody>';
+  table.innerHTML = html;
+  document.getElementById('rowCount').textContent = years.length + ' rows';
+
+  document.getElementById('results').style.display = '';
+  document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function cumsum(arr){
+  let s = 0;
+  return arr.map(v => (s += v));
+}
+function fmt(n){
+  return Math.round(n).toLocaleString();
+}
+</script>
+</body>
+</html>
