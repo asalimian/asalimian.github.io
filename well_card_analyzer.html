@@ -69,8 +69,8 @@ Html source code:
     </div>
 
     <div class="well-header mb-4">
-      <div class="text-muted text-uppercase small" id="wellId">API — · pasted data</div>
       <h2 id="wellTitle">Well Production Overview</h2>
+      <div class="text-muted text-uppercase small mb-2" id="wellId">API — · pasted data</div>
       <div class="text-muted small" id="wellMeta"></div>
       <div class="text-muted small fst-italic" id="wellGenerated" style="display:none;"></div>
     </div>
@@ -394,8 +394,15 @@ function renderResults(rows, meta){
   const cumWaterShare = cumsum(water.map(v=>100*v/(totWater||1)));
 
   /* header / meta */
-  document.getElementById('wellId').textContent =
-    'API ' + (meta.api || '—') + ' · ' + years[0] + '–' + years[years.length-1];
+  const wellIdEl = document.getElementById('wellId');
+  const apiDigits = (meta.api || '').replace(/\D/g,'');
+  if(apiDigits){
+    wellIdEl.innerHTML = 'Well Summary <a href="https://gis.ohiodnr.gov/MapViewer/WellSummaryCard.asp?api=' +
+      apiDigits + '" target="_blank" rel="noopener">' + meta.api + '</a> · ' +
+      years[0] + '–' + years[years.length-1];
+  } else {
+    wellIdEl.textContent = 'API ' + (meta.api || '—') + ' · ' + years[0] + '–' + years[years.length-1];
+  }
   document.getElementById('wellTitle').textContent = meta.name || 'Well Production Overview';
   const metaBits = [];
   if(meta.owner) metaBits.push('Owner/Operator: ' + meta.owner);
